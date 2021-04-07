@@ -1,27 +1,45 @@
-# NotifFe
+# avopos Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.7.
+Front-end app for Notif App
 
-## Development server
+## Description
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Notif App is a notifications tool, allowing users to manage dynamic Email and Teams templates
 
-## Code scaffolding
+## Git Branching Strategy
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### `main` and `development`
 
-## Build
+There are 2 main branches in the project: `master` and `development`.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+`development` branch contain stable versions of the app. Developers should branch out from the `development` branch to begin development.
 
-## Running unit tests
+Once development branch is ready, or once a `hot-fix` branch is ready, it will be merged into `master` with an annotated tag. Click here to read more about [tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### `feature`, `bug`, `chore`, `refactor` and `hot-fix`
 
-## Running end-to-end tests
+These branches are short-lived. Below are the descriptions of the branche types:
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+1. `feature`: Contain code for any new feature
+2. `bug`: Fixes for any bug discovered
+3. `chore`: Work that will not affect end user (e.g updating `.gitignore`)
+4. `refactor`: Refactoring of code
+5. `hot-fix`: Urgent fix for a deployed version
 
-## Further help
+Branches should be named: `type/description` (e.g `feature/login`)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+| Branch Type | Branch From   |
+| ----------- | ------------- |
+| `feature`   | `development` |
+| `bug`       | `development` |
+| `chore`     | `development` |
+| `refactor`  | `development` |
+| `hot-fix`   | `master`      |
+
+### Versioning
+
+A version will typically look like this `MAJOR.MINOR.REVISION`
+
+- A `MAJOR` version increment signifies a MAJOR version release. Perhaps with lots of new features added
+- A `MINOR` version increment signifies a MINOR version release. Perhaps a few minor features and bug fixes
+- A `REVISION` version increment signifies a deployment with hot-fixes
