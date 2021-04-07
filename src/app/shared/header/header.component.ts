@@ -7,9 +7,14 @@ import { LayoutService } from '../layout.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+  headerTitle: string = '';
   constructor(private layoutService: LayoutService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.layoutService.headerTitle$.subscribe(
+      (title) => (this.headerTitle = title)
+    );
+  }
 
   toggleHeader() {
     this.layoutService.toggleSideNavCollapsed();

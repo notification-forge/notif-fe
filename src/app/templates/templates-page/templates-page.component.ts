@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LayoutService } from 'src/app/shared/layout.service';
 
 @Component({
   selector: 'app-templates-page',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./templates-page.component.scss'],
 })
 export class TemplatesPageComponent implements OnInit {
-  constructor() {}
+  constructor(private layoutService: LayoutService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.layoutService.setHeaderTitle('Templates');
+  }
 }
