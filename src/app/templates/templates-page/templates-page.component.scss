@@ -1,6 +1,12 @@
 .templates-page-wrapper {
   padding: 1rem;
 
+  .button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
   .input-wrapper {
     display: flex;
     margin-bottom: 1rem;

@@ -1,4 +1,7 @@
 <section class="templates-page-wrapper">
+  <div class="button-wrapper">
+    <button nz-button nzType="primary">Create Template</button>
+  </div>
   <div class="input-wrapper">
     <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
       <input type="text" nz-input placeholder="Search for template name" />
@@ -7,7 +10,7 @@
     <nz-select
       [(ngModel)]="tagValue"
       nzMode="tags"
-      nzPlaceHolder="Please select"
+      nzPlaceHolder="Please select app"
     >
       <nz-option
         *ngFor="let option of listOfOption"
