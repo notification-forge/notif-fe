@@ -6,8 +6,23 @@
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
+  p,
   h1 {
     margin: 0;
+  }
+
+  p {
+    margin-left: 1rem;
+  }
+
+  button {
+    margin-right: 1rem;
+  }
+
+  .flex-item {
+    display: flex;
+    align-items: center;
   }
 }

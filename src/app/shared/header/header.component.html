@@ -1,6 +1,18 @@
 <header class="app-header">
-  <button nz-button nzType="text" (click)="toggleHeader()">
-    <i nz-icon nzType="menu" nzTheme="outline"></i>
-  </button>
-  <h1>Page title</h1>
+  <div class="flex-item">
+    <button nz-button nzType="text" (click)="toggleHeader()">
+      <i nz-icon nzType="menu" nzTheme="outline"></i>
+    </button>
+    <h1>Page title</h1>
+  </div>
+
+  <div class="flex-item">
+    <nz-avatar
+      [nzGap]="8"
+      nzText="B"
+      nzSize="large"
+      style="vertical-align: middle"
+    ></nz-avatar>
+    <p>bcatsgops1</p>
+  </div>
 </header>
