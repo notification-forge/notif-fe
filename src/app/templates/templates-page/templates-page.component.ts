@@ -48,6 +48,7 @@ export class TemplatesPageComponent implements OnInit {
 
   onExpandChange(id: number, checked: boolean): void {
     if (checked) {
+      this.expandSet.clear();
       this.expandSet.add(id);
     } else {
       this.expandSet.delete(id);
