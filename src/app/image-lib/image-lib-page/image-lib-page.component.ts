@@ -7,9 +7,26 @@ import { LayoutService } from 'src/app/shared/layout.service';
   styleUrls: ['./image-lib-page.component.scss'],
 })
 export class ImageLibPageComponent implements OnInit {
+  tagValue = [];
+  listOfOption: DropdownOption[] = [
+    {
+      label: 'BCAT',
+      value: 'bcat',
+    },
+    {
+      label: 'SDWT',
+      value: 'sdwt',
+    },
+  ];
+
   constructor(private layoutService: LayoutService) {}
 
   ngOnInit(): void {
     this.layoutService.setHeaderTitle('Image Library');
   }
+}
+
+interface DropdownOption {
+  label: string;
+  value: string;
 }
