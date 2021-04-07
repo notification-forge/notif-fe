@@ -27,6 +27,20 @@ export class TemplatesPageComponent implements OnInit {
       deliveryChannel: 'Email',
       lastEdited: new Date(),
     },
+    {
+      id: 2,
+      template: 'BCAT Failure Email',
+      app: 'BCAT',
+      deliveryChannel: 'Email',
+      lastEdited: new Date(),
+    },
+    {
+      id: 3,
+      template: 'SDWT Success Email',
+      app: 'BCAT',
+      deliveryChannel: 'Email',
+      lastEdited: new Date(),
+    },
   ];
   expandSet = new Set<number>();
 

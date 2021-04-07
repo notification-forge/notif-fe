@@ -9,6 +9,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { FormsModule } from '@angular/forms';
+import { TemplateDetailsComponent } from './template-details/template-details.component';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 const routes: Routes = [
   {
@@ -23,7 +25,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [TemplatesPageComponent],
+  declarations: [TemplatesPageComponent, TemplateDetailsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -33,6 +35,7 @@ const routes: Routes = [
     NzIconModule,
     NzSelectModule,
     NzDropDownModule,
+    NzToolTipModule,
     FormsModule,
   ],
 })

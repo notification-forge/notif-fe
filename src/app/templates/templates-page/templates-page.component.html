@@ -49,7 +49,7 @@
           </td>
         </tr>
         <tr [nzExpand]="expandSet.has(data.id)">
-          <span>details</span>
+          <app-template-details [templateID]="data.id"></app-template-details>
         </tr>
       </ng-container>
     </tbody>
