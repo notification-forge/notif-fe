@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from 'src/app/shared/layout.service';
+import { TemplateItem } from '../templates.models';
 
 @Component({
   selector: 'app-templates-page',
@@ -7,7 +8,26 @@ import { LayoutService } from 'src/app/shared/layout.service';
   styleUrls: ['./templates-page.component.scss'],
 })
 export class TemplatesPageComponent implements OnInit {
+  listOfData: TemplateItem[] = [
+    {
+      id: 1,
+      template: 'BCAT Success Email',
+      app: 'BCAT',
+      deliveryChannel: 'Email',
+      lastEdited: new Date(),
+    },
+  ];
+  expandSet = new Set<number>();
+
   constructor(private layoutService: LayoutService) {}
+
+  onExpandChange(id: number, checked: boolean): void {
+    if (checked) {
+      this.expandSet.add(id);
+    } else {
+      this.expandSet.delete(id);
+    }
+  }
 
   ngOnInit(): void {
     this.layoutService.setHeaderTitle('Templates');

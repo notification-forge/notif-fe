@@ -1,1 +1,30 @@
-<p>templates-page works!</p>
+<section class="templates-page-wrapper">
+  <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
+    <thead>
+      <tr>
+        <th nzWidth="60px"></th>
+        <th>Template</th>
+        <th>Delivery Channel</th>
+        <th>App</th>
+        <th>Last Edited</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of nzTable.data">
+        <tr>
+          <td
+            [nzExpand]="expandSet.has(data.id)"
+            (nzExpandChange)="onExpandChange(data.id, $event)"
+          ></td>
+          <td>{{ data.template }}</td>
+          <td>{{ data.deliveryChannel }}</td>
+          <td>{{ data.app }}</td>
+          <td>{{ data.lastEdited }}</td>
+        </tr>
+        <tr [nzExpand]="expandSet.has(data.id)">
+          <span>details</span>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</section>
