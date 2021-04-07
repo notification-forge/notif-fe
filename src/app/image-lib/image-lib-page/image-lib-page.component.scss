@@ -23,4 +23,15 @@
       margin-left: 1rem;
     }
   }
+
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+
+    img {
+      width: 220px;
+      height: 220px;
+      object-fit: contain;
+    }
+  }
 }
