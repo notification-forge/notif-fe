@@ -6,14 +6,13 @@
     [ngClass]="[isCollapsed ? 'collapsed' : '']"
   >
     <li
+      *ngFor="let item of sideNavItem"
       nz-menu-item
-      nz-tooltip
-      nzTooltipPlacement="right"
-      [nzTooltipTitle]="isCollapsed ? 'Navigation One' : ''"
       nzSelected
+      [routerLink]="[item.url]"
     >
-      <i nz-icon [nzType]="'home'"></i>
-      <span>Test</span>
+      <i nz-icon [nzType]="item.icon"></i>
+      <span>{{ item.display }}</span>
     </li>
   </ul>
 </div>
