@@ -1,5 +1,7 @@
 .templates-page-wrapper {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
 
   .button-wrapper {
     display: flex;
@@ -20,5 +22,9 @@
       flex: 1;
       margin-left: 1rem;
     }
+  }
+
+  nz-table {
+    flex-grow: 1;
   }
 }

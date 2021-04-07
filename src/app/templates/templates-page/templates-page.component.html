@@ -28,6 +28,7 @@
         <th>Delivery Channel</th>
         <th>App</th>
         <th>Last Edited</th>
+        <th nzWidth="60px"></th>
       </tr>
     </thead>
     <tbody>
@@ -41,6 +42,11 @@
           <td>{{ data.deliveryChannel }}</td>
           <td>{{ data.app }}</td>
           <td>{{ data.lastEdited }}</td>
+          <td>
+            <a nz-dropdown [nzDropdownMenu]="menu">
+              <i nz-icon nzType="more"></i>
+            </a>
+          </td>
         </tr>
         <tr [nzExpand]="expandSet.has(data.id)">
           <span>details</span>
@@ -55,3 +61,10 @@
     <i nz-icon nzType="search"></i>
   </button>
 </ng-template>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu nzSelectable>
+    <li nz-menu-item>Edit Template Name</li>
+    <li nz-menu-item nzDanger>Delete</li>
+  </ul>
+</nz-dropdown-menu>

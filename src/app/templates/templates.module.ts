@@ -7,6 +7,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
     NzButtonModule,
     NzIconModule,
     NzSelectModule,
+    NzDropDownModule,
     FormsModule,
   ],
 })
