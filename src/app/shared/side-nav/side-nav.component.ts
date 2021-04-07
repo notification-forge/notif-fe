@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { LayoutService } from '../layout.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -23,7 +24,7 @@ export class SideNavComponent implements OnInit {
   ];
   currentActive: string | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private layoutService: LayoutService) {}
 
   ngOnInit(): void {
     this.router.events
@@ -31,6 +32,10 @@ export class SideNavComponent implements OnInit {
       .subscribe((event) => {
         this.currentActive = (event as NavigationStart).url;
       });
+
+    this.layoutService.sideNavCollapsed$.subscribe(
+      (isCollapsed) => (this.isCollapsed = isCollapsed)
+    );
   }
 
   toggleCollapsed(): void {

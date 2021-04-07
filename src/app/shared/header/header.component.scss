@@ -1,0 +1,13 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  background-color: #ffff;
+  padding: 1rem;
+
+  display: flex;
+  align-items: center;
+
+  h1 {
+    margin: 0;
+  }
+}
