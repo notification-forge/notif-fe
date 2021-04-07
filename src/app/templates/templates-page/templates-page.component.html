@@ -1,4 +1,22 @@
 <section class="templates-page-wrapper">
+  <div class="input-wrapper">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input type="text" nz-input placeholder="Search for template name" />
+    </nz-input-group>
+
+    <nz-select
+      [(ngModel)]="tagValue"
+      nzMode="tags"
+      nzPlaceHolder="Please select"
+    >
+      <nz-option
+        *ngFor="let option of listOfOption"
+        [nzLabel]="option.label"
+        [nzValue]="option.value"
+      ></nz-option>
+    </nz-select>
+  </div>
+
   <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
     <thead>
       <tr>
@@ -28,3 +46,9 @@
     </tbody>
   </nz-table>
 </section>
+
+<ng-template #suffixIconButton>
+  <button nz-button nzType="primary" nzSearch>
+    <i nz-icon nzType="search"></i>
+  </button>
+</ng-template>

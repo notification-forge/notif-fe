@@ -1,3 +1,18 @@
 .templates-page-wrapper {
   padding: 1rem;
+
+  .input-wrapper {
+    display: flex;
+    margin-bottom: 1rem;
+
+    nz-input-group {
+      flex: 1;
+      margin-right: 1rem;
+    }
+
+    nz-select {
+      flex: 1;
+      margin-left: 1rem;
+    }
+  }
 }

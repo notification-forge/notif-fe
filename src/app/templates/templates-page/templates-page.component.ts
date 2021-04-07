@@ -8,6 +8,8 @@ import { TemplateItem } from '../templates.models';
   styleUrls: ['./templates-page.component.scss'],
 })
 export class TemplatesPageComponent implements OnInit {
+  tagValue = ['a10', 'c12', 'tag'];
+  listOfOption: { label: string; value: string }[] = [];
   listOfData: TemplateItem[] = [
     {
       id: 1,
@@ -31,5 +33,10 @@ export class TemplatesPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.layoutService.setHeaderTitle('Templates');
+    const children: { label: string; value: string }[] = [];
+    for (let i = 10; i < 36; i++) {
+      children.push({ label: i.toString(36) + i, value: i.toString(36) + i });
+    }
+    this.listOfOption = children;
   }
 }
