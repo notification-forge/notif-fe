@@ -14,12 +14,12 @@ export class SideNavComponent implements OnInit {
     {
       url: 'template',
       display: 'Templates',
-      icon: 'home',
+      icon: 'book',
     },
     {
       url: 'image-lib',
       display: 'Image Library',
-      icon: 'home',
+      icon: 'file-image',
     },
   ];
   currentActive: string | null = null;

@@ -13,6 +13,15 @@
       nzSize="large"
       style="vertical-align: middle"
     ></nz-avatar>
-    <p>bcatsgops1</p>
+    <a nz-dropdown [nzDropdownMenu]="menu">
+      bcatsgops1
+      <i nz-icon nzType="down"></i>
+    </a>
   </div>
 </header>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu nzSelectable>
+    <li nz-menu-item>Logout</li>
+  </ul>
+</nz-dropdown-menu>
