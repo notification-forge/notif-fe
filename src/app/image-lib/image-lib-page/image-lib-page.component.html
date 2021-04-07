@@ -26,14 +26,20 @@
       nzHoverable
       style="width: 220px; margin: 1rem"
       [nzCover]="coverTemplate"
+      [nzActions]="[actionDelete]"
     >
-      <ng-template #coverTemplate>
-        <img [alt]="image.fileName" [src]="image.url" />
-      </ng-template>
       <nz-card-meta
         [nzTitle]="image.fileName"
         [nzDescription]="image.app"
       ></nz-card-meta>
+      <ng-template #coverTemplate>
+        <img [alt]="image.fileName" [src]="image.url" />
+      </ng-template>
+      <ng-template #actionDelete>
+        <button nz-button nzType="text" nzDanger>
+          <i nz-icon nzType="delete"></i>
+        </button>
+      </ng-template>
     </nz-card>
   </div>
 </section>
