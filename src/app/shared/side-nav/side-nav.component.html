@@ -1,1 +1,19 @@
-<nz-sider class="menu-sidebar"> side nav </nz-sider>
+<div class="menu-sidebar">
+  <ul
+    nz-menu
+    nzMode="inline"
+    [nzInlineCollapsed]="isCollapsed"
+    [ngClass]="[isCollapsed ? 'collapsed' : '']"
+  >
+    <li
+      nz-menu-item
+      nz-tooltip
+      nzTooltipPlacement="right"
+      [nzTooltipTitle]="isCollapsed ? 'Navigation One' : ''"
+      nzSelected
+    >
+      <i nz-icon [nzType]="'home'"></i>
+      <span>Test</span>
+    </li>
+  </ul>
+</div>

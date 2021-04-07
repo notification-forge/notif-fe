@@ -7,7 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideNavComponent implements OnInit {
   isCollapsed = false;
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  toggleCollapsed(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
 }
