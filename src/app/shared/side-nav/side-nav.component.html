@@ -8,7 +8,7 @@
     <li
       *ngFor="let item of sideNavItem"
       nz-menu-item
-      nzSelected
+      [nzSelected]="currentActive?.includes(item.url)"
       [routerLink]="[item.url]"
     >
       <i nz-icon [nzType]="item.icon"></i>

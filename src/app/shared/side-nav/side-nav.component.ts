@@ -21,6 +21,7 @@ export class SideNavComponent implements OnInit {
       icon: 'home',
     },
   ];
+  currentActive: string | null = null;
 
   constructor(private router: Router) {}
 
@@ -28,7 +29,7 @@ export class SideNavComponent implements OnInit {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationStart))
       .subscribe((event) => {
-        console.log(event);
+        this.currentActive = (event as NavigationStart).url;
       });
   }
 
