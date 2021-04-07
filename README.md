@@ -1,46 +1,100 @@
-# Getting Started with Create React App
+# Notif Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Front-end app for the notif software
 
-## Available Scripts
+## Table of Content
 
-In the project directory, you can run:
+1. Description
+2. Git Branching Strategy
+3. Toolings
+4. Folder Structure and Naming convention
+5. State Management Strategy
 
-### `npm start`
+## Description
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Notif is a notification templating tool, allowing users to create and manage email and Teams templates
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Git Branching Strategy
 
-### `npm test`
+### `main` and `development`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+There are 2 main branches in the project: `master` and `development`.
 
-### `npm run build`
+`development` branch contain stable versions of the app. Developers should branch out from the `development` branch to begin development.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Once development branch is ready, or once a `hot-fix` branch is ready, it will be merged into `master` with an annotated tag. Click here to read more about [tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `feature`, `bug`, `chore`, `refactor` and `hot-fix`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+These branches are short-lived. Below are the descriptions of the branche types:
 
-### `npm run eject`
+1. `feature`: Contain code for any new feature
+2. `bug`: Fixes for any bug discovered
+3. `chore`: Work that will not affect end user (e.g updating `.gitignore`)
+4. `refactor`: Refactoring of code
+5. `hot-fix`: Urgent fix for a deployed version
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Branches should be named: `type/description` (e.g `feature/login`)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Branch Type | Branch From   |
+| ----------- | ------------- |
+| `feature`   | `development` |
+| `bug`       | `development` |
+| `chore`     | `development` |
+| `refactor`  | `development` |
+| `hot-fix`   | `master`      |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Versioning
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+A version will typically look like this `MAJOR.MINOR.REVISION`
 
-## Learn More
+- A `MAJOR` version increment signifies a MAJOR version release. Perhaps with lots of new features added
+- A `MINOR` version increment signifies a MINOR version release. Perhaps a few minor features and bug fixes
+- A `REVISION` version increment signifies a deployment with hot-fixes
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Toolings
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The tools that we are using are:
+| Tool | Purpose |
+| ---------- | ------- |
+| `SCSS` | CSS Pre-processor |
+| `Prettier` | Code Formatter |
+| `Axios` | API interceptor |
+| React-Context | State Management |
+
+## Folder structure and Naming convention
+
+The folder structure and file naming convention is as follow
+
+```
+src
+|
+|__shared
+   |
+   |__ styles // Style for shared components
+   |__ components // Shared components
+   |__ constants // Constant values across the app e.g color codes
+   |__ contexts // Context code
+   |__ services // Services code
+   |__ utils // Shared utils methods
+   |__ // Other shared files
+|
+|__assets // assets for the app e.g Logos, Images, e.t.c
+|
+|__module
+   |
+   |__component // Shared components folder for the module
+   |__styles // Style folder for the module
+   |__ModulePage.tsx // A component that display an entire page
+   |__module.models.ts // Model that the module will share
+
+```
+
+Tests are to be placed right next to the `.ts` or `.tsx` file it is testing. Test files are to be named `File.test.ts` or `File.test.tsx`
+
+## State Management
+
+We are using React Context as our state management strategy. Before writing a context, perform the below thought experiment:
+
+1. Will the state be needed for more than 1 module? If yes create a context. If no, read on.
+2. Will the state be nested for more than 2 layers of components? If yes, create a context. If no, use `useState` instead.
