@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class LayoutService {
-  private _sideNavCollapsed: boolean = false;
+  private sideNavCollapsed = false;
   sideNavCollapsed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
@@ -13,12 +13,12 @@ export class LayoutService {
 
   constructor() {}
 
-  toggleSideNavCollapsed() {
-    this.sideNavCollapsed$.next(!this._sideNavCollapsed);
-    this._sideNavCollapsed = !this._sideNavCollapsed;
+  toggleSideNavCollapsed(): void {
+    this.sideNavCollapsed$.next(!this.sideNavCollapsed);
+    this.sideNavCollapsed = !this.sideNavCollapsed;
   }
 
-  setHeaderTitle(title: string) {
+  setHeaderTitle(title: string): void {
     this.headerTitle$.next(title);
   }
 }
