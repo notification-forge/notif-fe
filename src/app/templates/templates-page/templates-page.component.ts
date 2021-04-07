@@ -43,8 +43,14 @@ export class TemplatesPageComponent implements OnInit {
     },
   ];
   expandSet = new Set<number>();
+  codeEditorVisible = false;
+  codeEditorHeight = window.innerHeight;
 
   constructor(private layoutService: LayoutService) {}
+
+  ngOnInit(): void {
+    this.layoutService.setHeaderTitle('Templates');
+  }
 
   onExpandChange(id: number, checked: boolean): void {
     if (checked) {
@@ -55,8 +61,12 @@ export class TemplatesPageComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.layoutService.setHeaderTitle('Templates');
+  openCodeEditor() {
+    this.codeEditorVisible = true;
+  }
+
+  closeCodeEditor() {
+    this.codeEditorVisible = false;
   }
 }
 

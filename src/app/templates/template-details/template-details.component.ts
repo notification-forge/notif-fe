@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-template-details',
@@ -7,8 +7,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TemplateDetailsComponent implements OnInit {
   @Input() templateID: number;
+  @Output() onCreateVersion: EventEmitter<null> = new EventEmitter();
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  createVersion() {
+    this.onCreateVersion.emit();
+  }
 }

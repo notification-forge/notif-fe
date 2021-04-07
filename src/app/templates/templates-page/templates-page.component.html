@@ -49,12 +49,31 @@
           </td>
         </tr>
         <tr [nzExpand]="expandSet.has(data.id)">
-          <app-template-details [templateID]="data.id"></app-template-details>
+          <app-template-details
+            [templateID]="data.id"
+            (onCreateVersion)="openCodeEditor()"
+          ></app-template-details>
         </tr>
       </ng-container>
     </tbody>
   </nz-table>
 </section>
+
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="codeEditorVisible"
+  [nzMaskClosable]="false"
+  [nzHeight]="codeEditorHeight"
+  nzPlacement="bottom"
+  nzTitle="Basic Drawer"
+  (nzOnClose)="closeCodeEditor()"
+>
+  <ng-container *nzDrawerContent>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+  </ng-container>
+</nz-drawer>
 
 <ng-template #suffixIconButton>
   <button nz-button nzType="primary" nzSearch>

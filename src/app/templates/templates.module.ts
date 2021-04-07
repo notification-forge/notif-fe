@@ -11,6 +11,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { FormsModule } from '@angular/forms';
 import { TemplateDetailsComponent } from './template-details/template-details.component';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 const routes: Routes = [
   {
@@ -36,6 +37,7 @@ const routes: Routes = [
     NzSelectModule,
     NzDropDownModule,
     NzToolTipModule,
+    NzDrawerModule,
     FormsModule,
   ],
 })
