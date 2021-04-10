@@ -59,21 +59,10 @@
   </nz-table>
 </section>
 
-<nz-drawer
-  [nzClosable]="true"
-  [nzVisible]="codeEditorVisible"
-  [nzMaskClosable]="false"
-  [nzHeight]="codeEditorHeight"
-  nzPlacement="bottom"
-  nzTitle="Basic Drawer"
-  (nzOnClose)="closeCodeEditor()"
->
-  <ng-container *nzDrawerContent>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-    <p>Some contents...</p>
-  </ng-container>
-</nz-drawer>
+<app-code-editor
+  [codeEditorVisible]="codeEditorVisible"
+  (closeCodeEditor)="closeCodeEditor()"
+></app-code-editor>
 
 <ng-template #suffixIconButton>
   <button nz-button nzType="primary" nzSearch>

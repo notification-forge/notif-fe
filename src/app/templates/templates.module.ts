@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { TemplateDetailsComponent } from './template-details/template-details.component';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { CodeEditorComponent } from './code-editor/code-editor.component';
 
 const routes: Routes = [
   {
@@ -26,7 +27,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [TemplatesPageComponent, TemplateDetailsComponent],
+  declarations: [
+    TemplatesPageComponent,
+    TemplateDetailsComponent,
+    CodeEditorComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

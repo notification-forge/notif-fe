@@ -1,0 +1,16 @@
+<nz-drawer
+  [nzClosable]="true"
+  [nzVisible]="codeEditorVisible"
+  [nzMaskClosable]="false"
+  [nzHeight]="codeEditorHeight"
+  nzPlacement="bottom"
+  [nzTitle]="header"
+  (nzOnClose)="onCloseCodeEditor()"
+>
+  <ng-template #header>
+    <div class="code-editor-header">Header</div>
+  </ng-template>
+  <ng-container *nzDrawerContent>
+    <p>Code editor</p>
+  </ng-container>
+</nz-drawer>
