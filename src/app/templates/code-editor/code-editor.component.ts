@@ -10,6 +10,8 @@ export class CodeEditorComponent implements OnInit {
   @Output() closeCodeEditor: EventEmitter<null> = new EventEmitter();
 
   codeEditorHeight = window.innerHeight;
+  editorOptions = { theme: 'vs-dark', language: 'html' };
+  code: string = '<div> Hello world </div>';
 
   constructor() {}
 

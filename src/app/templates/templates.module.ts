@@ -13,6 +13,7 @@ import { TemplateDetailsComponent } from './template-details/template-details.co
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 const routes: Routes = [
   {
@@ -44,6 +45,7 @@ const routes: Routes = [
     NzToolTipModule,
     NzDrawerModule,
     FormsModule,
+    MonacoEditorModule.forRoot(),
   ],
 })
 export class TemplatesModule {}

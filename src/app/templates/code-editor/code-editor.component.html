@@ -11,6 +11,9 @@
     <div class="code-editor-header">Header</div>
   </ng-template>
   <ng-container *nzDrawerContent>
-    <p>Code editor</p>
+    <ngx-monaco-editor
+      [options]="editorOptions"
+      [(ngModel)]="code"
+    ></ngx-monaco-editor>
   </ng-container>
 </nz-drawer>
