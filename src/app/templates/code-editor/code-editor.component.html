@@ -11,9 +11,13 @@
     <div class="code-editor-header">Header</div>
   </ng-template>
   <ng-container *nzDrawerContent>
-    <ngx-monaco-editor
-      [options]="editorOptions"
-      [(ngModel)]="code"
-    ></ngx-monaco-editor>
+    <div class="content-wrapper">
+      <ngx-monaco-editor
+        [options]="editorOptions"
+        [ngModel]="code"
+        (ngModelChange)="onCodeChange($event)"
+      ></ngx-monaco-editor>
+      <div class="preview" [innerHTML]="code | trustCss"></div>
+    </div>
   </ng-container>
 </nz-drawer>

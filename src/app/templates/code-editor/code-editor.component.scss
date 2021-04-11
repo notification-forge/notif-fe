@@ -1,0 +1,12 @@
+.content-wrapper {
+  height: 100%;
+  display: flex;
+  ngx-monaco-editor {
+    flex: 1;
+    height: 100%;
+  }
+
+  .preview {
+    flex: 1;
+  }
+}
