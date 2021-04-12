@@ -8,37 +8,65 @@
   (nzOnClose)="onCloseCodeEditor()"
 >
   <ng-template #header>
-    <div class="code-editor-header">Header</div>
+    <nz-radio-group [(ngModel)]="tabValue" nzSize="large">
+      <label nz-radio-button [nzValue]="TAB_VALUES.DESIGN">DESIGN</label>
+      <label nz-radio-button [nzValue]="TAB_VALUES.TEST">TEST</label>
+      <label nz-radio-button [nzValue]="TAB_VALUES.SETTINGS">SETTINGS</label>
+    </nz-radio-group>
   </ng-template>
   <ng-container *nzDrawerContent>
-    <div class="content-wrapper">
-      <ngx-monaco-editor
-        [options]="editorOptions"
-        [ngModel]="code"
-        (ngModelChange)="onCodeChange($event)"
-      ></ngx-monaco-editor>
-      <div class="preview-wrapper">
-        <div class="preview-header">
-          <nz-avatar
-            [nzGap]="8"
-            nzText="B"
-            nzSize="large"
-            style="vertical-align: middle"
-          ></nz-avatar>
-          <div class="preview-senders">
-            <h2>bcatsgops1</h2>
-            <div class="preview-to-from">
-              <p class="preview-to-from-title">To</p>
-              <p>tmoopsuser@dbs.com; randomusername@dbs.com</p>
-            </div>
-            <div class="preview-to-from">
-              <p class="preview-to-from-title">CC</p>
-              <p>username1@dbs.com</p>
-            </div>
-          </div>
-        </div>
-        <div class="preview" [innerHTML]="code | trustCss"></div>
-      </div>
-    </div>
+    <ng-container [ngSwitch]="tabValue">
+      <ng-container *ngSwitchCase="TAB_VALUES.DESIGN">
+        <ng-container *ngTemplateOutlet="design"></ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="TAB_VALUES.TEST">
+        <ng-container *ngTemplateOutlet="test"></ng-container>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="TAB_VALUES.SETTINGS">
+        <ng-container *ngTemplateOutlet="settings"></ng-container>
+      </ng-container>
+    </ng-container>
   </ng-container>
 </nz-drawer>
+
+<ng-template #design>
+  <div class="design-content-wrapper">
+    <ngx-monaco-editor
+      [options]="editorOptions"
+      [ngModel]="code"
+      (ngModelChange)="onCodeChange($event)"
+    ></ngx-monaco-editor>
+    <div class="preview-wrapper">
+      <div class="preview-header">
+        <nz-avatar
+          [nzGap]="8"
+          nzText="B"
+          nzSize="large"
+          style="vertical-align: middle"
+        ></nz-avatar>
+        <div class="preview-senders">
+          <h2>bcatsgops1</h2>
+          <div class="preview-to-from">
+            <p class="preview-to-from-title">To</p>
+            <p>tmoopsuser@dbs.com; randomusername@dbs.com</p>
+          </div>
+          <div class="preview-to-from">
+            <p class="preview-to-from-title">CC</p>
+            <p>username1@dbs.com</p>
+          </div>
+        </div>
+      </div>
+      <div class="preview" [innerHTML]="code | trustCss"></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #test>
+  <div>Test</div>
+</ng-template>
+
+<ng-template #settings>
+  <div>Settings</div>
+</ng-template>

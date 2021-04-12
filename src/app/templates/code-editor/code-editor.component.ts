@@ -18,6 +18,9 @@ export class CodeEditorComponent implements OnInit {
   @Input() codeEditorVisible: boolean;
   @Output() closeCodeEditor: EventEmitter<null> = new EventEmitter();
 
+  tabValue = TabValues.DESIGN;
+  readonly TAB_VALUES = TabValues;
+
   codeEditorHeight = window.innerHeight;
   editorOptions = { theme: 'vs-dark', language: 'html' };
   code: string = '<div> Hello world </div>';
@@ -37,4 +40,10 @@ export class CodeEditorComponent implements OnInit {
   onCodeChange(code: string) {
     this.code = code;
   }
+}
+
+enum TabValues {
+  DESIGN = 'DESIGN',
+  TEST = 'TEST',
+  SETTINGS = 'SETTINGS',
 }
