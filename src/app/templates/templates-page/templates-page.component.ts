@@ -43,8 +43,7 @@ export class TemplatesPageComponent implements OnInit {
     },
   ];
   expandSet = new Set<number>();
-  codeEditorVisible = false;
-  codeEditorHeight = window.innerHeight;
+  codeEditorVisible = true;
 
   constructor(private layoutService: LayoutService) {}
 

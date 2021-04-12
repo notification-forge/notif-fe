@@ -15,6 +15,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { TrustCssPipe } from './trust-css.pipe';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 const routes: Routes = [
   {
@@ -46,6 +47,7 @@ const routes: Routes = [
     NzDropDownModule,
     NzToolTipModule,
     NzDrawerModule,
+    NzAvatarModule,
     FormsModule,
     MonacoEditorModule.forRoot(),
   ],

@@ -6,7 +6,34 @@
     height: 100%;
   }
 
-  .preview {
+  .preview-wrapper {
     flex: 1;
+    padding: 1rem;
+
+    nz-avatar {
+      margin: 1rem;
+    }
+
+    .preview-header {
+      display: flex;
+      h2 {
+        margin: 0;
+      }
+
+      .preview-senders {
+        width: 100%;
+        p {
+          margin: 0;
+        }
+
+        .preview-to-from {
+          display: flex;
+          width: 100%;
+          .preview-to-from-title {
+            flex: 0 0 30px;
+          }
+        }
+      }
+    }
   }
 }
