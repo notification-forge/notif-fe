@@ -12,7 +12,11 @@
 }
 
 .app-main {
+  flex-grow: 1;
   background-color: #fafafa;
   min-height: 100%;
   height: fit-content;
+
+  display: flex;
+  flex-direction: column;
 }
