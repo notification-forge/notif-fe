@@ -34,9 +34,9 @@
 <ng-template #design>
   <div class="design-content-wrapper">
     <ngx-monaco-editor
-      [options]="editorOptions"
-      [ngModel]="code"
-      (ngModelChange)="onCodeChange($event)"
+      [options]="designEditorOptions"
+      [ngModel]="designCode"
+      (ngModelChange)="onDesignCodeChange($event)"
     ></ngx-monaco-editor>
     <div class="preview-wrapper">
       <div class="preview-header">
@@ -58,13 +58,20 @@
           </div>
         </div>
       </div>
-      <div class="preview" [innerHTML]="code | trustCss"></div>
+      <div class="preview" [innerHTML]="designCode | trustCss"></div>
     </div>
   </div>
 </ng-template>
 
 <ng-template #test>
-  <div>Test</div>
+  <div class="test-content-wrapper">
+    <ngx-monaco-editor
+      [options]="testEditorOptions"
+      [ngModel]="testCode"
+      (ngModelChange)="onTestCodeChange($event)"
+    ></ngx-monaco-editor>
+    <div class="preview">Enter Test Data and press Test to see preview</div>
+  </div>
 </ng-template>
 
 <ng-template #settings>

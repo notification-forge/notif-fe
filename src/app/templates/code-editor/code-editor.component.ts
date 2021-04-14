@@ -22,8 +22,11 @@ export class CodeEditorComponent implements OnInit {
   readonly TAB_VALUES = TabValues;
 
   codeEditorHeight = window.innerHeight;
-  editorOptions = { theme: 'vs-dark', language: 'html' };
-  code: string = '<div> Hello world </div>';
+  designEditorOptions = { theme: 'vs-dark', language: 'html' };
+  designCode: string = '<div> Hello world </div>';
+
+  testEditorOptions = { theme: 'vs-dark', language: 'json' };
+  testCode: string = '{\n\t"key": "value"\n}';
 
   constructor(private layoutService: LayoutService) {}
 
@@ -37,8 +40,12 @@ export class CodeEditorComponent implements OnInit {
     this.closeCodeEditor.emit();
   }
 
-  onCodeChange(code: string) {
-    this.code = code;
+  onDesignCodeChange(code: string) {
+    this.designCode = code;
+  }
+
+  onTestCodeChange(code: string) {
+    this.testCode = code;
   }
 }
 
