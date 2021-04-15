@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 import { TemplatesPageComponent } from './templates-page.component';
 
@@ -8,6 +9,7 @@ describe('TemplatesPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [NzDropDownModule],
       declarations: [TemplatesPageComponent],
     }).compileComponents();
   });
