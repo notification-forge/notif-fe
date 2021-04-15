@@ -1,6 +1,8 @@
 .design-content-wrapper {
   height: 100%;
   display: flex;
+  overflow-x: auto;
+
   ngx-monaco-editor {
     flex: 1;
     height: 100%;
