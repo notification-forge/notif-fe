@@ -97,7 +97,7 @@
               "src/styles.scss"
             ],
             "scripts": []
-          }
+          },
           "configurations": {
             "ci": {
               "watch": false,
