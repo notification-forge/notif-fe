@@ -1,0 +1,17 @@
+name: Test before merging to Development and Main
+
+on:
+  push:
+    branches: [ main, development ]
+  pull_request:
+    branches: [ main, development ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup Node.js environment
+    - uses: actions/setup-node@v2.1.5
+    - run: npm run test
