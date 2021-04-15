@@ -9,7 +9,8 @@ describe('TestEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestEditorComponent, MonacoEditorModule.forRoot()],
+      imports: [MonacoEditorModule.forRoot()],
+      declarations: [TestEditorComponent],
     }).compileComponents();
   });
 

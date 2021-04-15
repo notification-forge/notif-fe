@@ -3,9 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzIconTestModule } from 'src/app/nz-icon-test/nz-icon-test.module';
 
 import { ImageLibPageComponent } from './image-lib-page.component';
 
@@ -19,7 +19,7 @@ describe('ImageLibPageComponent', () => {
         NzInputModule,
         NzSelectModule,
         NzButtonModule,
-        NzIconModule,
+        NzIconTestModule,
         NzCardModule,
         FormsModule,
         BrowserAnimationsModule,
