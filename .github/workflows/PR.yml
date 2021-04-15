@@ -1,6 +1,8 @@
 name: Test before merging to Development and Main
 
 on:
+  push:
+    branches: [main, development]
   pull_request:
     branches: [main, development]
 
