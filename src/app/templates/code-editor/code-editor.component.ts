@@ -6,7 +6,6 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { LayoutService } from 'src/app/shared/layout.service';
 
 @Component({
   selector: 'app-code-editor',
@@ -28,13 +27,9 @@ export class CodeEditorComponent implements OnInit {
   testEditorOptions = { theme: 'vs-dark', language: 'json' };
   testCode: string = '{\n\t"key": "value"\n}';
 
-  constructor(private layoutService: LayoutService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.layoutService.windowSize$.subscribe(
-      (windowSize) => (this.codeEditorHeight = windowSize.height)
-    );
-  }
+  ngOnInit(): void {}
 
   onCloseCodeEditor() {
     this.closeCodeEditor.emit();
