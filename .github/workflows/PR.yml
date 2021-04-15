@@ -2,16 +2,22 @@ name: Test before merging to Development and Main
 
 on:
   push:
-    branches: [ main, development ]
+    branches: [main, development]
   pull_request:
-    branches: [ main, development ]
+    branches: [main, development]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Setup Node.js environment
-    - uses: actions/setup-node@v2.1.5
-    - run: npm run test
+      - uses: actions/checkout@master
+
+      - name: Setup Node.js environment and run test
+        uses: actions/setup-node@v2.1.5
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Test
+        run: npm run test -- --configuration=ci
