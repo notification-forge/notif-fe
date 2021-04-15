@@ -17,11 +17,11 @@
   <ng-container *nzDrawerContent>
     <ng-container [ngSwitch]="tabValue">
       <ng-container *ngSwitchCase="TAB_VALUES.DESIGN">
-        <ng-container *ngTemplateOutlet="design"></ng-container>
+        <app-design-editor></app-design-editor>
       </ng-container>
 
       <ng-container *ngSwitchCase="TAB_VALUES.TEST">
-        <ng-container *ngTemplateOutlet="test"></ng-container>
+        <app-test-editor></app-test-editor>
       </ng-container>
 
       <ng-container *ngSwitchCase="TAB_VALUES.SETTINGS">
@@ -30,49 +30,6 @@
     </ng-container>
   </ng-container>
 </nz-drawer>
-
-<ng-template #design>
-  <div class="design-content-wrapper">
-    <ngx-monaco-editor
-      [options]="designEditorOptions"
-      [ngModel]="designCode"
-      (ngModelChange)="onDesignCodeChange($event)"
-    ></ngx-monaco-editor>
-    <div class="preview-wrapper">
-      <div class="preview-header">
-        <nz-avatar
-          [nzGap]="8"
-          nzText="B"
-          nzSize="large"
-          style="vertical-align: middle"
-        ></nz-avatar>
-        <div class="preview-senders">
-          <h2>bcatsgops1</h2>
-          <div class="preview-to-from">
-            <p class="preview-to-from-title">To</p>
-            <p>tmoopsuser@dbs.com; randomusername@dbs.com</p>
-          </div>
-          <div class="preview-to-from">
-            <p class="preview-to-from-title">CC</p>
-            <p>username1@dbs.com</p>
-          </div>
-        </div>
-      </div>
-      <div class="preview" [innerHTML]="designCode | trustCss"></div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #test>
-  <div class="test-content-wrapper">
-    <ngx-monaco-editor
-      [options]="testEditorOptions"
-      [ngModel]="testCode"
-      (ngModelChange)="onTestCodeChange($event)"
-    ></ngx-monaco-editor>
-    <div class="preview">Enter Test Data and press Test to see preview</div>
-  </div>
-</ng-template>
 
 <ng-template #settings>
   <div>Settings</div>

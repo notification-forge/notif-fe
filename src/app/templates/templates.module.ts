@@ -17,6 +17,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { TrustCssPipe } from './trust-css.pipe';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { DesignEditorComponent } from './design-editor/design-editor.component';
+import { TestEditorComponent } from './test-editor/test-editor.component';
 
 const routes: Routes = [
   {
@@ -36,6 +38,8 @@ const routes: Routes = [
     TemplateDetailsComponent,
     CodeEditorComponent,
     TrustCssPipe,
+    DesignEditorComponent,
+    TestEditorComponent,
   ],
   imports: [
     CommonModule,
