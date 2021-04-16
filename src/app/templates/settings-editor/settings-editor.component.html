@@ -1,1 +1,65 @@
-<p>settings-editor works!</p>
+<form nz-form [formGroup]="settingsForm" (ngSubmit)="onFormSubmit()">
+  <nz-form-item>
+    <nz-form-label [nzSm]="1" [nzXs]="24" nzFor="from" nzRequired>
+      From
+    </nz-form-label>
+    <nz-form-control nzErrorTip="Please input From value!">
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          formControlName="from"
+          placeholder="e.g bcatsgops1@email.com"
+          name="from"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="1" [nzXs]="24" nzFor="to" nzRequired>
+      To
+    </nz-form-label>
+    <nz-form-control nzErrorTip="Please input To value!">
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          formControlName="to"
+          placeholder="e.g users@email.com"
+          name="to"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="1" [nzXs]="24" nzFor="cc"> CC </nz-form-label>
+    <nz-form-control nzErrorTip="Please input CC value!">
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          formControlName="cc"
+          placeholder="e.g user2@email.com"
+          name="cc"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="1" [nzXs]="24" nzFor="bcc"> BCC </nz-form-label>
+    <nz-form-control nzErrorTip="Please input BCC value!">
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          formControlName="bcc"
+          placeholder="e.g user2@email.com"
+          name="bcc"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+</form>

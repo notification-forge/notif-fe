@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-settings-editor',
@@ -6,7 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings-editor.component.scss'],
 })
 export class SettingsEditorComponent implements OnInit {
-  constructor() {}
+  settingsForm: FormGroup = this.fb.group({
+    from: ['', Validators.required],
+    to: ['', Validators.required],
+    cc: [''],
+    bcc: [''],
+  });
+
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {}
+
+  onFormSubmit(): void {
+    console.log(this.settingsForm.value);
+  }
 }
