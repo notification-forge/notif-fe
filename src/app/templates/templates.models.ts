@@ -5,3 +5,5 @@ export interface TemplateItem {
   app: string;
   lastEdited: Date;
 }
+
+export type DeliveryChannel = 'EMAIL' | 'TEAMS';

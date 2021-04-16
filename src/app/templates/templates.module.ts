@@ -8,7 +8,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TemplateDetailsComponent } from './template-details/template-details.component';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -17,6 +17,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { TrustCssPipe } from './trust-css.pipe';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { DesignEditorComponent } from './design-editor/design-editor.component';
 import { TestEditorComponent } from './test-editor/test-editor.component';
 
@@ -55,6 +56,8 @@ const routes: Routes = [
     NzAvatarModule,
     FormsModule,
     NzRadioModule,
+    NzFormModule,
+    ReactiveFormsModule,
     MonacoEditorModule.forRoot(),
   ],
 })

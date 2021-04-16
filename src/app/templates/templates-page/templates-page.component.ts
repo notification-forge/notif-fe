@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { LayoutService } from 'src/app/shared/layout.service';
-import { TemplateItem } from '../templates.models';
+import { DeliveryChannel, TemplateItem } from '../templates.models';
 
 @Component({
   selector: 'app-templates-page',
@@ -45,7 +46,14 @@ export class TemplatesPageComponent implements OnInit {
   expandSet = new Set<number>();
   codeEditorVisible = false;
 
-  constructor(private layoutService: LayoutService) {}
+  // Create Template Form
+  showCreateTemplateForm = false;
+  createTemplateForm = this.fb.group({
+    templateName: ['', Validators.required],
+    deliveryChannel: ['EMAIL' as DeliveryChannel, Validators.required],
+  });
+
+  constructor(private layoutService: LayoutService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.layoutService.setHeaderTitle('Templates');
@@ -66,6 +74,18 @@ export class TemplatesPageComponent implements OnInit {
 
   closeCodeEditor() {
     this.codeEditorVisible = false;
+  }
+
+  openForm() {
+    this.showCreateTemplateForm = true;
+  }
+
+  closeForm() {
+    this.showCreateTemplateForm = false;
+  }
+
+  onFormSubmit() {
+    console.log(this.createTemplateForm.value);
   }
 }
 
