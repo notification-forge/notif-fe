@@ -22,6 +22,7 @@ import { DesignEditorComponent } from './design-editor/design-editor.component';
 import { TestEditorComponent } from './test-editor/test-editor.component';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { SettingsEditorComponent } from './settings-editor/settings-editor.component';
+import { EditorService } from './editor.service';
 
 const routes: Routes = [
   {
@@ -64,5 +65,6 @@ const routes: Routes = [
     NzMessageModule,
     MonacoEditorModule.forRoot(),
   ],
+  providers: [EditorService],
 })
 export class TemplatesModule {}
