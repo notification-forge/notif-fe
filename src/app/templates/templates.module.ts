@@ -20,6 +20,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { DesignEditorComponent } from './design-editor/design-editor.component';
 import { TestEditorComponent } from './test-editor/test-editor.component';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 const routes: Routes = [
   {
@@ -58,6 +59,7 @@ const routes: Routes = [
     NzRadioModule,
     NzFormModule,
     ReactiveFormsModule,
+    NzMessageModule,
     MonacoEditorModule.forRoot(),
   ],
 })

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { LayoutService } from 'src/app/shared/layout.service';
 import { DeliveryChannel, TemplateItem } from '../templates.models';
 
@@ -53,7 +54,11 @@ export class TemplatesPageComponent implements OnInit {
     deliveryChannel: ['EMAIL' as DeliveryChannel, Validators.required],
   });
 
-  constructor(private layoutService: LayoutService, private fb: FormBuilder) {}
+  constructor(
+    private layoutService: LayoutService,
+    private fb: FormBuilder,
+    private message: NzMessageService
+  ) {}
 
   ngOnInit(): void {
     this.layoutService.setHeaderTitle('Templates');
@@ -85,6 +90,10 @@ export class TemplatesPageComponent implements OnInit {
   }
 
   onFormSubmit() {
+    this.closeForm();
+    this.message.success(
+      `Template with name: "${this.createTemplateForm.value.templateName}" created`
+    );
     console.log(this.createTemplateForm.value);
   }
 }
