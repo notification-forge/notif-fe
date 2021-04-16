@@ -6,6 +6,7 @@
   .designer-wrapper {
     height: 100%;
     flex: 1;
+    overflow-y: hidden;
 
     display: flex;
     flex-direction: column;
@@ -23,6 +24,7 @@
 
   .preview-wrapper {
     flex: 1;
+    padding: 1rem;
 
     nz-avatar {
       margin: 1rem;
@@ -48,10 +50,6 @@
           }
         }
       }
-    }
-
-    .preview {
-      padding: 1rem;
     }
   }
 }
