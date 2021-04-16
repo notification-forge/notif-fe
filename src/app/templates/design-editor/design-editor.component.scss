@@ -3,14 +3,26 @@
   display: flex;
   overflow-x: auto;
 
-  ngx-monaco-editor {
-    flex: 1;
+  .designer-wrapper {
     height: 100%;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    header {
+      display: flex;
+      justify-content: flex-end;
+      padding-bottom: 0.5rem;
+    }
+
+    ngx-monaco-editor {
+      flex-grow: 1;
+    }
   }
 
   .preview-wrapper {
     flex: 1;
-    padding: 1rem;
 
     nz-avatar {
       margin: 1rem;
@@ -36,6 +48,10 @@
           }
         }
       }
+    }
+
+    .preview {
+      padding: 1rem;
     }
   }
 }

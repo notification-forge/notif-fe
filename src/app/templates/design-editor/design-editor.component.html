@@ -1,9 +1,17 @@
 <div class="design-content-wrapper">
-  <ngx-monaco-editor
-    [options]="designEditorOptions"
-    [ngModel]="designCode"
-    (ngModelChange)="onDesignCodeChange($event)"
-  ></ngx-monaco-editor>
+  <div class="designer-wrapper">
+    <header>
+      <button nz-button nzType="dashed">
+        <i nz-icon nzType="file-image" nzTheme="outline"></i>Upload Image
+      </button>
+    </header>
+    <ngx-monaco-editor
+      [options]="designEditorOptions"
+      [ngModel]="designCode"
+      (ngModelChange)="onDesignCodeChange($event)"
+    ></ngx-monaco-editor>
+  </div>
+
   <div class="preview-wrapper">
     <div class="preview-header">
       <nz-avatar
