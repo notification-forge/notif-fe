@@ -9,6 +9,8 @@
     </header>
 
     <ngx-monaco-editor
+      name="code-editor"
+      ngDefaultControl
       [options]="designEditorOptions"
       [ngModel]="designCode"
       (ngModelChange)="onDesignCodeChange($event)"

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TrustCssPipe } from '../trust-css.pipe';
 
 import { DesignEditorComponent } from './design-editor.component';
@@ -9,6 +10,7 @@ describe('DesignEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, FormsModule],
       declarations: [DesignEditorComponent, TrustCssPipe],
     }).compileComponents();
   });
