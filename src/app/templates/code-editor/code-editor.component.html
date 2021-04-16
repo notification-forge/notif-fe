@@ -8,11 +8,21 @@
   (nzOnClose)="onCloseCodeEditor()"
 >
   <ng-template #header>
-    <nz-radio-group [(ngModel)]="tabValue" nzSize="large">
-      <label nz-radio-button [nzValue]="TAB_VALUES.DESIGN">DESIGN</label>
-      <label nz-radio-button [nzValue]="TAB_VALUES.TEST">TEST</label>
-      <label nz-radio-button [nzValue]="TAB_VALUES.SETTINGS">SETTINGS</label>
-    </nz-radio-group>
+    <header class="wrapper">
+      <nz-radio-group [(ngModel)]="tabValue" nzSize="large">
+        <label nz-radio-button [nzValue]="TAB_VALUES.DESIGN">DESIGN</label>
+        <label nz-radio-button [nzValue]="TAB_VALUES.TEST">TEST</label>
+        <label nz-radio-button [nzValue]="TAB_VALUES.SETTINGS">SETTINGS</label>
+      </nz-radio-group>
+
+      <div class="button-wrapper">
+        <button nz-button nzType="dashed">
+          <i nz-icon nzType="save" nzTheme="outline"></i>Save
+        </button>
+        <span class="spacer"></span>
+        <button nz-button nzType="primary">Publish</button>
+      </div>
+    </header>
   </ng-template>
   <ng-container *nzDrawerContent>
     <ng-container [ngSwitch]="tabValue">

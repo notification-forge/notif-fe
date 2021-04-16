@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 import { CodeEditorComponent } from './code-editor.component';
 
@@ -8,6 +10,7 @@ describe('CodeEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [NzButtonModule, NzRadioModule],
       declarations: [CodeEditorComponent],
     }).compileComponents();
   });
