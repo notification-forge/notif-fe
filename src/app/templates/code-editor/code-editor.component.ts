@@ -20,27 +20,12 @@ export class CodeEditorComponent implements OnInit {
   tabValue = TabValues.DESIGN;
   readonly TAB_VALUES = TabValues;
 
-  codeEditorHeight = window.innerHeight;
-  designEditorOptions = { theme: 'vs-dark', language: 'html' };
-  designCode: string = '<div> Hello world </div>';
-
-  testEditorOptions = { theme: 'vs-dark', language: 'json' };
-  testCode: string = '{\n\t"key": "value"\n}';
-
   constructor() {}
 
   ngOnInit(): void {}
 
   onCloseCodeEditor() {
     this.closeCodeEditor.emit();
-  }
-
-  onDesignCodeChange(code: string) {
-    this.designCode = code;
-  }
-
-  onTestCodeChange(code: string) {
-    this.testCode = code;
   }
 }
 
