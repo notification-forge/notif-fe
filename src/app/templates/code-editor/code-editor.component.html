@@ -37,12 +37,8 @@
       </ng-container>
 
       <ng-container *ngSwitchCase="TAB_VALUES.SETTINGS">
-        <ng-container *ngTemplateOutlet="settings"></ng-container>
+        <app-settings-editor></app-settings-editor>
       </ng-container>
     </ng-container>
   </ng-container>
 </nz-drawer>
-
-<ng-template #settings>
-  <div>Settings</div>
-</ng-template>
