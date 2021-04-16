@@ -21,6 +21,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { DesignEditorComponent } from './design-editor/design-editor.component';
 import { TestEditorComponent } from './test-editor/test-editor.component';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { SettingsEditorComponent } from './settings-editor/settings-editor.component';
 import { EditorService } from './editor.service';
 
@@ -63,6 +64,7 @@ const routes: Routes = [
     NzFormModule,
     ReactiveFormsModule,
     NzMessageModule,
+    NzUploadModule,
     MonacoEditorModule.forRoot(),
   ],
   providers: [EditorService],

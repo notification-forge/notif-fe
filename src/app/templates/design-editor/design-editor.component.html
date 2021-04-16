@@ -1,10 +1,13 @@
 <div class="design-content-wrapper">
   <div class="designer-wrapper">
     <header>
-      <button nz-button nzType="dashed">
-        <i nz-icon nzType="file-image" nzTheme="outline"></i>Upload Image
-      </button>
+      <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76">
+        <button nz-button nzType="dashed">
+          <i nz-icon nzType="upload"></i> Upload Image
+        </button>
+      </nz-upload>
     </header>
+
     <ngx-monaco-editor
       [options]="designEditorOptions"
       [ngModel]="designCode"
