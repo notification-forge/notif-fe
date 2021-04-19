@@ -2,7 +2,7 @@ name: Test before merging to Development and Main
 
 on:
   pull_request:
-    branches: [main, development]
+    branches: [main]
 
 jobs:
   test:
