@@ -18,6 +18,7 @@ import { TrustCssPipe } from './trust-css.pipe';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { DesignEditorComponent } from './design-editor/design-editor.component';
 import { TestEditorComponent } from './test-editor/test-editor.component';
 import { NzMessageModule } from 'ng-zorro-antd/message';
@@ -62,6 +63,7 @@ const routes: Routes = [
     FormsModule,
     NzRadioModule,
     NzFormModule,
+    NzModalModule,
     ReactiveFormsModule,
     NzMessageModule,
     NzUploadModule,

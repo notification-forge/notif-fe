@@ -81,56 +81,55 @@
   </ul>
 </nz-dropdown-menu>
 
-<nz-drawer
-  [nzClosable]="false"
-  [nzVisible]="showCreateTemplateForm"
-  nzPlacement="right"
+<nz-modal
+  [(nzVisible)]="showCreateTemplateForm"
   nzTitle="Create Template"
-  (nzOnClose)="closeForm()"
-  nzWidth="40%"
+  (nzOnCancel)="closeForm()"
+  [nzFooter]="modalFooter"
 >
-  <ng-container *nzDrawerContent>
-    <form nz-form [formGroup]="createTemplateForm" (ngSubmit)="onFormSubmit()">
-      <nz-form-item>
-        <nz-form-label nzFor="templateName" nzRequired
-          >Template Name</nz-form-label
-        >
-        <nz-form-control nzErrorTip="Please input the template name!">
-          <nz-input-group nzPrefixIcon="user">
-            <input
-              type="text"
-              nz-input
-              formControlName="templateName"
-              placeholder="Template Name"
-              name="templateName"
-            />
-          </nz-input-group>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="deliveryChannel" nzRequired
-          >Delivery Channel</nz-form-label
-        >
-        <nz-form-control nzErrorTip="Please select the delivery channel!">
-          <nz-radio-group
-            formControlName="deliveryChannel"
-            nzButtonStyle="solid"
-            name="deliveryChannel"
-          >
-            <label nz-radio-button nzValue="EMAIL">Email</label>
-            <label nz-radio-button nzValue="TEAMS">Teams</label>
-          </nz-radio-group>
-        </nz-form-control>
-      </nz-form-item>
-      <button
-        nz-button
-        [nzType]="'primary'"
-        type="submit"
-        style="width: 100%"
-        [disabled]="!createTemplateForm.valid"
+  <form nz-form [formGroup]="createTemplateForm" (ngSubmit)="onFormSubmit()">
+    <nz-form-item>
+      <nz-form-label nzFor="templateName" nzRequired
+        >Template Name</nz-form-label
       >
-        Create Template
-      </button>
-    </form>
-  </ng-container>
-</nz-drawer>
+      <nz-form-control nzErrorTip="Please input the template name!">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            type="text"
+            nz-input
+            formControlName="templateName"
+            placeholder="Template Name"
+            name="templateName"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="deliveryChannel" nzRequired
+        >Delivery Channel</nz-form-label
+      >
+      <nz-form-control nzErrorTip="Please select the delivery channel!">
+        <nz-radio-group
+          formControlName="deliveryChannel"
+          nzButtonStyle="solid"
+          name="deliveryChannel"
+        >
+          <label nz-radio-button nzValue="EMAIL">Email</label>
+          <label nz-radio-button nzValue="TEAMS">Teams</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="closeForm()">Cancel</button>
+    <button
+      nz-button
+      [nzType]="'primary'"
+      type="submit"
+      [disabled]="!createTemplateForm.valid"
+    >
+      Create Template
+    </button>
+  </ng-template>
+</nz-modal>
