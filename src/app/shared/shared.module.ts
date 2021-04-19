@@ -19,6 +19,7 @@ import { HeaderComponent } from './header/header.component';
     NzButtonModule,
     NzAvatarModule,
     NzDropDownModule,
+    RouterModule,
   ],
   exports: [SideNavComponent, HeaderComponent],
 })
