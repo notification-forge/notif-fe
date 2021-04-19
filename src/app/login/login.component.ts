@@ -21,7 +21,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user) => {
-      this.router.navigate(['templates']);
+      if (!!user) {
+        this.router.navigate(['templates']);
+      }
     });
   }
 
