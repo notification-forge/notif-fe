@@ -1,39 +1,43 @@
-<form
-  nz-form
-  [formGroup]="loginForm"
-  class="login-form"
-  (ngSubmit)="handleFormSubmit()"
->
-  <nz-form-item>
-    <nz-form-control nzErrorTip="Please input your username!">
-      <nz-input-group nzPrefixIcon="user">
-        <input
-          type="text"
-          nz-input
-          formControlName="username"
-          placeholder="Username"
-        />
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-control nzErrorTip="Please input your Password!">
-      <nz-input-group nzPrefixIcon="lock">
-        <input
-          type="password"
-          nz-input
-          formControlName="password"
-          placeholder="Password"
-        />
-      </nz-input-group>
-    </nz-form-control>
-  </nz-form-item>
-
-  <button
-    nz-button
-    class="login-form-button login-form-margin"
-    [nzType]="'primary'"
+<div class="login-wrapper">
+  <form
+    nz-form
+    [formGroup]="loginForm"
+    class="login-form"
+    (ngSubmit)="handleFormSubmit()"
   >
-    Log in
-  </button>
-</form>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your username!">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            type="text"
+            nz-input
+            formControlName="username"
+            placeholder="Username"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group nzPrefixIcon="lock">
+          <input
+            type="password"
+            nz-input
+            formControlName="password"
+            placeholder="Password"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <div class="button-wrapper">
+      <button
+        nz-button
+        class="login-form-button login-form-margin"
+        [nzType]="'primary'"
+      >
+        Log in
+      </button>
+    </div>
+  </form>
+</div>
