@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { LayoutService } from '../layout.service';
 
@@ -12,7 +12,7 @@ export class SideNavComponent implements OnInit {
   isCollapsed = false;
   sideNavItem: SideNavItem[] = [
     {
-      url: 'template',
+      url: 'templates',
       display: 'Templates',
       icon: 'book',
     },
@@ -24,13 +24,16 @@ export class SideNavComponent implements OnInit {
   ];
   currentActive: string | null = null;
 
-  constructor(private router: Router, private layoutService: LayoutService) {}
+  constructor(private router: Router, private layoutService: LayoutService) {
+    const currentRoute = this.router.url;
+    this.currentActive = currentRoute;
+  }
 
   ngOnInit(): void {
     this.router.events
-      .pipe(filter((event) => event instanceof NavigationStart))
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event) => {
-        this.currentActive = (event as NavigationStart).url;
+        this.currentActive = (event as NavigationEnd).url;
       });
 
     this.layoutService.sideNavCollapsed$.subscribe(

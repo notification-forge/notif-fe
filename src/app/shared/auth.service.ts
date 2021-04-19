@@ -20,6 +20,14 @@ export class AuthService {
       this.user$.next(null);
     }
   }
+
+  login(username: string, password: string) {
+    // Temp
+    this.user$.next({
+      username,
+      token: `${username}${password}`,
+    });
+  }
 }
 
 interface User {

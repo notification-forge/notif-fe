@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { LayoutService } from '../layout.service';
 
 @Component({
@@ -8,12 +8,16 @@ import { LayoutService } from '../layout.service';
 })
 export class HeaderComponent implements OnInit {
   headerTitle = '';
-  constructor(private layoutService: LayoutService) {}
+  constructor(
+    private layoutService: LayoutService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    this.layoutService.headerTitle$.subscribe(
-      (title) => (this.headerTitle = title)
-    );
+    this.layoutService.headerTitle$.subscribe((title) => {
+      this.headerTitle = title;
+      this.cd.detectChanges();
+    });
   }
 
   toggleHeader(): void {
