@@ -1,6 +1,10 @@
 <div class="design-content-wrapper">
   <div class="designer-wrapper">
     <header>
+      <button nz-button nzType="dashed" (click)="onOpenSettings()">
+        <i nz-icon nzType="setting"></i> Settings
+      </button>
+      <span class="spacer"></span>
       <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76">
         <button nz-button nzType="dashed">
           <i nz-icon nzType="upload"></i> Upload Image

@@ -19,6 +19,7 @@ export class CodeEditorComponent implements OnInit {
 
   tabValue = TabValues.DESIGN;
   readonly TAB_VALUES = TabValues;
+  settingsVisible: boolean = false;
 
   constructor() {}
 
@@ -26,6 +27,15 @@ export class CodeEditorComponent implements OnInit {
 
   onCloseCodeEditor() {
     this.closeCodeEditor.emit();
+  }
+
+  openSettings() {
+    console.log('opening settings');
+    this.settingsVisible = true;
+  }
+
+  closeSettings() {
+    this.settingsVisible = false;
   }
 }
 

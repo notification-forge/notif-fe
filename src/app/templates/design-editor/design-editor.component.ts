@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { EditorService } from '../editor.service';
 
@@ -8,6 +8,8 @@ import { EditorService } from '../editor.service';
   styleUrls: ['./design-editor.component.scss'],
 })
 export class DesignEditorComponent implements OnInit {
+  @Output() openSettings = new EventEmitter<null>();
+
   settingsForm: FormGroup = this.editorService.settingsForm;
   designEditorOptions = { theme: 'vs-dark', language: 'html' };
   designCode: string = '<div> Hello world </div>';
@@ -18,5 +20,9 @@ export class DesignEditorComponent implements OnInit {
 
   onDesignCodeChange(code: string) {
     this.designCode = code;
+  }
+
+  onOpenSettings() {
+    this.openSettings.emit();
   }
 }

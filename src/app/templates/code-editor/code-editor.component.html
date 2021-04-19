@@ -29,16 +29,25 @@
   <ng-container *nzDrawerContent>
     <ng-container [ngSwitch]="tabValue">
       <ng-container *ngSwitchCase="TAB_VALUES.DESIGN">
-        <app-design-editor></app-design-editor>
+        <app-design-editor (openSettings)="openSettings()"></app-design-editor>
       </ng-container>
 
       <ng-container *ngSwitchCase="TAB_VALUES.TEST">
         <app-test-editor></app-test-editor>
       </ng-container>
-
-      <ng-container *ngSwitchCase="TAB_VALUES.SETTINGS">
-        <app-settings-editor></app-settings-editor>
-      </ng-container>
     </ng-container>
   </ng-container>
+
+  <nz-drawer
+    [nzClosable]="false"
+    [nzVisible]="settingsVisible"
+    nzPlacement="left"
+    nzWidth="40%"
+    nzTitle="Food"
+    (nzOnClose)="closeSettings()"
+  >
+    <ng-container *nzDrawerContent>
+      <app-settings-editor></app-settings-editor>
+    </ng-container>
+  </nz-drawer>
 </nz-drawer>
