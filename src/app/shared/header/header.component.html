@@ -1,0 +1,27 @@
+<header class="app-header">
+  <div class="flex-item">
+    <button nz-button nzType="text" (click)="toggleHeader()">
+      <i nz-icon nzType="menu" nzTheme="outline"></i>
+    </button>
+    <h1>{{ headerTitle }}</h1>
+  </div>
+
+  <div class="flex-item">
+    <a nz-dropdown [nzDropdownMenu]="menu">
+      bcatsgops1
+      <i nz-icon nzType="down"></i>
+    </a>
+    <nz-avatar
+      [nzGap]="8"
+      nzText="B"
+      nzSize="large"
+      style="vertical-align: middle"
+    ></nz-avatar>
+  </div>
+</header>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu nzSelectable>
+    <li nz-menu-item (click)="logout()">Logout</li>
+  </ul>
+</nz-dropdown-menu>

@@ -1,0 +1,50 @@
+<div class="design-content-wrapper">
+  <div class="designer-wrapper">
+    <header>
+      <button nz-button nzType="dashed" (click)="onOpenSettings()">
+        <i nz-icon nzType="setting"></i> Settings
+      </button>
+      <span class="spacer"></span>
+      <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76">
+        <button nz-button nzType="dashed">
+          <i nz-icon nzType="upload"></i> Upload Image
+        </button>
+      </nz-upload>
+    </header>
+
+    <ngx-monaco-editor
+      name="code-editor"
+      ngDefaultControl
+      [options]="designEditorOptions"
+      [ngModel]="designCode"
+      (ngModelChange)="onDesignCodeChange($event)"
+    ></ngx-monaco-editor>
+  </div>
+
+  <div class="preview-wrapper">
+    <div class="preview-header">
+      <nz-avatar
+        [nzGap]="8"
+        nzText="B"
+        nzSize="large"
+        style="vertical-align: middle"
+      ></nz-avatar>
+      <div class="preview-senders">
+        <h2>
+          {{ settingsForm.value.from || 'N/A (Click on settings to configue)' }}
+        </h2>
+        <div class="preview-to-from">
+          <p class="preview-to-from-title">To</p>
+          <p>
+            {{ settingsForm.value.to || 'N/A (Click on settings to configue)' }}
+          </p>
+        </div>
+        <div class="preview-to-from">
+          <p class="preview-to-from-title">CC</p>
+          <p>{{ settingsForm.value.cc || 'N/A' }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="preview" [innerHTML]="designCode | trustCss"></div>
+  </div>
+</div>

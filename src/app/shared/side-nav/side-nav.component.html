@@ -1,0 +1,22 @@
+<div class="menu-sidebar">
+  <header>
+    <h1>NT</h1>
+  </header>
+
+  <ul
+    nz-menu
+    nzMode="inline"
+    [nzInlineCollapsed]="isCollapsed"
+    [ngClass]="[isCollapsed ? 'collapsed' : '']"
+  >
+    <li
+      *ngFor="let item of sideNavItem"
+      nz-menu-item
+      [nzSelected]="currentActive?.includes(item.url)"
+      [routerLink]="[item.url]"
+    >
+      <i nz-icon [nzType]="item.icon"></i>
+      <span>{{ item.display }}</span>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,9 @@
+<div class="test-content-wrapper">
+  <ngx-monaco-editor
+    [options]="testEditorOptions"
+    [ngModel]="testCode"
+    (ngModelChange)="onTestCodeChange($event)"
+  >
+  </ngx-monaco-editor>
+  <div class="preview">Enter Test Data and to see preview</div>
+</div>

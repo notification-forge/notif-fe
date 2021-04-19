@@ -1,0 +1,51 @@
+<section class="image-lib-page-wrapper">
+  <div class="button-wrapper">
+    <button nz-button nzType="primary">Upload New Image</button>
+  </div>
+  <div class="input-wrapper">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input type="text" nz-input placeholder="Search for image file name" />
+    </nz-input-group>
+
+    <nz-select
+      [(ngModel)]="tagValue"
+      nzMode="tags"
+      nzPlaceHolder="Please select app"
+    >
+      <nz-option
+        *ngFor="let option of listOfOption"
+        [nzLabel]="option.label"
+        [nzValue]="option.value"
+      ></nz-option>
+    </nz-select>
+  </div>
+
+  <div class="content">
+    <nz-card
+      *ngFor="let image of images"
+      nzHoverable
+      style="width: 220px; margin: 1rem"
+      [nzCover]="coverTemplate"
+      [nzActions]="[actionDelete]"
+    >
+      <nz-card-meta
+        [nzTitle]="image.fileName"
+        [nzDescription]="image.app"
+      ></nz-card-meta>
+      <ng-template #coverTemplate>
+        <img [alt]="image.fileName" [src]="image.url" />
+      </ng-template>
+      <ng-template #actionDelete>
+        <button nz-button nzType="text" nzDanger>
+          <i nz-icon nzType="delete"></i>
+        </button>
+      </ng-template>
+    </nz-card>
+  </div>
+</section>
+
+<ng-template #suffixIconButton>
+  <button nz-button nzType="primary" nzSearch>
+    <i nz-icon nzType="search"></i>
+  </button>
+</ng-template>

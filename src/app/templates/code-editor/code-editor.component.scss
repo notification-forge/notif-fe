@@ -1,0 +1,14 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .button-wrapper {
+    margin-right: 2rem;
+
+    .spacer {
+      display: inline-block;
+      width: 1rem;
+    }
+  }
+}

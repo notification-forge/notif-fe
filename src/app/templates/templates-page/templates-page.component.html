@@ -1,0 +1,135 @@
+<section class="templates-page-wrapper">
+  <div class="button-wrapper">
+    <button nz-button nzType="primary" (click)="openForm()">
+      Create Template
+    </button>
+  </div>
+  <div class="input-wrapper">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+      <input type="text" nz-input placeholder="Search for template name" />
+    </nz-input-group>
+
+    <nz-select
+      name="app"
+      ngDefaultControl
+      [(ngModel)]="tagValue"
+      nzMode="tags"
+      nzPlaceHolder="Please select app"
+    >
+      <nz-option
+        *ngFor="let option of listOfOption"
+        [nzLabel]="option.label"
+        [nzValue]="option.value"
+      ></nz-option>
+    </nz-select>
+  </div>
+
+  <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
+    <thead>
+      <tr>
+        <th nzWidth="60px"></th>
+        <th>Template</th>
+        <th>Delivery Channel</th>
+        <th>App</th>
+        <th>Last Edited</th>
+        <th nzWidth="60px"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of nzTable.data">
+        <tr>
+          <td
+            [nzExpand]="expandSet.has(data.id)"
+            (nzExpandChange)="onExpandChange(data.id, $event)"
+          ></td>
+          <td>{{ data.template }}</td>
+          <td>{{ data.deliveryChannel }}</td>
+          <td>{{ data.app }}</td>
+          <td>{{ data.lastEdited }}</td>
+          <td>
+            <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
+              <i nz-icon nzType="more"></i>
+            </a>
+          </td>
+        </tr>
+        <tr [nzExpand]="expandSet.has(data.id)">
+          <app-template-details
+            [templateID]="data.id"
+            (onCreateVersion)="openCodeEditor()"
+          ></app-template-details>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</section>
+
+<app-code-editor
+  [codeEditorVisible]="codeEditorVisible"
+  (closeCodeEditor)="closeCodeEditor()"
+></app-code-editor>
+
+<ng-template #suffixIconButton>
+  <button nz-button nzType="primary" nzSearch>
+    <i nz-icon nzType="search"></i>
+  </button>
+</ng-template>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu nzSelectable>
+    <li nz-menu-item>Edit Template Name</li>
+    <li nz-menu-item nzDanger>Delete</li>
+  </ul>
+</nz-dropdown-menu>
+
+<nz-modal
+  [(nzVisible)]="showCreateTemplateForm"
+  nzTitle="Create Template"
+  (nzOnCancel)="closeForm()"
+  [nzFooter]="modalFooter"
+>
+  <form nz-form [formGroup]="createTemplateForm" (ngSubmit)="onFormSubmit()">
+    <nz-form-item>
+      <nz-form-label nzFor="templateName" nzRequired
+        >Template Name</nz-form-label
+      >
+      <nz-form-control nzErrorTip="Please input the template name!">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+            type="text"
+            nz-input
+            formControlName="templateName"
+            placeholder="Template Name"
+            name="templateName"
+          />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label nzFor="deliveryChannel" nzRequired
+        >Delivery Channel</nz-form-label
+      >
+      <nz-form-control nzErrorTip="Please select the delivery channel!">
+        <nz-radio-group
+          formControlName="deliveryChannel"
+          nzButtonStyle="solid"
+          name="deliveryChannel"
+        >
+          <label nz-radio-button nzValue="EMAIL">Email</label>
+          <label nz-radio-button nzValue="TEAMS">Teams</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="closeForm()">Cancel</button>
+    <button
+      nz-button
+      [nzType]="'primary'"
+      type="submit"
+      [disabled]="!createTemplateForm.valid"
+    >
+      Create Template
+    </button>
+  </ng-template>
+</nz-modal>

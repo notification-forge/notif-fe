@@ -1,0 +1,33 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #ffff;
+  padding: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p,
+  h1 {
+    margin: 0;
+  }
+
+  p {
+    margin-left: 1rem;
+  }
+
+  a {
+    margin-right: 1rem;
+  }
+
+  button {
+    margin-right: 1rem;
+  }
+
+  .flex-item {
+    display: flex;
+    align-items: center;
+  }
+}
