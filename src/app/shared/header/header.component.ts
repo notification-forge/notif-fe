@@ -9,6 +9,7 @@ import { LayoutService } from '../layout.service';
 })
 export class HeaderComponent implements OnInit {
   headerTitle = '';
+  username: string = '';
   constructor(
     private layoutService: LayoutService,
     private cd: ChangeDetectorRef,
@@ -19,6 +20,10 @@ export class HeaderComponent implements OnInit {
     this.layoutService.headerTitle$.subscribe((title) => {
       this.headerTitle = title;
       this.cd.detectChanges();
+    });
+
+    this.authService.user$.subscribe((user) => {
+      this.username = !!user ? user.username : '';
     });
   }
 

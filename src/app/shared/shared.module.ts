@@ -8,6 +8,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [SideNavComponent, HeaderComponent],
@@ -20,6 +21,7 @@ import { HeaderComponent } from './header/header.component';
     NzAvatarModule,
     NzDropDownModule,
     RouterModule,
+    HttpClientModule,
   ],
   exports: [SideNavComponent, HeaderComponent],
 })

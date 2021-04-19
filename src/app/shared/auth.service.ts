@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { LoginBody, LoginResponse } from './models/api.models';
 import { TokenService } from './token.service';
 
 @Injectable({
@@ -9,7 +11,11 @@ import { TokenService } from './token.service';
 export class AuthService {
   user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
-  constructor(private tokenService: TokenService, private router: Router) {
+  constructor(
+    private tokenService: TokenService,
+    private router: Router,
+    private http: HttpClient
+  ) {
     this.restoreSession();
   }
 
@@ -22,12 +28,21 @@ export class AuthService {
     }
   }
 
-  login(username: string, password: string) {
+  login({ username, password }: LoginBody) {
     // Temp
-    this.user$.next({
-      username,
-      token: `${username}${password}`,
-    });
+    this.http
+      .post<LoginResponse>('api/v1/auth/login', {
+        username,
+        password,
+      })
+      .subscribe(({ accessToken }) => {
+        const user: User = {
+          username,
+          token: accessToken,
+        };
+
+        this.user$.next(user);
+      });
   }
 
   logout() {
