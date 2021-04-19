@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
 import { LayoutService } from '../layout.service';
 
 @Component({
@@ -10,7 +11,8 @@ export class HeaderComponent implements OnInit {
   headerTitle = '';
   constructor(
     private layoutService: LayoutService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -22,5 +24,9 @@ export class HeaderComponent implements OnInit {
 
   toggleHeader(): void {
     this.layoutService.toggleSideNavCollapsed();
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

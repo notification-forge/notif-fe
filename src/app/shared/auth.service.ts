@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { TokenService } from './token.service';
 
@@ -8,7 +9,7 @@ import { TokenService } from './token.service';
 export class AuthService {
   user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
-  constructor(private tokenService: TokenService) {
+  constructor(private tokenService: TokenService, private router: Router) {
     this.restoreSession();
   }
 
@@ -27,6 +28,11 @@ export class AuthService {
       username,
       token: `${username}${password}`,
     });
+  }
+
+  logout() {
+    this.user$.next(null);
+    this.router.navigate(['login']);
   }
 }
 
