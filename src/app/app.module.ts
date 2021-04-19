@@ -17,6 +17,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { AuthGuard } from './shared/auth.guard';
 
 registerLocaleData(en);
 
@@ -38,7 +39,7 @@ registerLocaleData(en);
     NzInputModule,
     ReactiveFormsModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [{ provide: NZ_I18N, useValue: en_US }, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
