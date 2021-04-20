@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import {
-  GetAllTemplatesWithPagesGQL,
-  Template,
-  TemplatePages,
-} from 'src/app/graphql/graphql';
+import { GetAllTemplatesWithPagesGQL, Template } from 'src/app/graphql/graphql';
 import { LayoutService } from 'src/app/shared/layout.service';
-import { DeliveryChannel, TemplateItem } from '../templates.models';
+import { DeliveryChannel } from '../templates.models';
 
 @Component({
   selector: 'app-templates-page',
