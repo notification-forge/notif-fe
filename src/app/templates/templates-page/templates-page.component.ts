@@ -29,6 +29,7 @@ export class TemplatesPageComponent implements OnInit {
   listOfData: (Template | null)[] = [];
   expandSet = new Set<string>();
   codeEditorVisible = false;
+  tableLoading = false;
 
   // Create Template Form
   showCreateTemplateForm = false;
@@ -46,11 +47,25 @@ export class TemplatesPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.layoutService.setHeaderTitle('Templates');
+    this.getAllTemplates();
+  }
+
+  getAllTemplates() {
+    this.tableLoading = true;
     this.getAllTemplatesWithPages
-      .fetch({ name: '', appCodes: [], pageNumber: 0, rowPerPage: 10 })
-      .subscribe(({ data, loading }) => {
-        this.listOfData = data.templatePages?.content || [];
-      });
+      .watch({ name: '', appCodes: [], pageNumber: 0, rowPerPage: 10 })
+      .valueChanges.subscribe(
+        ({ data, loading }) => {
+          this.tableLoading = loading;
+          this.listOfData = data.templatePages?.content || [];
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          this.tableLoading = false;
+        }
+      );
   }
 
   onExpandChange(id: string, checked: boolean): void {
