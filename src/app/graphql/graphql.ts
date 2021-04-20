@@ -185,7 +185,10 @@ export type UpdateTemplateVersionInput = {
 };
 
 export type GetAllTemplatesWithPagesQueryVariables = Exact<{
-  [key: string]: never;
+  name: Scalars['String'];
+  appCodes?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  pageNumber: Scalars['Int'];
+  rowPerPage: Scalars['Int'];
 }>;
 
 export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
@@ -231,13 +234,18 @@ export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
 };
 
 export const GetAllTemplatesWithPagesDocument = gql`
-  query GetAllTemplatesWithPages {
+  query GetAllTemplatesWithPages(
+    $name: String!
+    $appCodes: [String!]
+    $pageNumber: Int!
+    $rowPerPage: Int!
+  ) {
     templatePages(
-      name: "template"
-      appCodes: ["BCAT", "ECAT"]
+      name: $name
+      appCodes: $appCodes
       paginationInput: {
-        pageNumber: 0
-        rowPerPage: 10
+        pageNumber: $pageNumber
+        rowPerPage: $rowPerPage
         sortDirection: ASC
         sortField: "name"
       }

@@ -1,10 +1,15 @@
-query GetAllTemplatesWithPages {
+query GetAllTemplatesWithPages(
+  $name: String!
+  $appCodes: [String!]
+  $pageNumber: Int!
+  $rowPerPage: Int!
+) {
   templatePages(
-    name: "template"
-    appCodes: ["BCAT", "ECAT"]
+    name: $name
+    appCodes: $appCodes
     paginationInput: {
-      pageNumber: 0
-      rowPerPage: 10
+      pageNumber: $pageNumber
+      rowPerPage: $rowPerPage
       sortDirection: ASC
       sortField: "name"
     }

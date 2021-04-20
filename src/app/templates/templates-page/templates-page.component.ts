@@ -46,9 +46,11 @@ export class TemplatesPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.layoutService.setHeaderTitle('Templates');
-    this.getAllTemplatesWithPages.fetch().subscribe(({ data, loading }) => {
-      this.listOfData = data.templatePages?.content || [];
-    });
+    this.getAllTemplatesWithPages
+      .fetch({ name: '', appCodes: [], pageNumber: 0, rowPerPage: 10 })
+      .subscribe(({ data, loading }) => {
+        this.listOfData = data.templatePages?.content || [];
+      });
   }
 
   onExpandChange(id: string, checked: boolean): void {
