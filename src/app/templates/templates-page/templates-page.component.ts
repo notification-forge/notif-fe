@@ -18,11 +18,7 @@ export class TemplatesPageComponent implements OnInit {
   listOfOption: DropdownOption[] = [
     {
       label: 'BCAT',
-      value: 'bcat',
-    },
-    {
-      label: 'SDWT',
-      value: 'sdwt',
+      value: 'BCAT',
     },
   ];
   listOfData: (Template | null)[] = [];
@@ -35,6 +31,7 @@ export class TemplatesPageComponent implements OnInit {
   createTemplateForm = this.fb.group({
     templateName: ['', Validators.required],
     alertType: ['EMAIL' as AlertType, Validators.required],
+    appCode: ['BCAT', Validators.required],
   });
 
   constructor(

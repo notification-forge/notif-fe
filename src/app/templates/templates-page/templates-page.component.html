@@ -122,6 +122,23 @@
         </nz-radio-group>
       </nz-form-control>
     </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzFor="appCode" nzRequired> App Code</nz-form-label>
+      <nz-form-control nzErrorTip="Please select the app code!">
+        <nz-select
+          name="appCode"
+          nzPlaceHolder="Please select app"
+          formControlName="appCode"
+        >
+          <nz-option
+            *ngFor="let option of listOfOption"
+            [nzLabel]="option.label"
+            [nzValue]="option.value"
+          ></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
   </form>
 
   <ng-template #modalFooter>
