@@ -149,6 +149,7 @@
       type="submit"
       (click)="onFormSubmit()"
       [disabled]="!createTemplateForm.valid"
+      [nzLoading]="formLoading"
     >
       Create Template
     </button>

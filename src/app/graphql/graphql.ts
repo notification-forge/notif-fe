@@ -215,7 +215,12 @@ export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
             Maybe<
               { __typename?: 'Template' } & Pick<
                 Template,
-                'id' | 'appCode' | 'createdDate' | 'lastModifiedDate'
+                | 'name'
+                | 'alertType'
+                | 'id'
+                | 'appCode'
+                | 'createdDate'
+                | 'lastModifiedDate'
               > & {
                   templateVersions?: Maybe<
                     Array<
@@ -295,6 +300,8 @@ export const GetAllTemplatesWithPagesDocument = gql`
       }
     ) {
       content {
+        name
+        alertType
         id
         appCode
         createdDate

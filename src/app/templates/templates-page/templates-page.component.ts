@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {
   AlertType,
+  CreateTemplateGQL,
   GetAllTemplatesWithPagesGQL,
   Template,
 } from 'src/app/graphql/graphql';
 import { LayoutService } from 'src/app/shared/layout.service';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-templates-page',
   templateUrl: './templates-page.component.html',
   styleUrls: ['./templates-page.component.scss'],
 })
-export class TemplatesPageComponent implements OnInit {
+export class TemplatesPageComponent implements OnInit, OnDestroy {
+  // UI related
   tagValue = [];
   listOfOption: DropdownOption[] = [
     {
@@ -24,7 +29,6 @@ export class TemplatesPageComponent implements OnInit {
   listOfData: (Template | null)[] = [];
   expandSet = new Set<string>();
   codeEditorVisible = false;
-  tableLoading = false;
 
   // Create Template Form
   showCreateTemplateForm = false;
@@ -34,11 +38,19 @@ export class TemplatesPageComponent implements OnInit {
     appCode: ['BCAT', Validators.required],
   });
 
+  // Loaders
+  tableLoading = false;
+  formLoading = false;
+
+  // Observable
+  onDestroy$: Subject<null> = new Subject<null>();
+
   constructor(
     private layoutService: LayoutService,
     private fb: FormBuilder,
     private message: NzMessageService,
-    private getAllTemplatesWithPages: GetAllTemplatesWithPagesGQL
+    private getAllTemplatesWithPagesQuery: GetAllTemplatesWithPagesGQL,
+    private createTemplateQuery: CreateTemplateGQL
   ) {}
 
   ngOnInit(): void {
@@ -46,22 +58,31 @@ export class TemplatesPageComponent implements OnInit {
     this.getAllTemplates();
   }
 
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+  }
+
   getAllTemplates() {
     this.tableLoading = true;
-    this.getAllTemplatesWithPages
-      .watch({ name: '', appCodes: [], pageNumber: 0, rowPerPage: 10 })
-      .valueChanges.subscribe(
-        ({ data, loading }) => {
+    this.getAllTemplatesWithPagesQuery
+      .fetch(
+        { name: '', appCodes: ['BCAT'], pageNumber: 0, rowPerPage: 10 },
+        { fetchPolicy: 'network-only' }
+      )
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe({
+        next: ({ data, loading }) => {
           this.tableLoading = loading;
           this.listOfData = data.templatePages?.content || [];
+          console.log(data.templatePages?.content);
         },
-        (error) => {
+        error: (error) => {
           console.log(error);
         },
-        () => {
+        complete: () => {
           this.tableLoading = false;
-        }
-      );
+        },
+      });
   }
 
   onExpandChange(id: string, checked: boolean): void {
@@ -90,11 +111,37 @@ export class TemplatesPageComponent implements OnInit {
   }
 
   onFormSubmit() {
-    this.closeForm();
-    this.message.success(
-      `Template with name: "${this.createTemplateForm.value.templateName}" created`
-    );
-    console.log(this.createTemplateForm.value);
+    const { templateName, alertType, appCode } = this.createTemplateForm.value;
+    this.formLoading = true;
+    this.createTemplateQuery
+      .mutate({ name: templateName, alertType, appCode })
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe({
+        next: ({ data }) => {
+          this.message.success(
+            `Template with name: "${this.createTemplateForm.value.templateName}" created`
+          );
+          const newTemplate = data?.createTemplate;
+          if (!!newTemplate) {
+            const dataClone = cloneDeep(this.listOfData);
+            dataClone.push(newTemplate);
+            console.log('hmm', newTemplate);
+            console.log('hmm', dataClone);
+            this.listOfData = dataClone;
+          }
+
+          this.formLoading = false;
+          this.closeForm();
+          this.createTemplateForm.reset();
+        },
+        error: (error) => {
+          this.message.error(String(error));
+
+          this.formLoading = false;
+          this.closeForm();
+          this.createTemplateForm.reset();
+        },
+      });
   }
 }
 
