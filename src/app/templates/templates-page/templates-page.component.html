@@ -34,7 +34,7 @@
       <tr>
         <th nzWidth="60px"></th>
         <th>Template</th>
-        <th>Delivery Channel</th>
+        <th>Alert Type</th>
         <th>App</th>
         <th>Last Edited</th>
         <th nzWidth="60px"></th>
@@ -110,14 +110,12 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label nzFor="deliveryChannel" nzRequired
-        >Delivery Channel</nz-form-label
-      >
-      <nz-form-control nzErrorTip="Please select the delivery channel!">
+      <nz-form-label nzFor="alertType" nzRequired> Alert Type</nz-form-label>
+      <nz-form-control nzErrorTip="Please select the alert type!">
         <nz-radio-group
-          formControlName="deliveryChannel"
+          formControlName="alertType"
           nzButtonStyle="solid"
-          name="deliveryChannel"
+          name="alertType"
         >
           <label nz-radio-button nzValue="EMAIL">Email</label>
           <label nz-radio-button nzValue="TEAMS">Teams</label>
@@ -132,6 +130,7 @@
       nz-button
       [nzType]="'primary'"
       type="submit"
+      (click)="onFormSubmit()"
       [disabled]="!createTemplateForm.valid"
     >
       Create Template

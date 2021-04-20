@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { GetAllTemplatesWithPagesGQL, Template } from 'src/app/graphql/graphql';
+import {
+  AlertType,
+  GetAllTemplatesWithPagesGQL,
+  Template,
+} from 'src/app/graphql/graphql';
 import { LayoutService } from 'src/app/shared/layout.service';
-import { DeliveryChannel } from '../templates.models';
 
 @Component({
   selector: 'app-templates-page',
@@ -31,7 +34,7 @@ export class TemplatesPageComponent implements OnInit {
   showCreateTemplateForm = false;
   createTemplateForm = this.fb.group({
     templateName: ['', Validators.required],
-    deliveryChannel: ['EMAIL' as DeliveryChannel, Validators.required],
+    alertType: ['EMAIL' as AlertType, Validators.required],
   });
 
   constructor(

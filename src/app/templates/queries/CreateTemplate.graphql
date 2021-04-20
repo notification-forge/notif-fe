@@ -1,0 +1,15 @@
+mutation CreateTemplate(
+  $name: String!
+  $alertType: AlertType!
+  $appCode: String!
+) {
+  createTemplate(
+    input: { name: $name, alertType: $alertType, appCode: $appCode }
+  ) {
+    name
+    uuid
+    alertType
+    appCode
+    createdDate
+  }
+}

@@ -184,6 +184,19 @@ export type UpdateTemplateVersionInput = {
   status?: Maybe<TemplateStatus>;
 };
 
+export type CreateTemplateMutationVariables = Exact<{
+  name: Scalars['String'];
+  alertType: AlertType;
+  appCode: Scalars['String'];
+}>;
+
+export type CreateTemplateMutation = { __typename?: 'Mutation' } & {
+  createTemplate: { __typename?: 'Template' } & Pick<
+    Template,
+    'name' | 'uuid' | 'alertType' | 'appCode' | 'createdDate'
+  >;
+};
+
 export type GetAllTemplatesWithPagesQueryVariables = Exact<{
   name: Scalars['String'];
   appCodes?: Maybe<Array<Scalars['String']> | Scalars['String']>;
@@ -233,6 +246,37 @@ export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export const CreateTemplateDocument = gql`
+  mutation CreateTemplate(
+    $name: String!
+    $alertType: AlertType!
+    $appCode: String!
+  ) {
+    createTemplate(
+      input: { name: $name, alertType: $alertType, appCode: $appCode }
+    ) {
+      name
+      uuid
+      alertType
+      appCode
+      createdDate
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CreateTemplateGQL extends Apollo.Mutation<
+  CreateTemplateMutation,
+  CreateTemplateMutationVariables
+> {
+  document = CreateTemplateDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
 export const GetAllTemplatesWithPagesDocument = gql`
   query GetAllTemplatesWithPages(
     $name: String!
