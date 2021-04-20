@@ -1,0 +1,126 @@
+enum AlertType {
+  TEAMS
+  EMAIL
+}
+
+input CloneTemplateVersionInput {
+  templateId: ID
+  id: Int
+  name: String
+  settings: String
+  body: String
+}
+
+input CreateTemplateInput {
+  name: String
+  alertType: AlertType
+  appCode: String
+}
+
+input CreateTemplateVersionInput {
+  templateId: ID
+}
+
+scalar Date
+
+type Image {
+  id: ID
+  appCode: String
+  tenant: String
+  fileName: String
+  imageData: String
+}
+
+type Mutation {
+  createTemplate(input: CreateTemplateInput!): Template!
+  updateTemplate(input: UpdateTemplateInput!): Template!
+  createTemplateVersion(input: CreateTemplateVersionInput!): TemplateVersion!
+  cloneTemplateVersion(input: CloneTemplateVersionInput!): TemplateVersion!
+  updateTemplateVersion(input: UpdateTemplateVersionInput!): TemplateVersion!
+  uploadImage(image: Upload!): Image!
+}
+
+input PaginationInput {
+  pageNumber: Int
+  rowPerPage: Int
+  sortDirection: SortDirection
+  sortField: String
+}
+
+type Query {
+  template(id: ID): Template
+  templatePages(
+    name: String
+    appCodes: [String]
+    paginationInput: PaginationInput
+  ): TemplatePages
+  templateVersion(id: ID): TemplateVersion
+}
+
+type Sort {
+  isSorted: Boolean
+  isUnsorted: Boolean
+  isEmpty: Boolean
+}
+
+enum SortDirection {
+  ASC
+  DESC
+}
+
+type Template {
+  id: ID
+  name: String
+  uuid: String
+  alertType: String
+  appCode: String
+  templateVersions: [TemplateVersion]
+  createdDate: Date
+  lastModifiedDate: Date
+}
+
+type TemplatePages {
+  totalElements: Int
+  totalPages: Int
+  content: [Template]
+  isEmpty: Boolean
+  isFirst: Boolean
+  isLast: Boolean
+  number: Int
+  numberOfElements: Int
+  size: Int
+  sort: Sort
+}
+
+enum TemplateStatus {
+  DRAFT
+  PUBLISHED
+}
+
+type TemplateVersion {
+  templateId: ID
+  id: Int
+  name: String
+  templateHash: String
+  body: String
+  settings: String
+  version: String
+  status: TemplateStatus
+  createdDate: Date
+  lastModifiedDate: Date
+}
+
+input UpdateTemplateInput {
+  id: ID
+  name: String
+}
+
+input UpdateTemplateVersionInput {
+  id: ID
+  name: String
+  settings: String
+  body: String
+  status: TemplateStatus
+}
+
+scalar Upload

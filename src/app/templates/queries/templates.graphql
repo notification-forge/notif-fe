@@ -1,0 +1,38 @@
+query GetAllTemplatesWithPages {
+  templatePages(
+    name: "template"
+    appCodes: ["BCAT", "ECAT"]
+    paginationInput: {
+      pageNumber: 0
+      rowPerPage: 10
+      sortDirection: ASC
+      sortField: "name"
+    }
+  ) {
+    content {
+      id
+      appCode
+      createdDate
+      lastModifiedDate
+      templateVersions {
+        id
+        name
+        body
+        settings
+        version
+        status
+      }
+    }
+    isEmpty
+    isFirst
+    isLast
+    number
+    numberOfElements
+    size
+    sort {
+      isSorted
+      isUnsorted
+      isEmpty
+    }
+  }
+}
