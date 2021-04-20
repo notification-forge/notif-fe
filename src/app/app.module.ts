@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import en from '@angular/common/locales/en';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +18,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { AuthGuard } from './shared/auth.guard';
+import { ApiInterceptor } from './shared/api.interceptor';
 
 registerLocaleData(en);
 
@@ -39,7 +40,11 @@ registerLocaleData(en);
     NzInputModule,
     ReactiveFormsModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }, AuthGuard],
+  providers: [
+    { provide: NZ_I18N, useValue: en_US },
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

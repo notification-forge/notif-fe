@@ -6,7 +6,13 @@
   </div>
   <div class="input-wrapper">
     <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-      <input type="text" nz-input placeholder="Search for template name" />
+      <input
+        type="text"
+        nz-input
+        placeholder="Search for template name"
+        [ngModel]="query"
+        (ngModelChange)="onSearch($event)"
+      />
     </nz-input-group>
 
     <nz-select
@@ -24,12 +30,22 @@
     </nz-select>
   </div>
 
-  <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
+  <nz-table
+    #nzTable
+    [nzData]="listOfData"
+    [nzLoading]="tableLoading"
+    [nzFrontPagination]="false"
+    [nzTotal]="pagination.totalElements"
+    [nzPageSize]="pagination.pageSize"
+    [nzPageIndex]="pagination.pageIndex + 1"
+    (nzQueryParams)="onPageChange($event)"
+    nzTableLayout="fixed"
+  >
     <thead>
       <tr>
         <th nzWidth="60px"></th>
         <th>Template</th>
-        <th>Delivery Channel</th>
+        <th>Alert Type</th>
         <th>App</th>
         <th>Last Edited</th>
         <th nzWidth="60px"></th>
@@ -39,22 +55,22 @@
       <ng-container *ngFor="let data of nzTable.data">
         <tr>
           <td
-            [nzExpand]="expandSet.has(data.id)"
-            (nzExpandChange)="onExpandChange(data.id, $event)"
+            [nzExpand]="expandSet.has(data?.id || '')"
+            (nzExpandChange)="onExpandChange(data?.id || '', $event)"
           ></td>
-          <td>{{ data.template }}</td>
-          <td>{{ data.deliveryChannel }}</td>
-          <td>{{ data.app }}</td>
-          <td>{{ data.lastEdited }}</td>
+          <td>{{ data?.name }}</td>
+          <td>{{ data?.alertType }}</td>
+          <td>{{ data?.appCode }}</td>
+          <td>{{ data?.lastModifiedDate }}</td>
           <td>
             <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
               <i nz-icon nzType="more"></i>
             </a>
           </td>
         </tr>
-        <tr [nzExpand]="expandSet.has(data.id)">
+        <tr [nzExpand]="expandSet.has(data?.id || '')">
           <app-template-details
-            [templateID]="data.id"
+            [templateID]="data?.uuid || ''"
             (onCreateVersion)="openCodeEditor()"
           ></app-template-details>
         </tr>
@@ -87,39 +103,56 @@
   (nzOnCancel)="closeForm()"
   [nzFooter]="modalFooter"
 >
-  <form nz-form [formGroup]="createTemplateForm" (ngSubmit)="onFormSubmit()">
-    <nz-form-item>
-      <nz-form-label nzFor="templateName" nzRequired
-        >Template Name</nz-form-label
-      >
-      <nz-form-control nzErrorTip="Please input the template name!">
-        <nz-input-group nzPrefixIcon="user">
-          <input
-            type="text"
-            nz-input
-            formControlName="templateName"
-            placeholder="Template Name"
-            name="templateName"
-          />
-        </nz-input-group>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzFor="deliveryChannel" nzRequired
-        >Delivery Channel</nz-form-label
-      >
-      <nz-form-control nzErrorTip="Please select the delivery channel!">
-        <nz-radio-group
-          formControlName="deliveryChannel"
-          nzButtonStyle="solid"
-          name="deliveryChannel"
-        >
-          <label nz-radio-button nzValue="EMAIL">Email</label>
-          <label nz-radio-button nzValue="TEAMS">Teams</label>
-        </nz-radio-group>
-      </nz-form-control>
-    </nz-form-item>
-  </form>
+  <ng-template nzModalContent>
+    <form nz-form [formGroup]="createTemplateForm" (ngSubmit)="onFormSubmit()">
+      <nz-form-item>
+        <nz-form-label nzFor="templateName" nzRequired>
+          Template Name
+        </nz-form-label>
+        <nz-form-control nzErrorTip="Please input the template name!">
+          <nz-input-group nzPrefixIcon="user">
+            <input
+              type="text"
+              nz-input
+              formControlName="templateName"
+              placeholder="Template Name"
+              name="templateName"
+            />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="alertType" nzRequired> Alert Type</nz-form-label>
+        <nz-form-control nzErrorTip="Please select the alert type!">
+          <nz-radio-group
+            formControlName="alertType"
+            nzButtonStyle="solid"
+            name="alertType"
+          >
+            <label nz-radio-button nzValue="EMAIL">Email</label>
+            <label nz-radio-button nzValue="TEAMS">Teams</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="appCode" nzRequired> App Code</nz-form-label>
+        <nz-form-control nzErrorTip="Please select the app code!">
+          <nz-select
+            formControlName="appCode"
+            name="appCode"
+            nzPlaceHolder="Please select app"
+          >
+            <nz-option
+              *ngFor="let option of listOfOption"
+              [nzLabel]="option.label"
+              [nzValue]="option.value"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-template>
 
   <ng-template #modalFooter>
     <button nz-button nzType="default" (click)="closeForm()">Cancel</button>
@@ -127,7 +160,9 @@
       nz-button
       [nzType]="'primary'"
       type="submit"
+      (click)="onFormSubmit()"
       [disabled]="!createTemplateForm.valid"
+      [nzLoading]="formLoading"
     >
       Create Template
     </button>

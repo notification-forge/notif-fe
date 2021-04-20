@@ -1,0 +1,47 @@
+query GetAllTemplatesWithPages(
+  $name: String!
+  $appCodes: [String!]
+  $pageNumber: Int!
+  $rowPerPage: Int!
+) {
+  templatePages(
+    name: $name
+    appCodes: $appCodes
+    paginationInput: {
+      pageNumber: $pageNumber
+      rowPerPage: $rowPerPage
+      sortDirection: DESC
+      sortField: "createdDate"
+    }
+  ) {
+    content {
+      name
+      alertType
+      id
+      uuid
+      appCode
+      createdDate
+      lastModifiedDate
+      templateVersions {
+        id
+        name
+        body
+        settings
+        version
+        status
+      }
+    }
+    isEmpty
+    isFirst
+    isLast
+    number
+    numberOfElements
+    totalElements
+    size
+    sort {
+      isSorted
+      isUnsorted
+      isEmpty
+    }
+  }
+}

@@ -11,7 +11,8 @@
     "e2e": "ng e2e",
     "format": "prettier --write src/**/*.{ts,html,scss}",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "graphql-codegen": "graphql-codegen --config codegen.yml"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +28,7 @@
     "apollo-angular": "^2.4.0",
     "graphql": "^15.0.0",
     "jwt-decode": "^3.1.2",
+    "lodash": "^4.17.21",
     "ng-zorro-antd": "^11.3.0",
     "ngx-monaco-editor": "^9.0.0",
     "rxjs": "~6.6.0",
@@ -37,7 +39,13 @@
     "@angular-devkit/build-angular": "~0.1100.7",
     "@angular/cli": "~11.0.7",
     "@angular/compiler-cli": "~11.0.9",
+    "@graphql-codegen/cli": "1.21.4",
+    "@graphql-codegen/introspection": "1.18.2",
+    "@graphql-codegen/typescript": "1.22.0",
+    "@graphql-codegen/typescript-apollo-angular": "2.3.3",
+    "@graphql-codegen/typescript-operations": "1.17.16",
     "@types/jasmine": "~3.6.0",
+    "@types/lodash": "^4.14.168",
     "@types/node": "^12.20.10",
     "codelyzer": "^6.0.0",
     "husky": "^6.0.0",

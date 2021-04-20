@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./template-details.component.scss'],
 })
 export class TemplateDetailsComponent implements OnInit {
-  @Input() templateID: number;
+  @Input() templateID: string;
   @Output() onCreateVersion: EventEmitter<null> = new EventEmitter();
 
   constructor() {}

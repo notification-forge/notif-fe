@@ -3,11 +3,13 @@ import { APOLLO_OPTIONS } from 'apollo-angular';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 
-const uri = 'http://54.179.227.126:8080/'; // <-- add the URL of the GraphQL server here
+const uri = '/graphql'; // <-- add the URL of the GraphQL server here
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   return {
     link: httpLink.create({ uri }),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      resultCaching: false,
+    }),
   };
 }
 

@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class TokenService {
-  private _token: string;
+  private _token: string | null;
   private readonly _tokenKey: string = 'NTF_AUTH_TOKEN';
 
   constructor() {
@@ -18,8 +18,13 @@ export class TokenService {
     return this._token;
   }
 
-  set token(token: string) {
-    localStorage.setItem(this._tokenKey, token);
-    this._token = token;
+  set token(token: string | null) {
+    if (!token) {
+      localStorage.removeItem(this._tokenKey);
+      this._token = null;
+    } else {
+      localStorage.setItem(this._tokenKey, token);
+      this._token = token;
+    }
   }
 }
