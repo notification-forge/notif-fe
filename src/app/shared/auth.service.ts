@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { LoginBody, LoginResponse } from './models/api.models';
+import { LoginBody, LoginResponse, TokenDecoded } from './models/api.models';
 import { TokenService } from './token.service';
+import jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,14 @@ export class AuthService {
   restoreSession() {
     const token = this.tokenService.token;
     if (token) {
-      // fetch api for user details
+      // TODO: Change to Whoami. This is temporary until whoami is up
+      const { sub }: TokenDecoded = jwt_decode(token);
+      const user: User = {
+        username: sub,
+        token,
+      };
+
+      this.user$.next(user);
     } else {
       this.user$.next(null);
     }
@@ -36,11 +44,13 @@ export class AuthService {
         password,
       })
       .subscribe(({ accessToken }) => {
+        const { sub }: TokenDecoded = jwt_decode(accessToken);
         const user: User = {
-          username,
+          username: sub,
           token: accessToken,
         };
 
+        this.tokenService.token = accessToken;
         this.user$.next(user);
       });
   }
