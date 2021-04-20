@@ -39,22 +39,22 @@
       <ng-container *ngFor="let data of nzTable.data">
         <tr>
           <td
-            [nzExpand]="expandSet.has(data.id)"
-            (nzExpandChange)="onExpandChange(data.id, $event)"
+            [nzExpand]="expandSet.has(data?.id || '')"
+            (nzExpandChange)="onExpandChange(data?.id || '', $event)"
           ></td>
-          <td>{{ data.template }}</td>
-          <td>{{ data.deliveryChannel }}</td>
-          <td>{{ data.app }}</td>
-          <td>{{ data.lastEdited }}</td>
+          <td>{{ data?.name }}</td>
+          <td>{{ data?.alertType }}</td>
+          <td>{{ data?.appCode }}</td>
+          <td>{{ data?.lastModifiedDate }}</td>
           <td>
             <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
               <i nz-icon nzType="more"></i>
             </a>
           </td>
         </tr>
-        <tr [nzExpand]="expandSet.has(data.id)">
+        <tr [nzExpand]="expandSet.has(data?.id || '')">
           <app-template-details
-            [templateID]="data.id"
+            [templateID]="data?.id || ''"
             (onCreateVersion)="openCodeEditor()"
           ></app-template-details>
         </tr>

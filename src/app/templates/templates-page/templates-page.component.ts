@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import {
+  GetAllTemplatesWithPagesGQL,
+  Template,
+  TemplatePages,
+} from 'src/app/graphql/graphql';
 import { LayoutService } from 'src/app/shared/layout.service';
 import { DeliveryChannel, TemplateItem } from '../templates.models';
 
@@ -21,30 +26,8 @@ export class TemplatesPageComponent implements OnInit {
       value: 'sdwt',
     },
   ];
-  listOfData: TemplateItem[] = [
-    {
-      id: 1,
-      template: 'BCAT Success Email',
-      app: 'BCAT',
-      deliveryChannel: 'Email',
-      lastEdited: new Date(),
-    },
-    {
-      id: 2,
-      template: 'BCAT Failure Email',
-      app: 'BCAT',
-      deliveryChannel: 'Email',
-      lastEdited: new Date(),
-    },
-    {
-      id: 3,
-      template: 'SDWT Success Email',
-      app: 'BCAT',
-      deliveryChannel: 'Email',
-      lastEdited: new Date(),
-    },
-  ];
-  expandSet = new Set<number>();
+  listOfData: (Template | null)[] = [];
+  expandSet = new Set<string>();
   codeEditorVisible = false;
 
   // Create Template Form
@@ -57,14 +40,18 @@ export class TemplatesPageComponent implements OnInit {
   constructor(
     private layoutService: LayoutService,
     private fb: FormBuilder,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private getAllTemplatesWithPages: GetAllTemplatesWithPagesGQL
   ) {}
 
   ngOnInit(): void {
     this.layoutService.setHeaderTitle('Templates');
+    this.getAllTemplatesWithPages.fetch().subscribe(({ data, loading }) => {
+      this.listOfData = data.templatePages?.content || [];
+    });
   }
 
-  onExpandChange(id: number, checked: boolean): void {
+  onExpandChange(id: string, checked: boolean): void {
     if (checked) {
       this.expandSet.clear();
       this.expandSet.add(id);
