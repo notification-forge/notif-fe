@@ -56,6 +56,7 @@ export class AuthService {
   }
 
   logout() {
+    this.tokenService.token = null;
     this.user$.next(null);
     this.router.navigate(['login']);
   }
