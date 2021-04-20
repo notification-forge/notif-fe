@@ -35,7 +35,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   createTemplateForm = this.fb.group({
     templateName: ['', Validators.required],
     alertType: ['EMAIL' as AlertType, Validators.required],
-    appCode: ['BCAT', Validators.required],
+    appCode: ['', Validators.required],
   });
 
   // Loaders
