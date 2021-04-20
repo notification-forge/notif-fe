@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
   AlertType,
   CreateTemplateGQL,
@@ -10,7 +10,6 @@ import {
   Template,
 } from 'src/app/graphql/graphql';
 import { LayoutService } from 'src/app/shared/layout.service';
-import { cloneDeep } from 'lodash';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
 @Component({
@@ -46,6 +45,10 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   // Observable
   onDestroy$: Subject<null> = new Subject<null>();
 
+  // Search
+  query: string;
+  queryChanged: Subject<string> = new Subject<string>();
+
   // Pagination
   pagination: Pagination = {
     pageSize: 10,
@@ -64,6 +67,16 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const { pageSize, pageIndex } = this.pagination;
     this.layoutService.setHeaderTitle('Templates');
+    this.queryChanged
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.onDestroy$)
+      )
+      .subscribe((query: string) => {
+        this.query = query;
+        this.getAllTemplates(this.pagination.pageSize, 0, false, query);
+      });
     this.getAllTemplates(pageSize, pageIndex);
   }
 
@@ -74,13 +87,14 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   getAllTemplates(
     pageSize: number,
     pageIndex: number,
-    shouldUseNetwork: boolean = false
+    shouldUseNetwork: boolean = false,
+    query: string = ''
   ) {
     this.tableLoading = true;
     this.getAllTemplatesWithPagesQuery
       .fetch(
         {
-          name: '',
+          name: query,
           appCodes: ['BCAT'],
           pageNumber: pageIndex,
           rowPerPage: pageSize,
@@ -147,6 +161,10 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     this.showCreateTemplateForm = false;
   }
 
+  onSearch(query: string) {
+    this.queryChanged.next(query);
+  }
+
   onFormSubmit() {
     const { templateName, alertType, appCode } = this.createTemplateForm.value;
     this.formLoading = true;
@@ -154,7 +172,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
       .mutate({ name: templateName, alertType, appCode })
       .pipe(takeUntil(this.onDestroy$))
       .subscribe({
-        next: ({ data }) => {
+        next: (_) => {
           this.message.success(
             `Template with name: "${this.createTemplateForm.value.templateName}" created`
           );

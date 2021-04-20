@@ -6,7 +6,13 @@
   </div>
   <div class="input-wrapper">
     <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-      <input type="text" nz-input placeholder="Search for template name" />
+      <input
+        type="text"
+        nz-input
+        placeholder="Search for template name"
+        [ngModel]="query"
+        (ngModelChange)="onSearch($event)"
+      />
     </nz-input-group>
 
     <nz-select
