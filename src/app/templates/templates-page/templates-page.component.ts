@@ -11,6 +11,7 @@ import {
 } from 'src/app/graphql/graphql';
 import { LayoutService } from 'src/app/shared/layout.service';
 import { cloneDeep } from 'lodash';
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
 @Component({
   selector: 'app-templates-page',
@@ -45,6 +46,13 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   // Observable
   onDestroy$: Subject<null> = new Subject<null>();
 
+  // Pagination
+  pagination: Pagination = {
+    pageSize: 10,
+    pageIndex: 0,
+    totalElements: 0,
+  };
+
   constructor(
     private layoutService: LayoutService,
     private fb: FormBuilder,
@@ -54,19 +62,25 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    const { pageSize, pageIndex } = this.pagination;
     this.layoutService.setHeaderTitle('Templates');
-    this.getAllTemplates();
+    this.getAllTemplates(pageSize, pageIndex);
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
   }
 
-  getAllTemplates() {
+  getAllTemplates(pageSize: number, pageIndex: number) {
     this.tableLoading = true;
     this.getAllTemplatesWithPagesQuery
       .fetch(
-        { name: '', appCodes: ['BCAT'], pageNumber: 0, rowPerPage: 10 },
+        {
+          name: '',
+          appCodes: ['BCAT'],
+          pageNumber: pageIndex,
+          rowPerPage: pageSize,
+        },
         { fetchPolicy: 'network-only' }
       )
       .pipe(takeUntil(this.onDestroy$))
@@ -74,7 +88,13 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
         next: ({ data, loading }) => {
           this.tableLoading = loading;
           this.listOfData = data.templatePages?.content || [];
-          console.log(data.templatePages?.content);
+          const pagination: Pagination = {
+            totalElements: data.templatePages?.totalElements || 0,
+            pageSize: data.templatePages?.size || 0,
+            pageIndex: data.templatePages?.number || 0,
+          };
+
+          this.pagination = pagination;
         },
         error: (error) => {
           console.log(error);
@@ -83,6 +103,19 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
           this.tableLoading = false;
         },
       });
+  }
+
+  onPageChange({ pageIndex, pageSize }: NzTableQueryParams): void {
+    if (pageIndex - 1 !== this.pagination.pageIndex) {
+      const paginationClone = {
+        ...this.pagination,
+        pageIndex: pageIndex - 1,
+        pageSize,
+      };
+      this.pagination = paginationClone;
+
+      this.getAllTemplates(pageSize, pageIndex - 1);
+    }
   }
 
   onExpandChange(id: string, checked: boolean): void {
@@ -148,4 +181,10 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
 interface DropdownOption {
   label: string;
   value: string;
+}
+
+interface Pagination {
+  pageIndex: number;
+  pageSize: number;
+  totalElements: number;
 }

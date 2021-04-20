@@ -28,6 +28,11 @@
     #nzTable
     [nzData]="listOfData"
     [nzLoading]="tableLoading"
+    [nzFrontPagination]="false"
+    [nzTotal]="pagination.totalElements"
+    [nzPageSize]="pagination.pageSize"
+    [nzPageIndex]="pagination.pageIndex + 1"
+    (nzQueryParams)="onPageChange($event)"
     nzTableLayout="fixed"
   >
     <thead>
@@ -59,7 +64,7 @@
         </tr>
         <tr [nzExpand]="expandSet.has(data?.id || '')">
           <app-template-details
-            [templateID]="data?.id || ''"
+            [templateID]="data?.uuid || ''"
             (onCreateVersion)="openCodeEditor()"
           ></app-template-details>
         </tr>

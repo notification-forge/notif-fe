@@ -18,6 +18,7 @@ query GetAllTemplatesWithPages(
       name
       alertType
       id
+      uuid
       appCode
       createdDate
       lastModifiedDate
@@ -35,6 +36,7 @@ query GetAllTemplatesWithPages(
     isLast
     number
     numberOfElements
+    totalElements
     size
     sort {
       isSorted

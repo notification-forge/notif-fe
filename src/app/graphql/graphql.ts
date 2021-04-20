@@ -208,7 +208,13 @@ export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
   templatePages?: Maybe<
     { __typename?: 'TemplatePages' } & Pick<
       TemplatePages,
-      'isEmpty' | 'isFirst' | 'isLast' | 'number' | 'numberOfElements' | 'size'
+      | 'isEmpty'
+      | 'isFirst'
+      | 'isLast'
+      | 'number'
+      | 'numberOfElements'
+      | 'totalElements'
+      | 'size'
     > & {
         content?: Maybe<
           Array<
@@ -218,6 +224,7 @@ export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
                 | 'name'
                 | 'alertType'
                 | 'id'
+                | 'uuid'
                 | 'appCode'
                 | 'createdDate'
                 | 'lastModifiedDate'
@@ -303,6 +310,7 @@ export const GetAllTemplatesWithPagesDocument = gql`
         name
         alertType
         id
+        uuid
         appCode
         createdDate
         lastModifiedDate
@@ -320,6 +328,7 @@ export const GetAllTemplatesWithPagesDocument = gql`
       isLast
       number
       numberOfElements
+      totalElements
       size
       sort {
         isSorted
