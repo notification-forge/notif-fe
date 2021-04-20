@@ -71,7 +71,11 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     this.onDestroy$.next();
   }
 
-  getAllTemplates(pageSize: number, pageIndex: number) {
+  getAllTemplates(
+    pageSize: number,
+    pageIndex: number,
+    shouldUseNetwork: boolean = false
+  ) {
     this.tableLoading = true;
     this.getAllTemplatesWithPagesQuery
       .fetch(
@@ -81,7 +85,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
           pageNumber: pageIndex,
           rowPerPage: pageSize,
         },
-        { fetchPolicy: 'network-only' }
+        { fetchPolicy: shouldUseNetwork ? 'network-only' : 'cache-first' }
       )
       .pipe(takeUntil(this.onDestroy$))
       .subscribe({
@@ -154,15 +158,8 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
           this.message.success(
             `Template with name: "${this.createTemplateForm.value.templateName}" created`
           );
-          const newTemplate = data?.createTemplate;
-          if (!!newTemplate) {
-            const dataClone = cloneDeep(this.listOfData);
-            dataClone.push(newTemplate);
-            console.log('hmm', newTemplate);
-            console.log('hmm', dataClone);
-            this.listOfData = dataClone;
-          }
 
+          this.getAllTemplates(this.pagination.pageSize, 0, true);
           this.formLoading = false;
           this.closeForm();
           this.createTemplateForm.reset();

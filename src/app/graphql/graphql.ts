@@ -302,8 +302,8 @@ export const GetAllTemplatesWithPagesDocument = gql`
       paginationInput: {
         pageNumber: $pageNumber
         rowPerPage: $rowPerPage
-        sortDirection: ASC
-        sortField: "name"
+        sortDirection: DESC
+        sortField: "createdDate"
       }
     ) {
       content {
