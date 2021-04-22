@@ -60,7 +60,16 @@
             (nzExpandChange)="onExpandChange(data?.id || '', $event)"
           ></td>
           <td>{{ data?.name }}</td>
-          <td>{{ data?.alertType }}</td>
+          <td>
+            <div
+              [ngClass]="[
+                data?.alertType === 'EMAIL' ? 'email-chip' : 'teams-chip',
+                'chip'
+              ]"
+            >
+              {{ data?.alertType }}
+            </div>
+          </td>
           <td>{{ appMap[data?.appCode || ''].appName || 'N/A' }}</td>
           <td>{{ data?.lastModifiedDate }}</td>
           <td>
