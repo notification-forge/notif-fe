@@ -3,7 +3,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { LoginBody, LoginResponse, WhoAmIResponse } from './models/api.models';
+import {
+  LoginBody,
+  LoginResponse,
+  User,
+  WhoAmIResponse,
+} from './models/api.models';
 import { TokenService } from './token.service';
 
 @Injectable({
@@ -87,11 +92,4 @@ export class AuthService {
     this.user$.next(null);
     this.router.navigate(['login']);
   }
-}
-
-interface User {
-  username: string;
-  name: string;
-  apps: string[];
-  token: string;
 }
