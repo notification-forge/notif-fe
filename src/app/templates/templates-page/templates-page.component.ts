@@ -89,7 +89,17 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
       )
       .subscribe((query: string) => {
         this.query = query;
-        this.getAllTemplates(this.pagination.pageSize, 0, false, query);
+        let queryAppCodes = this.selectedAppCodes;
+        if (this.selectedAppCodes.length === 0)
+          queryAppCodes = this.allAppCodes;
+
+        this.getAllTemplates(
+          this.pagination.pageSize,
+          0,
+          false,
+          query,
+          queryAppCodes
+        );
       });
 
     const { pageSize, pageIndex } = this.pagination;
