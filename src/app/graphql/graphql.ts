@@ -334,6 +334,17 @@ export type CreateTemplateMutation = { __typename?: 'Mutation' } & {
   >;
 };
 
+export type CreateTemplateVersionMutationVariables = Exact<{
+  templateId: Scalars['ID'];
+}>;
+
+export type CreateTemplateVersionMutation = { __typename?: 'Mutation' } & {
+  createTemplateVersion: { __typename?: 'TemplateVersion' } & Pick<
+    TemplateVersion,
+    'id' | 'templateId' | 'status'
+  >;
+};
+
 export type GetAllTemplatesWithPagesQueryVariables = Exact<{
   name: Scalars['String'];
   appCodes?: Maybe<Array<Scalars['String']> | Scalars['String']>;
@@ -421,6 +432,29 @@ export class CreateTemplateGQL extends Apollo.Mutation<
   CreateTemplateMutationVariables
 > {
   document = CreateTemplateDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
+export const CreateTemplateVersionDocument = gql`
+  mutation CreateTemplateVersion($templateId: ID!) {
+    createTemplateVersion(input: { templateId: $templateId }) {
+      id
+      templateId
+      status
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class CreateTemplateVersionGQL extends Apollo.Mutation<
+  CreateTemplateVersionMutation,
+  CreateTemplateVersionMutationVariables
+> {
+  document = CreateTemplateVersionDocument;
 
   constructor(apollo: Apollo.Apollo) {
     super(apollo);
