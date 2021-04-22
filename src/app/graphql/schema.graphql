@@ -3,12 +3,36 @@ enum AlertType {
   EMAIL
 }
 
+input ApprovalAppInput {
+  appCode: String
+  status: AppStatus
+  rejectedReason: String
+}
+
+enum AppStatus {
+  ACTIVE
+  INACTIVE
+  PENDING_OWNER_APPROVAL
+  REJECTED
+}
+
 input CloneTemplateVersionInput {
   templateId: ID
   id: Int
   name: String
   settings: String
   body: String
+}
+
+input CreateAppInput {
+  appCode: String
+  name: String
+  justification: String
+  description: String
+  primaryOwnerName: String
+  primaryOwnerId: String
+  secondaryOwnerName: String
+  secondaryOwnerId: String
 }
 
 input CreateTemplateInput {
@@ -26,9 +50,30 @@ scalar Date
 type Image {
   id: ID
   appCode: String
+  contentType: String
   tenant: String
   fileName: String
+  fileSignature: String
+  status: ImageStatus
   imageData: String
+}
+
+type ImagePages {
+  totalElements: Int
+  totalPages: Int
+  content: [Image]
+  isEmpty: Boolean
+  isFirst: Boolean
+  isLast: Boolean
+  number: Int
+  numberOfElements: Int
+  size: Int
+  sort: Sort
+}
+
+enum ImageStatus {
+  ACTIVE
+  DELETED
 }
 
 type Mutation {
@@ -37,7 +82,23 @@ type Mutation {
   createTemplateVersion(input: CreateTemplateVersionInput!): TemplateVersion!
   cloneTemplateVersion(input: CloneTemplateVersionInput!): TemplateVersion!
   updateTemplateVersion(input: UpdateTemplateVersionInput!): TemplateVersion!
-  uploadImage(image: Upload!): Image!
+  uploadImage(appCode: String, file: Upload!): Image!
+  onboardApp(input: CreateAppInput!): Tenant!
+  updateApp(input: UpdateAppInput!): Tenant!
+  approveOrRejectAppInput(input: ApprovalAppInput!): Tenant!
+  onboardUser(input: OnboardingUserInput!): User!
+}
+
+type Onboarding {
+  id: ID
+  username: String
+  appCode: String
+}
+
+input OnboardingUserInput {
+  appCode: String
+  username: String
+  name: String
 }
 
 input PaginationInput {
@@ -55,6 +116,13 @@ type Query {
     paginationInput: PaginationInput
   ): TemplatePages
   templateVersion(id: ID): TemplateVersion
+  imagePages(
+    name: String
+    appCodes: [String]
+    paginationInput: PaginationInput
+  ): ImagePages
+  tenant(id: ID): Tenant
+  user(username: ID): User
 }
 
 type Sort {
@@ -110,6 +178,38 @@ type TemplateVersion {
   lastModifiedDate: Date
 }
 
+type Tenant {
+  appCode: ID
+  displayName: String
+  apiToken: String
+  status: AppStatus
+  justification: String
+  description: String
+  primaryOwnerName: String
+  primaryOwnerId: String
+  secondaryOwnerName: String
+  secondaryOwnerId: String
+  encryptionKey: String
+  appSettings: String
+  onboardings: [Onboarding]
+  approvedBy: String
+  approvedDate: Date
+  rejectedBy: String
+  rejectedDate: Date
+  rejectedReason: String
+}
+
+input UpdateAppInput {
+  appCode: String
+  name: String
+  justification: String
+  description: String
+  primaryOwnerName: String
+  primaryOwnerId: String
+  secondaryOwnerName: String
+  secondaryOwnerId: String
+}
+
 input UpdateTemplateInput {
   id: ID
   name: String
@@ -124,3 +224,9 @@ input UpdateTemplateVersionInput {
 }
 
 scalar Upload
+
+type User {
+  username: ID
+  name: String
+  onboardings: [Onboarding]
+}

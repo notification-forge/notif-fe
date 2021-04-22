@@ -25,12 +25,36 @@ export enum AlertType {
   Email = 'EMAIL',
 }
 
+export enum AppStatus {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE',
+  PendingOwnerApproval = 'PENDING_OWNER_APPROVAL',
+  Rejected = 'REJECTED',
+}
+
+export type ApprovalAppInput = {
+  appCode?: Maybe<Scalars['String']>;
+  status?: Maybe<AppStatus>;
+  rejectedReason?: Maybe<Scalars['String']>;
+};
+
 export type CloneTemplateVersionInput = {
   templateId?: Maybe<Scalars['ID']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   settings?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['String']>;
+};
+
+export type CreateAppInput = {
+  appCode?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  justification?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  primaryOwnerName?: Maybe<Scalars['String']>;
+  primaryOwnerId?: Maybe<Scalars['String']>;
+  secondaryOwnerName?: Maybe<Scalars['String']>;
+  secondaryOwnerId?: Maybe<Scalars['String']>;
 };
 
 export type CreateTemplateInput = {
@@ -47,10 +71,32 @@ export type Image = {
   __typename?: 'Image';
   id?: Maybe<Scalars['ID']>;
   appCode?: Maybe<Scalars['String']>;
+  contentType?: Maybe<Scalars['String']>;
   tenant?: Maybe<Scalars['String']>;
   fileName?: Maybe<Scalars['String']>;
+  fileSignature?: Maybe<Scalars['String']>;
+  status?: Maybe<ImageStatus>;
   imageData?: Maybe<Scalars['String']>;
 };
+
+export type ImagePages = {
+  __typename?: 'ImagePages';
+  totalElements?: Maybe<Scalars['Int']>;
+  totalPages?: Maybe<Scalars['Int']>;
+  content?: Maybe<Array<Maybe<Image>>>;
+  isEmpty?: Maybe<Scalars['Boolean']>;
+  isFirst?: Maybe<Scalars['Boolean']>;
+  isLast?: Maybe<Scalars['Boolean']>;
+  number?: Maybe<Scalars['Int']>;
+  numberOfElements?: Maybe<Scalars['Int']>;
+  size?: Maybe<Scalars['Int']>;
+  sort?: Maybe<Sort>;
+};
+
+export enum ImageStatus {
+  Active = 'ACTIVE',
+  Deleted = 'DELETED',
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -60,6 +106,10 @@ export type Mutation = {
   cloneTemplateVersion: TemplateVersion;
   updateTemplateVersion: TemplateVersion;
   uploadImage: Image;
+  onboardApp: Tenant;
+  updateApp: Tenant;
+  approveOrRejectAppInput: Tenant;
+  onboardUser: User;
 };
 
 export type MutationCreateTemplateArgs = {
@@ -83,7 +133,37 @@ export type MutationUpdateTemplateVersionArgs = {
 };
 
 export type MutationUploadImageArgs = {
-  image: Scalars['Upload'];
+  appCode?: Maybe<Scalars['String']>;
+  file: Scalars['Upload'];
+};
+
+export type MutationOnboardAppArgs = {
+  input: CreateAppInput;
+};
+
+export type MutationUpdateAppArgs = {
+  input: UpdateAppInput;
+};
+
+export type MutationApproveOrRejectAppInputArgs = {
+  input: ApprovalAppInput;
+};
+
+export type MutationOnboardUserArgs = {
+  input: OnboardingUserInput;
+};
+
+export type Onboarding = {
+  __typename?: 'Onboarding';
+  id?: Maybe<Scalars['ID']>;
+  username?: Maybe<Scalars['String']>;
+  appCode?: Maybe<Scalars['String']>;
+};
+
+export type OnboardingUserInput = {
+  appCode?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type PaginationInput = {
@@ -98,6 +178,9 @@ export type Query = {
   template?: Maybe<Template>;
   templatePages?: Maybe<TemplatePages>;
   templateVersion?: Maybe<TemplateVersion>;
+  imagePages?: Maybe<ImagePages>;
+  tenant?: Maybe<Tenant>;
+  user?: Maybe<User>;
 };
 
 export type QueryTemplateArgs = {
@@ -112,6 +195,20 @@ export type QueryTemplatePagesArgs = {
 
 export type QueryTemplateVersionArgs = {
   id?: Maybe<Scalars['ID']>;
+};
+
+export type QueryImagePagesArgs = {
+  name?: Maybe<Scalars['String']>;
+  appCodes?: Maybe<Array<Maybe<Scalars['String']>>>;
+  paginationInput?: Maybe<PaginationInput>;
+};
+
+export type QueryTenantArgs = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type QueryUserArgs = {
+  username?: Maybe<Scalars['ID']>;
 };
 
 export type Sort = {
@@ -171,6 +268,39 @@ export type TemplateVersion = {
   lastModifiedDate?: Maybe<Scalars['Date']>;
 };
 
+export type Tenant = {
+  __typename?: 'Tenant';
+  appCode?: Maybe<Scalars['ID']>;
+  displayName?: Maybe<Scalars['String']>;
+  apiToken?: Maybe<Scalars['String']>;
+  status?: Maybe<AppStatus>;
+  justification?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  primaryOwnerName?: Maybe<Scalars['String']>;
+  primaryOwnerId?: Maybe<Scalars['String']>;
+  secondaryOwnerName?: Maybe<Scalars['String']>;
+  secondaryOwnerId?: Maybe<Scalars['String']>;
+  encryptionKey?: Maybe<Scalars['String']>;
+  appSettings?: Maybe<Scalars['String']>;
+  onboardings?: Maybe<Array<Maybe<Onboarding>>>;
+  approvedBy?: Maybe<Scalars['String']>;
+  approvedDate?: Maybe<Scalars['Date']>;
+  rejectedBy?: Maybe<Scalars['String']>;
+  rejectedDate?: Maybe<Scalars['Date']>;
+  rejectedReason?: Maybe<Scalars['String']>;
+};
+
+export type UpdateAppInput = {
+  appCode?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  justification?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  primaryOwnerName?: Maybe<Scalars['String']>;
+  primaryOwnerId?: Maybe<Scalars['String']>;
+  secondaryOwnerName?: Maybe<Scalars['String']>;
+  secondaryOwnerId?: Maybe<Scalars['String']>;
+};
+
 export type UpdateTemplateInput = {
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
@@ -182,6 +312,13 @@ export type UpdateTemplateVersionInput = {
   settings?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['String']>;
   status?: Maybe<TemplateStatus>;
+};
+
+export type User = {
+  __typename?: 'User';
+  username?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  onboardings?: Maybe<Array<Maybe<Onboarding>>>;
 };
 
 export type CreateTemplateMutationVariables = Exact<{
