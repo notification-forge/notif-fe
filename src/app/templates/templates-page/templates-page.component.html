@@ -23,9 +23,9 @@
       nzPlaceHolder="Please select app"
     >
       <nz-option
-        *ngFor="let option of listOfOption"
-        [nzLabel]="option.label"
-        [nzValue]="option.value"
+        *ngFor="let app of appList"
+        [nzLabel]="app.appName"
+        [nzValue]="app.appCode"
       ></nz-option>
     </nz-select>
   </div>
@@ -144,9 +144,9 @@
             nzPlaceHolder="Please select app"
           >
             <nz-option
-              *ngFor="let option of listOfOption"
-              [nzLabel]="option.label"
-              [nzValue]="option.value"
+              *ngFor="let app of appList"
+              [nzLabel]="app.appName"
+              [nzValue]="app.appCode"
             ></nz-option>
           </nz-select>
         </nz-form-control>

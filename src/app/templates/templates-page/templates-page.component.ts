@@ -11,6 +11,8 @@ import {
 } from 'src/app/graphql/graphql';
 import { LayoutService } from 'src/app/shared/layout.service';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { AuthService } from 'src/app/shared/auth.service';
+import { App } from 'src/app/shared/models/api.models';
 
 @Component({
   selector: 'app-templates-page',
@@ -20,12 +22,7 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 export class TemplatesPageComponent implements OnInit, OnDestroy {
   // UI related
   tagValue = [];
-  listOfOption: DropdownOption[] = [
-    {
-      label: 'BCAT',
-      value: 'BCAT',
-    },
-  ];
+  appList: App[] = [];
   listOfData: (Template | null)[] = [];
   expandSet = new Set<string>();
   codeEditorVisible = false;
@@ -60,6 +57,9 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private fb: FormBuilder,
     private message: NzMessageService,
+    private auth: AuthService,
+
+    // Queries
     private getAllTemplatesWithPagesQuery: GetAllTemplatesWithPagesGQL,
     private createTemplateQuery: CreateTemplateGQL
   ) {}
@@ -67,6 +67,9 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const { pageSize, pageIndex } = this.pagination;
     this.layoutService.setHeaderTitle('Templates');
+    this.auth.user$.subscribe((user) => {
+      this.appList = user?.apps || [];
+    });
     this.queryChanged
       .pipe(
         debounceTime(500),
@@ -191,11 +194,6 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
         },
       });
   }
-}
-
-interface DropdownOption {
-  label: string;
-  value: string;
 }
 
 interface Pagination {
