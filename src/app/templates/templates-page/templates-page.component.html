@@ -89,7 +89,7 @@
             *ngIf="expandSet.has(data?.id || '')"
             [templateUUID]="data?.uuid || ''"
             [templateID]="data?.id || ''"
-            (onCreateVersion)="openCodeEditor()"
+            (onOpenCodeEditor)="openCodeEditor()"
           ></app-template-details>
         </tr>
       </ng-container>

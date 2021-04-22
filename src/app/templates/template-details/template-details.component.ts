@@ -13,7 +13,7 @@ import {
 export class TemplateDetailsComponent implements OnInit {
   @Input() templateUUID: string;
   @Input() templateID: string;
-  @Output() onCreateVersion: EventEmitter<null> = new EventEmitter();
+  @Output() onOpenCodeEditor: EventEmitter<null> = new EventEmitter();
 
   templateVersionList: (TemplateVersion | null)[];
 
@@ -40,6 +40,10 @@ export class TemplateDetailsComponent implements OnInit {
           console.log(response);
         },
       });
-    this.onCreateVersion.emit();
+    this.openCodeEditor();
+  }
+
+  openCodeEditor() {
+    this.onOpenCodeEditor.emit();
   }
 }
