@@ -21,7 +21,7 @@ import { App } from 'src/app/shared/models/api.models';
 })
 export class TemplatesPageComponent implements OnInit, OnDestroy {
   // UI related
-  tagValue: string[] = [];
+  selectedAppCodes: string[] = [];
   appList: App[] = [];
   allAppCodes: string[] = [];
   templateList: (Template | null)[] = [];
@@ -172,7 +172,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   }
 
   onAppFilterSelect(appCodes: string[]) {
-    this.tagValue = appCodes;
+    this.selectedAppCodes = appCodes;
     let queryAppCodes = appCodes;
     if (appCodes.length === 0) queryAppCodes = this.allAppCodes;
 
