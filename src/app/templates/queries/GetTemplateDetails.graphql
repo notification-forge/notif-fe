@@ -1,0 +1,17 @@
+query GetTemplateDetails($id: ID!) {
+  template(id: $id) {
+    id
+    name
+    uuid
+    alertType
+    appCode
+    templateVersions {
+      id
+      name
+      status
+      body
+      settings
+      version
+    }
+  }
+}

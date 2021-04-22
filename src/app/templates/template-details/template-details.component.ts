@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CreateTemplateVersionGQL } from 'src/app/graphql/graphql';
+import {
+  CreateTemplateVersionGQL,
+  GetTemplateDetailsGQL,
+  TemplateVersion,
+} from 'src/app/graphql/graphql';
 
 @Component({
   selector: 'app-template-details',
@@ -7,13 +11,21 @@ import { CreateTemplateVersionGQL } from 'src/app/graphql/graphql';
   styleUrls: ['./template-details.component.scss'],
 })
 export class TemplateDetailsComponent implements OnInit {
+  @Input() templateUUID: string;
   @Input() templateID: string;
   @Output() onCreateVersion: EventEmitter<null> = new EventEmitter();
 
-  constructor(private createTemplateVersion: CreateTemplateVersionGQL) {}
+  templateVersionList: (TemplateVersion | null)[];
+
+  constructor(private getTemplateDetails: GetTemplateDetailsGQL) {}
 
   ngOnInit(): void {
-    console.log('template version id', this.templateID);
+    this.getTemplateDetails.fetch({ id: this.templateID }).subscribe({
+      next: (details) => {
+        this.templateVersionList =
+          details.data.template?.templateVersions || [];
+      },
+    });
   }
 
   createVersion() {

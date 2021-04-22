@@ -374,25 +374,8 @@ export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
                 | 'id'
                 | 'uuid'
                 | 'appCode'
-                | 'createdDate'
                 | 'lastModifiedDate'
-              > & {
-                  templateVersions?: Maybe<
-                    Array<
-                      Maybe<
-                        { __typename?: 'TemplateVersion' } & Pick<
-                          TemplateVersion,
-                          | 'id'
-                          | 'name'
-                          | 'body'
-                          | 'settings'
-                          | 'version'
-                          | 'status'
-                        >
-                      >
-                    >
-                  >;
-                }
+              >
             >
           >
         >;
@@ -400,6 +383,30 @@ export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
           { __typename?: 'Sort' } & Pick<
             Sort,
             'isSorted' | 'isUnsorted' | 'isEmpty'
+          >
+        >;
+      }
+  >;
+};
+
+export type GetTemplateDetailsQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetTemplateDetailsQuery = { __typename?: 'Query' } & {
+  template?: Maybe<
+    { __typename?: 'Template' } & Pick<
+      Template,
+      'id' | 'name' | 'uuid' | 'alertType' | 'appCode'
+    > & {
+        templateVersions?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'TemplateVersion' } & Pick<
+                TemplateVersion,
+                'id' | 'name' | 'status' | 'body' | 'settings' | 'version'
+              >
+            >
           >
         >;
       }
@@ -483,16 +490,7 @@ export const GetAllTemplatesWithPagesDocument = gql`
         id
         uuid
         appCode
-        createdDate
         lastModifiedDate
-        templateVersions {
-          id
-          name
-          body
-          settings
-          version
-          status
-        }
       }
       isEmpty
       isFirst
@@ -518,6 +516,39 @@ export class GetAllTemplatesWithPagesGQL extends Apollo.Query<
   GetAllTemplatesWithPagesQueryVariables
 > {
   document = GetAllTemplatesWithPagesDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
+export const GetTemplateDetailsDocument = gql`
+  query GetTemplateDetails($id: ID!) {
+    template(id: $id) {
+      id
+      name
+      uuid
+      alertType
+      appCode
+      templateVersions {
+        id
+        name
+        status
+        body
+        settings
+        version
+      }
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetTemplateDetailsGQL extends Apollo.Query<
+  GetTemplateDetailsQuery,
+  GetTemplateDetailsQueryVariables
+> {
+  document = GetTemplateDetailsDocument;
 
   constructor(apollo: Apollo.Apollo) {
     super(apollo);

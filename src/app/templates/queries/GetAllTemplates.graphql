@@ -20,16 +20,7 @@ query GetAllTemplatesWithPages(
       id
       uuid
       appCode
-      createdDate
       lastModifiedDate
-      templateVersions {
-        id
-        name
-        body
-        settings
-        version
-        status
-      }
     }
     isEmpty
     isFirst

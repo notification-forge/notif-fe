@@ -81,7 +81,8 @@
         <tr [nzExpand]="expandSet.has(data?.id || '')">
           <app-template-details
             *ngIf="expandSet.has(data?.id || '')"
-            [templateID]="data?.uuid || ''"
+            [templateUUID]="data?.uuid || ''"
+            [templateID]="data?.id || ''"
             (onCreateVersion)="openCodeEditor()"
           ></app-template-details>
         </tr>
