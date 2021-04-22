@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { EditorService } from '../editor.service';
+import { template } from './email-template';
 
 @Component({
   selector: 'app-design-editor',
@@ -12,7 +13,7 @@ export class DesignEditorComponent implements OnInit {
 
   settingsForm: FormGroup = this.editorService.settingsForm;
   designEditorOptions = { theme: 'vs-dark', language: 'html' };
-  designCode: string = '<div> Hello world </div>';
+  designCode: string = template;
 
   constructor(private editorService: EditorService) {}
 
