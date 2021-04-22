@@ -404,7 +404,7 @@ export type GetTemplateDetailsQuery = { __typename?: 'Query' } & {
             Maybe<
               { __typename?: 'TemplateVersion' } & Pick<
                 TemplateVersion,
-                'id' | 'name' | 'status' | 'body' | 'settings' | 'version'
+                'id' | 'name' | 'status' | 'lastModifiedDate'
               >
             >
           >
@@ -533,9 +533,7 @@ export const GetTemplateDetailsDocument = gql`
         id
         name
         status
-        body
-        settings
-        version
+        lastModifiedDate
       }
     }
   }

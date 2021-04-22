@@ -11,3 +11,19 @@
     padding: 3rem;
   }
 }
+
+.chip {
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.draft-chip {
+  background-color: rgb(230, 230, 230);
+  font-weight: bold;
+}
+
+.published-chip {
+  background-color: rgb(210, 255, 214);
+  font-weight: bold;
+}

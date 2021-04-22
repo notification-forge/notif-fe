@@ -17,18 +17,29 @@ export class TemplateDetailsComponent implements OnInit {
 
   templateVersionList: (TemplateVersion | null)[];
 
-  constructor(private getTemplateDetails: GetTemplateDetailsGQL) {}
+  constructor(
+    private getTemplateDetails: GetTemplateDetailsGQL,
+    private createTemplateVersion: CreateTemplateVersionGQL
+  ) {}
 
   ngOnInit(): void {
     this.getTemplateDetails.fetch({ id: this.templateID }).subscribe({
       next: (details) => {
         this.templateVersionList =
           details.data.template?.templateVersions || [];
+        console.log(details.data.template?.templateVersions);
       },
     });
   }
 
   createVersion() {
+    this.createTemplateVersion
+      .mutate({ templateId: this.templateID })
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+      });
     this.onCreateVersion.emit();
   }
 }

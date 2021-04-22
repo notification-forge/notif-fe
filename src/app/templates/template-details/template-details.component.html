@@ -10,7 +10,13 @@
     ></i>
   </p>
 
-  <div class="version-wrapper">
+  <div
+    class="version-wrapper"
+    *ngIf="
+      !templateVersionList || templateVersionList?.length === 0;
+      else templateVersionsTable
+    "
+  >
     <p>
       Add a version to this dynamic template in order to start editing its
       content
@@ -20,4 +26,39 @@
       Add Version
     </button>
   </div>
+
+  <ng-template #templateVersionsTable>
+    <nz-table
+      #innerTable
+      [nzData]="templateVersionList"
+      nzSize="middle"
+      [nzShowPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th>Version Name</th>
+          <th>Status</th>
+          <th>Created by</th>
+          <th>Last Edited</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of innerTable.data">
+          <td>{{ data?.name || 'Untitled' }}</td>
+          <td>
+            <div
+              [ngClass]="[
+                data?.status === 'PUBLISHED' ? 'published-chip' : 'draft-chip',
+                'chip'
+              ]"
+            >
+              {{ data?.status }}
+            </div>
+          </td>
+          <td>PENDING BACKEND API</td>
+          <td>{{ data?.lastModifiedDate }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </ng-template>
 </article>

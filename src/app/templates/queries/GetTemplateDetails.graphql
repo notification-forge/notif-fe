@@ -9,9 +9,7 @@ query GetTemplateDetails($id: ID!) {
       id
       name
       status
-      body
-      settings
-      version
+      lastModifiedDate
     }
   }
 }
