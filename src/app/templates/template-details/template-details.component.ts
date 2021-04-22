@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
 import {
   CreateTemplateVersionGQL,
   GetTemplateDetailsGQL,
@@ -35,9 +36,19 @@ export class TemplateDetailsComponent implements OnInit {
   createVersion() {
     this.createTemplateVersion
       .mutate({ templateId: this.templateID })
+      .pipe(
+        switchMap((_) => {
+          return this.getTemplateDetails.fetch(
+            { id: this.templateID },
+            { fetchPolicy: 'network-only' }
+          );
+        })
+      )
       .subscribe({
-        next: (response) => {
-          console.log(response);
+        next: (details) => {
+          this.templateVersionList =
+            details.data.template?.templateVersions || [];
+          console.log(details.data.template?.templateVersions);
         },
       });
     this.openCodeEditor();
