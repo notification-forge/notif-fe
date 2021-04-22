@@ -2,15 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {
-  LoginBody,
-  LoginResponse,
-  TokenDecoded,
-  WhoAmIResponse,
-} from './models/api.models';
-import { TokenService } from './token.service';
-import jwt_decode from 'jwt-decode';
 import { map, switchMap } from 'rxjs/operators';
+import { LoginBody, LoginResponse, WhoAmIResponse } from './models/api.models';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,18 +22,31 @@ export class AuthService {
 
   restoreSession(): void {
     const token = this.tokenService.token;
-    // if (token) {
-    //   // TODO: Change to Whoami. This is temporary until whoami is up
-    //   const { sub }: TokenDecoded = jwt_decode(token);
-    //   const user: User = {
-    //     username: sub,
-    //     token,
-    //   };
+    if (token) {
+      this.whoami()
+        .pipe(
+          map(({ username, name, apps }) => {
+            const user: User = {
+              username,
+              name,
+              apps,
+              token,
+            };
 
-    //   this.user$.next(user);
-    // } else {
-    //   this.user$.next(null);
-    // }
+            return user;
+          })
+        )
+        .subscribe({
+          next: (user: User) => {
+            this.user$.next(user);
+          },
+          error: () => {
+            this.logout();
+          },
+        });
+    } else {
+      this.user$.next(null);
+    }
   }
 
   login({ username, password }: LoginBody): void {
@@ -67,7 +74,6 @@ export class AuthService {
         })
       )
       .subscribe((user: User) => {
-        console.log(user);
         this.user$.next(user);
       });
   }
