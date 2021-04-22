@@ -10,7 +10,6 @@ export class TrustCssPipe implements PipeTransform {
   transform(value: unknown): unknown {
     if (typeof value !== 'string') return null;
 
-    console.log(value);
     return this.sanitizer.bypassSecurityTrustHtml(value);
   }
 }
