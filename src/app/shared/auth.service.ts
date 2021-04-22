@@ -1,10 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { LoginBody, LoginResponse, TokenDecoded } from './models/api.models';
+import { BehaviorSubject, Observable } from 'rxjs';
+import {
+  LoginBody,
+  LoginResponse,
+  TokenDecoded,
+  WhoAmIResponse,
+} from './models/api.models';
 import { TokenService } from './token.service';
 import jwt_decode from 'jwt-decode';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -20,39 +26,54 @@ export class AuthService {
     this.restoreSession();
   }
 
-  restoreSession() {
+  restoreSession(): void {
     const token = this.tokenService.token;
-    if (token) {
-      // TODO: Change to Whoami. This is temporary until whoami is up
-      const { sub }: TokenDecoded = jwt_decode(token);
-      const user: User = {
-        username: sub,
-        token,
-      };
+    // if (token) {
+    //   // TODO: Change to Whoami. This is temporary until whoami is up
+    //   const { sub }: TokenDecoded = jwt_decode(token);
+    //   const user: User = {
+    //     username: sub,
+    //     token,
+    //   };
 
-      this.user$.next(user);
-    } else {
-      this.user$.next(null);
-    }
+    //   this.user$.next(user);
+    // } else {
+    //   this.user$.next(null);
+    // }
   }
 
-  login({ username, password }: LoginBody) {
+  login({ username, password }: LoginBody): void {
     // Temp
     this.http
       .post<LoginResponse>('api/v1/auth/login', {
         username,
         password,
       })
-      .subscribe(({ accessToken }) => {
-        const { sub }: TokenDecoded = jwt_decode(accessToken);
-        const user: User = {
-          username: sub,
-          token: accessToken,
-        };
+      .pipe(
+        switchMap(({ accessToken }) => {
+          this.tokenService.token = accessToken;
+          return this.whoami();
+        }),
+        map(({ username, name, apps }) => {
+          const token = this.tokenService.token || ''; // if we can get the value of whoami, the token is not null
+          const user: User = {
+            username,
+            name,
+            apps,
+            token,
+          };
 
-        this.tokenService.token = accessToken;
+          return user;
+        })
+      )
+      .subscribe((user: User) => {
+        console.log(user);
         this.user$.next(user);
       });
+  }
+
+  whoami(): Observable<WhoAmIResponse> {
+    return this.http.get<WhoAmIResponse>('api/v1/whoami');
   }
 
   logout() {
@@ -64,5 +85,7 @@ export class AuthService {
 
 interface User {
   username: string;
+  name: string;
+  apps: string[];
   token: string;
 }

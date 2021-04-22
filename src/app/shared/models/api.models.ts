@@ -14,3 +14,10 @@ export interface TokenDecoded {
   roles: string[];
   sub: string; // username
 }
+
+export interface WhoAmIResponse {
+  username: string;
+  name: string;
+  dateIssued: string;
+  apps: string[];
+}
