@@ -76,6 +76,12 @@
             <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
               <i nz-icon nzType="more"></i>
             </a>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu nzSelectable>
+                <li nz-menu-item>Edit Template Name</li>
+                <li nz-menu-item nzDanger>Delete</li>
+              </ul>
+            </nz-dropdown-menu>
           </td>
         </tr>
         <tr [nzExpand]="expandSet.has(data?.id || '')">
@@ -101,13 +107,6 @@
     <i nz-icon nzType="search"></i>
   </button>
 </ng-template>
-
-<nz-dropdown-menu #menu="nzDropdownMenu">
-  <ul nz-menu nzSelectable>
-    <li nz-menu-item>Edit Template Name</li>
-    <li nz-menu-item nzDanger>Delete</li>
-  </ul>
-</nz-dropdown-menu>
 
 <nz-modal
   [(nzVisible)]="showCreateTemplateForm"
