@@ -18,7 +18,8 @@
     <nz-select
       name="app"
       ngDefaultControl
-      [(ngModel)]="tagValue"
+      [ngModel]="tagValue"
+      (ngModelChange)="onAppFilterSelect($event)"
       nzMode="tags"
       nzPlaceHolder="Please select app"
     >

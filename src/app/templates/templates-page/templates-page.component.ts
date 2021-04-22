@@ -21,8 +21,9 @@ import { App } from 'src/app/shared/models/api.models';
 })
 export class TemplatesPageComponent implements OnInit, OnDestroy {
   // UI related
-  tagValue = [];
+  tagValue: string[] = [];
   appList: App[] = [];
+  allAppCodes: string[] = [];
   listOfData: (Template | null)[] = [];
   expandSet = new Set<string>();
   codeEditorVisible = false;
@@ -69,6 +70,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     this.layoutService.setHeaderTitle('Templates');
     this.auth.user$.subscribe((user) => {
       this.appList = user?.apps || [];
+      this.allAppCodes = user?.apps.map((app) => app.appCode) || [];
     });
     this.queryChanged
       .pipe(
@@ -91,14 +93,15 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     pageSize: number,
     pageIndex: number,
     shouldUseNetwork: boolean = false,
-    query: string = ''
+    query: string = '',
+    appCodes: string[] = this.allAppCodes
   ) {
     this.tableLoading = true;
     this.getAllTemplatesWithPagesQuery
       .fetch(
         {
           name: query,
-          appCodes: ['BCAT'],
+          appCodes: appCodes,
           pageNumber: pageIndex,
           rowPerPage: pageSize,
         },
@@ -166,6 +169,20 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
 
   onSearch(query: string) {
     this.queryChanged.next(query);
+  }
+
+  onAppFilterSelect(appCodes: string[]) {
+    this.tagValue = appCodes;
+    let queryAppCodes = appCodes;
+    if (appCodes.length === 0) queryAppCodes = this.allAppCodes;
+
+    this.getAllTemplates(
+      this.pagination.pageSize,
+      0,
+      false,
+      this.query,
+      queryAppCodes
+    );
   }
 
   onFormSubmit() {
