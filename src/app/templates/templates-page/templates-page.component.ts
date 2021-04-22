@@ -24,7 +24,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   tagValue: string[] = [];
   appList: App[] = [];
   allAppCodes: string[] = [];
-  listOfData: (Template | null)[] = [];
+  templateList: (Template | null)[] = [];
   expandSet = new Set<string>();
   codeEditorVisible = false;
 
@@ -111,7 +111,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
       .subscribe({
         next: ({ data, loading }) => {
           this.tableLoading = loading;
-          this.listOfData = data.templatePages?.content || [];
+          this.templateList = data.templatePages?.content || [];
           const pagination: Pagination = {
             totalElements: data.templatePages?.totalElements || 0,
             pageSize: data.templatePages?.size || 0,
