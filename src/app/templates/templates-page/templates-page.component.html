@@ -80,6 +80,7 @@
         </tr>
         <tr [nzExpand]="expandSet.has(data?.id || '')">
           <app-template-details
+            *ngIf="expandSet.has(data?.id || '')"
             [templateID]="data?.uuid || ''"
             (onCreateVersion)="openCodeEditor()"
           ></app-template-details>
