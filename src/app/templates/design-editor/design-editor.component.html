@@ -31,17 +31,28 @@
       ></nz-avatar>
       <div class="preview-senders">
         <h2>
-          {{ settingsForm.value.from || 'N/A (Click on settings to configue)' }}
+          {{
+            settingsForm.value.from ||
+              'from@email.com (Click on settings to configue)'
+          }}
         </h2>
         <div class="preview-to-from">
           <p class="preview-to-from-title">To</p>
           <p>
-            {{ settingsForm.value.to || 'N/A (Click on settings to configue)' }}
+            {{
+              settingsForm.value.to ||
+                'to@email.com (Click on settings to configue)'
+            }}
           </p>
         </div>
         <div class="preview-to-from">
           <p class="preview-to-from-title">CC</p>
-          <p>{{ settingsForm.value.cc || 'N/A' }}</p>
+          <p>
+            {{
+              settingsForm.value.cc ||
+                'cc@email.com (Click on settings to configue)'
+            }}
+          </p>
         </div>
       </div>
     </div>
