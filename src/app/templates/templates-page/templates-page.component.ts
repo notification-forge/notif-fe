@@ -20,10 +20,13 @@ import { App } from 'src/app/shared/models/api.models';
   styleUrls: ['./templates-page.component.scss'],
 })
 export class TemplatesPageComponent implements OnInit, OnDestroy {
-  // UI related
+  // Search Header
   selectedAppCodes: string[] = [];
   appList: App[] = [];
   allAppCodes: string[] = [];
+  appMap: AppMap;
+
+  // Templates Detrails
   templateList: (Template | null)[] = [];
   expandSet = new Set<string>();
   codeEditorVisible = false;
@@ -66,12 +69,18 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const { pageSize, pageIndex } = this.pagination;
     this.layoutService.setHeaderTitle('Templates');
+
     this.auth.user$.subscribe((user) => {
       this.appList = user?.apps || [];
       this.allAppCodes = user?.apps.map((app) => app.appCode) || [];
+      this.appMap =
+        user?.apps.reduce((reducer, app) => {
+          reducer[app.appCode] = app;
+          return reducer;
+        }, {} as AppMap) || {};
     });
+
     this.queryChanged
       .pipe(
         debounceTime(500),
@@ -82,6 +91,8 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
         this.query = query;
         this.getAllTemplates(this.pagination.pageSize, 0, false, query);
       });
+
+    const { pageSize, pageIndex } = this.pagination;
     this.getAllTemplates(pageSize, pageIndex);
   }
 
@@ -217,4 +228,8 @@ interface Pagination {
   pageIndex: number;
   pageSize: number;
   totalElements: number;
+}
+
+interface AppMap {
+  [key: string]: App;
 }
