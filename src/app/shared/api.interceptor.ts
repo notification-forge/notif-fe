@@ -38,7 +38,6 @@ export class ApiInterceptor implements HttpInterceptor {
           (error.status === 401 || error.status === 403) &&
           this.router.url !== '/login'
         ) {
-          console.log('error zone');
           this.authService.logout();
         }
         return throwError(error);
