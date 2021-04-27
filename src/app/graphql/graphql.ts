@@ -72,25 +72,28 @@ export type Image = {
   id?: Maybe<Scalars['ID']>;
   appCode?: Maybe<Scalars['String']>;
   contentType?: Maybe<Scalars['String']>;
-  tenant?: Maybe<Scalars['String']>;
   fileName?: Maybe<Scalars['String']>;
   fileSignature?: Maybe<Scalars['String']>;
   status?: Maybe<ImageStatus>;
   imageData?: Maybe<Scalars['String']>;
 };
 
-export type ImagePages = {
-  __typename?: 'ImagePages';
-  totalElements?: Maybe<Scalars['Int']>;
-  totalPages?: Maybe<Scalars['Int']>;
-  content?: Maybe<Array<Maybe<Image>>>;
-  isEmpty?: Maybe<Scalars['Boolean']>;
-  isFirst?: Maybe<Scalars['Boolean']>;
-  isLast?: Maybe<Scalars['Boolean']>;
-  number?: Maybe<Scalars['Int']>;
-  numberOfElements?: Maybe<Scalars['Int']>;
-  size?: Maybe<Scalars['Int']>;
-  sort?: Maybe<Sort>;
+export type ImageConnection = {
+  __typename?: 'ImageConnection';
+  totalCount?: Maybe<Scalars['Int']>;
+  edges?: Maybe<Array<Maybe<ImageConnectionEdge>>>;
+  pageInfo?: Maybe<PageInfo>;
+};
+
+export type ImageConnectionEdge = {
+  __typename?: 'ImageConnectionEdge';
+  cursor?: Maybe<Scalars['String']>;
+  node?: Maybe<Image>;
+};
+
+export type ImageSearchFilterInput = {
+  fileNamePortion?: Maybe<Scalars['String']>;
+  appCodes?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export enum ImageStatus {
@@ -166,6 +169,14 @@ export type OnboardingUserInput = {
   name?: Maybe<Scalars['String']>;
 };
 
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  hasPreviousPage: Scalars['Boolean'];
+  hasNextPage: Scalars['Boolean'];
+  startCursor?: Maybe<Scalars['String']>;
+  endCursor?: Maybe<Scalars['String']>;
+};
+
 export type PaginationInput = {
   pageNumber?: Maybe<Scalars['Int']>;
   rowPerPage?: Maybe<Scalars['Int']>;
@@ -176,9 +187,9 @@ export type PaginationInput = {
 export type Query = {
   __typename?: 'Query';
   template?: Maybe<Template>;
-  templatePages?: Maybe<TemplatePages>;
+  templatePages?: Maybe<TemplateConnection>;
   templateVersion?: Maybe<TemplateVersion>;
-  imagePages?: Maybe<ImagePages>;
+  getImages?: Maybe<ImageConnection>;
   tenant?: Maybe<Tenant>;
   user?: Maybe<User>;
 };
@@ -190,17 +201,16 @@ export type QueryTemplateArgs = {
 export type QueryTemplatePagesArgs = {
   name?: Maybe<Scalars['String']>;
   appCodes?: Maybe<Array<Maybe<Scalars['String']>>>;
-  paginationInput?: Maybe<PaginationInput>;
+  pageRequestInput?: Maybe<PaginationInput>;
 };
 
 export type QueryTemplateVersionArgs = {
   id?: Maybe<Scalars['ID']>;
 };
 
-export type QueryImagePagesArgs = {
-  name?: Maybe<Scalars['String']>;
-  appCodes?: Maybe<Array<Maybe<Scalars['String']>>>;
-  paginationInput?: Maybe<PaginationInput>;
+export type QueryGetImagesArgs = {
+  searchFilter?: Maybe<ImageSearchFilterInput>;
+  pageRequestInput?: Maybe<PaginationInput>;
 };
 
 export type QueryTenantArgs = {
@@ -209,13 +219,6 @@ export type QueryTenantArgs = {
 
 export type QueryUserArgs = {
   username?: Maybe<Scalars['ID']>;
-};
-
-export type Sort = {
-  __typename?: 'Sort';
-  isSorted?: Maybe<Scalars['Boolean']>;
-  isUnsorted?: Maybe<Scalars['Boolean']>;
-  isEmpty?: Maybe<Scalars['Boolean']>;
 };
 
 export enum SortDirection {
@@ -235,18 +238,17 @@ export type Template = {
   lastModifiedDate?: Maybe<Scalars['Date']>;
 };
 
-export type TemplatePages = {
-  __typename?: 'TemplatePages';
-  totalElements?: Maybe<Scalars['Int']>;
-  totalPages?: Maybe<Scalars['Int']>;
-  content?: Maybe<Array<Maybe<Template>>>;
-  isEmpty?: Maybe<Scalars['Boolean']>;
-  isFirst?: Maybe<Scalars['Boolean']>;
-  isLast?: Maybe<Scalars['Boolean']>;
-  number?: Maybe<Scalars['Int']>;
-  numberOfElements?: Maybe<Scalars['Int']>;
-  size?: Maybe<Scalars['Int']>;
-  sort?: Maybe<Sort>;
+export type TemplateConnection = {
+  __typename?: 'TemplateConnection';
+  totalCount?: Maybe<Scalars['Int']>;
+  edges?: Maybe<Array<Maybe<TemplateConnectionEdge>>>;
+  pageInfo?: Maybe<PageInfo>;
+};
+
+export type TemplateConnectionEdge = {
+  __typename?: 'TemplateConnectionEdge';
+  cursor?: Maybe<Scalars['String']>;
+  node?: Maybe<Template>;
 };
 
 export enum TemplateStatus {
@@ -354,35 +356,33 @@ export type GetAllTemplatesWithPagesQueryVariables = Exact<{
 
 export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
   templatePages?: Maybe<
-    { __typename?: 'TemplatePages' } & Pick<
-      TemplatePages,
-      | 'isEmpty'
-      | 'isFirst'
-      | 'isLast'
-      | 'number'
-      | 'numberOfElements'
-      | 'totalElements'
-      | 'size'
+    { __typename?: 'TemplateConnection' } & Pick<
+      TemplateConnection,
+      'totalCount'
     > & {
-        content?: Maybe<
+        edges?: Maybe<
           Array<
             Maybe<
-              { __typename?: 'Template' } & Pick<
-                Template,
-                | 'name'
-                | 'alertType'
-                | 'id'
-                | 'uuid'
-                | 'appCode'
-                | 'lastModifiedDate'
-              >
+              { __typename?: 'TemplateConnectionEdge' } & {
+                node?: Maybe<
+                  { __typename?: 'Template' } & Pick<
+                    Template,
+                    | 'name'
+                    | 'alertType'
+                    | 'id'
+                    | 'uuid'
+                    | 'appCode'
+                    | 'lastModifiedDate'
+                  >
+                >;
+              }
             >
           >
         >;
-        sort?: Maybe<
-          { __typename?: 'Sort' } & Pick<
-            Sort,
-            'isSorted' | 'isUnsorted' | 'isEmpty'
+        pageInfo?: Maybe<
+          { __typename?: 'PageInfo' } & Pick<
+            PageInfo,
+            'hasPreviousPage' | 'hasNextPage'
           >
         >;
       }
@@ -477,32 +477,27 @@ export const GetAllTemplatesWithPagesDocument = gql`
     templatePages(
       name: $name
       appCodes: $appCodes
-      paginationInput: {
+      pageRequestInput: {
         pageNumber: $pageNumber
         rowPerPage: $rowPerPage
         sortDirection: DESC
         sortField: "createdDate"
       }
     ) {
-      content {
-        name
-        alertType
-        id
-        uuid
-        appCode
-        lastModifiedDate
+      totalCount
+      edges {
+        node {
+          name
+          alertType
+          id
+          uuid
+          appCode
+          lastModifiedDate
+        }
       }
-      isEmpty
-      isFirst
-      isLast
-      number
-      numberOfElements
-      totalElements
-      size
-      sort {
-        isSorted
-        isUnsorted
-        isEmpty
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
       }
     }
   }

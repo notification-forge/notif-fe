@@ -7,32 +7,27 @@ query GetAllTemplatesWithPages(
   templatePages(
     name: $name
     appCodes: $appCodes
-    paginationInput: {
+    pageRequestInput: {
       pageNumber: $pageNumber
       rowPerPage: $rowPerPage
       sortDirection: DESC
       sortField: "createdDate"
     }
   ) {
-    content {
-      name
-      alertType
-      id
-      uuid
-      appCode
-      lastModifiedDate
+    totalCount
+    edges {
+      node {
+        name
+        alertType
+        id
+        uuid
+        appCode
+        lastModifiedDate
+      }
     }
-    isEmpty
-    isFirst
-    isLast
-    number
-    numberOfElements
-    totalElements
-    size
-    sort {
-      isSorted
-      isUnsorted
-      isEmpty
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
     }
   }
 }

@@ -27,7 +27,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   appMap: AppMap;
 
   // Templates Detrails
-  templateList: (Template | null)[] = [];
+  templateList: (Template | null | undefined)[] = [];
   expandSet = new Set<string>();
   codeEditorVisible = false;
 
@@ -131,12 +131,15 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: ({ data, loading }) => {
+          const templateList =
+            data.templatePages?.edges?.map((edge) => edge?.node) || [];
+
           this.tableLoading = loading;
-          this.templateList = data.templatePages?.content || [];
+          this.templateList = templateList;
           const pagination: Pagination = {
-            totalElements: data.templatePages?.totalElements || 0,
-            pageSize: data.templatePages?.size || 0,
-            pageIndex: data.templatePages?.number || 0,
+            totalElements: data.templatePages?.totalCount || 0,
+            pageSize,
+            pageIndex,
           };
 
           this.pagination = pagination;
