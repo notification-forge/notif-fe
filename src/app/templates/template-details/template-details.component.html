@@ -70,7 +70,9 @@
             </a>
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu nzSelectable>
-                <li nz-menu-item (click)="openCodeEditor()">Edit Draft</li>
+                <li nz-menu-item (click)="openCodeEditor(data?.id || -1)">
+                  Edit Draft
+                </li>
                 <li nz-menu-item nzDanger>Delete</li>
               </ul>
             </nz-dropdown-menu>

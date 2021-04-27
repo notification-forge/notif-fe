@@ -26,7 +26,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   allAppCodes: string[] = [];
   appMap: AppMap;
 
-  // Templates Detrails
+  // Templates Details
   templateList: (Template | null | undefined)[] = [];
   expandSet = new Set<string>();
   codeEditorVisible = false;
@@ -38,6 +38,9 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     alertType: ['EMAIL' as AlertType, Validators.required],
     appCode: ['', Validators.required],
   });
+
+  // Code Editor
+  selectedTemplateVersion: number = -1;
 
   // Loaders
   tableLoading = false;
@@ -151,6 +154,12 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
           this.tableLoading = false;
         },
       });
+  }
+
+  // Handle Children
+  handleOpenCodeEditorRequest(templateVersionId: number) {
+    this.selectedTemplateVersion = templateVersionId;
+    this.openCodeEditor();
   }
 
   onPageChange({ pageIndex, pageSize }: NzTableQueryParams): void {

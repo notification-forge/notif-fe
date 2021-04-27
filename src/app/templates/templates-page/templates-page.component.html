@@ -89,7 +89,7 @@
             *ngIf="expandSet.has(data?.id || '')"
             [templateUUID]="data?.uuid || ''"
             [templateID]="data?.id || ''"
-            (onOpenCodeEditor)="openCodeEditor()"
+            (onOpenCodeEditor)="handleOpenCodeEditorRequest($event)"
           ></app-template-details>
         </tr>
       </ng-container>
@@ -100,6 +100,7 @@
 <app-code-editor
   [codeEditorVisible]="codeEditorVisible"
   (closeCodeEditor)="closeCodeEditor()"
+  [templateVersionId]="selectedTemplateVersion"
 ></app-code-editor>
 
 <ng-template #suffixIconButton>
