@@ -1,0 +1,14 @@
+query GetTemplateVersionDetails {
+  templateVersion(id: 5) {
+    templateId
+    id
+    name
+    templateHash
+    body
+    settings
+    version
+    status
+    createdDate
+    lastModifiedDate
+  }
+}

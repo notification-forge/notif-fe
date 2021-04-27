@@ -413,6 +413,28 @@ export type GetTemplateDetailsQuery = { __typename?: 'Query' } & {
   >;
 };
 
+export type GetTemplateVersionDetailsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetTemplateVersionDetailsQuery = { __typename?: 'Query' } & {
+  templateVersion?: Maybe<
+    { __typename?: 'TemplateVersion' } & Pick<
+      TemplateVersion,
+      | 'templateId'
+      | 'id'
+      | 'name'
+      | 'templateHash'
+      | 'body'
+      | 'settings'
+      | 'version'
+      | 'status'
+      | 'createdDate'
+      | 'lastModifiedDate'
+    >
+  >;
+};
+
 export const CreateTemplateDocument = gql`
   mutation CreateTemplate(
     $name: String!
@@ -542,6 +564,36 @@ export class GetTemplateDetailsGQL extends Apollo.Query<
   GetTemplateDetailsQueryVariables
 > {
   document = GetTemplateDetailsDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
+export const GetTemplateVersionDetailsDocument = gql`
+  query GetTemplateVersionDetails {
+    templateVersion(id: 5) {
+      templateId
+      id
+      name
+      templateHash
+      body
+      settings
+      version
+      status
+      createdDate
+      lastModifiedDate
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetTemplateVersionDetailsGQL extends Apollo.Query<
+  GetTemplateVersionDetailsQuery,
+  GetTemplateVersionDetailsQueryVariables
+> {
+  document = GetTemplateVersionDetailsDocument;
 
   constructor(apollo: Apollo.Apollo) {
     super(apollo);
