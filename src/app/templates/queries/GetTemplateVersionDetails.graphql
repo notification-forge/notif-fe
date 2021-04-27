@@ -1,5 +1,5 @@
-query GetTemplateVersionDetails {
-  templateVersion(id: 5) {
+query GetTemplateVersionDetails($templateVersionId: ID!) {
+  templateVersion(id: $templateVersionId) {
     templateId
     id
     name

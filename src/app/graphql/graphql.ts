@@ -414,7 +414,7 @@ export type GetTemplateDetailsQuery = { __typename?: 'Query' } & {
 };
 
 export type GetTemplateVersionDetailsQueryVariables = Exact<{
-  [key: string]: never;
+  templateVersionId: Scalars['ID'];
 }>;
 
 export type GetTemplateVersionDetailsQuery = { __typename?: 'Query' } & {
@@ -570,8 +570,8 @@ export class GetTemplateDetailsGQL extends Apollo.Query<
   }
 }
 export const GetTemplateVersionDetailsDocument = gql`
-  query GetTemplateVersionDetails {
-    templateVersion(id: 5) {
+  query GetTemplateVersionDetails($templateVersionId: ID!) {
+    templateVersion(id: $templateVersionId) {
       templateId
       id
       name
