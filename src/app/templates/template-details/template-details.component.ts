@@ -1,5 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import {
   CreateTemplateVersionGQL,
   GetTemplateDetailsGQL,
@@ -11,12 +19,14 @@ import {
   templateUrl: './template-details.component.html',
   styleUrls: ['./template-details.component.scss'],
 })
-export class TemplateDetailsComponent implements OnInit {
+export class TemplateDetailsComponent implements OnInit, OnDestroy {
   @Input() templateUUID: string;
   @Input() templateID: string;
   @Output() onOpenCodeEditor: EventEmitter<null> = new EventEmitter();
 
   templateVersionList: (TemplateVersion | null)[];
+  onDestroy$: Subject<null> = new Subject<null>();
+  detailsIsLoading = false;
 
   constructor(
     private getTemplateDetails: GetTemplateDetailsGQL,
@@ -24,13 +34,24 @@ export class TemplateDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getTemplateDetails.fetch({ id: this.templateID }).subscribe({
-      next: (details) => {
-        this.templateVersionList =
-          details.data.template?.templateVersions || [];
-        console.log(details.data.template?.templateVersions);
-      },
-    });
+    this.fetchTemplateDetails();
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+  }
+
+  fetchTemplateDetails() {
+    this.detailsIsLoading = true;
+    this.getTemplateDetails
+      .fetch({ id: this.templateID })
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe({
+        next: ({ data, loading }) => {
+          this.detailsIsLoading = loading;
+          this.templateVersionList = data.template?.templateVersions || [];
+        },
+      });
   }
 
   createVersion() {

@@ -1,4 +1,10 @@
-<article class="template-details-wrapper">
+<ng-template #skeletonLoader>
+  <nz-skeleton *ngIf="detailsIsLoading"></nz-skeleton>
+</ng-template>
+<article
+  *ngIf="!detailsIsLoading; else skeletonLoader"
+  class="template-details-wrapper"
+>
   <p>
     Template ID: {{ templateUUID }}
     <i

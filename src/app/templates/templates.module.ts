@@ -25,6 +25,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { SettingsEditorComponent } from './settings-editor/settings-editor.component';
 import { EditorService } from './editor.service';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 
 const routes: Routes = [
   {
@@ -67,6 +68,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NzMessageModule,
     NzUploadModule,
+    NzSkeletonModule,
     MonacoEditorModule.forRoot(),
   ],
   providers: [EditorService],
