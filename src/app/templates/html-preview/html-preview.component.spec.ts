@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TrustCssPipe } from '../trust-css.pipe';
 
 import { HtmlPreviewComponent } from './html-preview.component';
 
@@ -8,7 +9,7 @@ describe('HtmlPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HtmlPreviewComponent],
+      declarations: [HtmlPreviewComponent, TrustCssPipe],
     }).compileComponents();
   });
 

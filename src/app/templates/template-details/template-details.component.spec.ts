@@ -1,4 +1,7 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { GraphQLModule } from 'src/app/graphql/graphql.module';
 
 import { TemplateDetailsComponent } from './template-details.component';
 
@@ -8,6 +11,7 @@ describe('TemplateDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [NzSkeletonModule, GraphQLModule, HttpClientModule],
       declarations: [TemplateDetailsComponent],
     }).compileComponents();
   });
