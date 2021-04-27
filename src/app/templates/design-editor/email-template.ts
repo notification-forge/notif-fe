@@ -5,11 +5,6 @@ export const template = `<div style="margin:0;padding:0;word-spacing:normal;back
         <td align="center" style="padding:0;">
           <table role="presentation" style="width:94%;max-width:600px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
             <tr>
-              <td style="padding:40px 30px 30px 30px;text-align:center;font-size:24px;font-weight:bold;">
-                <a style="text-decoration:none;"><img src="https://assets.codepen.io/210284/logo.png" width="165" alt="Logo" style="width:80%;max-width:165px;height:auto;border:none;text-decoration:none;color:#ffffff;"></a>
-              </td>
-            </tr>
-            <tr>
               <td style="padding:30px;background-color:#ffffff;">
                 <h1 style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:-0.02em;">Welcome to NTF Email Template</h1>
                 <p style="margin:0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus adipiscing felis, sit amet blandit ipsum volutpat sed. Morbi porttitor, <a  style="color:#e50d70;text-decoration:underline;">eget accumsan dictum</a>, nisi libero ultricies ipsum, in posuere mauris neque at erat.</p>
