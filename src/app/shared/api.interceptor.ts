@@ -4,13 +4,22 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { TokenService } from './token.service';
+import { AuthService } from './auth.service';
+
+import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-  constructor(private tokenService: TokenService) {}
+  constructor(
+    private tokenService: TokenService,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -23,6 +32,16 @@ export class ApiInterceptor implements HttpInterceptor {
       });
     }
 
-    return next.handle(request);
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (
+          (error.status === 401 || error.status === 403) &&
+          this.router.url !== '/login'
+        ) {
+          this.authService.logout();
+        }
+        return throwError(error);
+      })
+    );
   }
 }
