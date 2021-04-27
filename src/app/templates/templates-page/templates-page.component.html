@@ -18,21 +18,22 @@
     <nz-select
       name="app"
       ngDefaultControl
-      [(ngModel)]="tagValue"
+      [ngModel]="selectedAppCodes"
+      (ngModelChange)="onAppFilterSelect($event)"
       nzMode="tags"
       nzPlaceHolder="Please select app"
     >
       <nz-option
-        *ngFor="let option of listOfOption"
-        [nzLabel]="option.label"
-        [nzValue]="option.value"
+        *ngFor="let app of appList"
+        [nzLabel]="app.appName"
+        [nzValue]="app.appCode"
       ></nz-option>
     </nz-select>
   </div>
 
   <nz-table
     #nzTable
-    [nzData]="listOfData"
+    [nzData]="templateList"
     [nzLoading]="tableLoading"
     [nzFrontPagination]="false"
     [nzTotal]="pagination.totalElements"
@@ -59,19 +60,36 @@
             (nzExpandChange)="onExpandChange(data?.id || '', $event)"
           ></td>
           <td>{{ data?.name }}</td>
-          <td>{{ data?.alertType }}</td>
-          <td>{{ data?.appCode }}</td>
+          <td>
+            <div
+              [ngClass]="[
+                data?.alertType === 'EMAIL' ? 'email-chip' : 'teams-chip',
+                'chip'
+              ]"
+            >
+              {{ data?.alertType }}
+            </div>
+          </td>
+          <td>{{ appMap[data?.appCode || ''].appName || 'N/A' }}</td>
           <td>{{ data?.lastModifiedDate }}</td>
           <td>
             <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
               <i nz-icon nzType="more"></i>
             </a>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu nzSelectable>
+                <li nz-menu-item>Edit Template Name</li>
+                <li nz-menu-item nzDanger>Delete</li>
+              </ul>
+            </nz-dropdown-menu>
           </td>
         </tr>
         <tr [nzExpand]="expandSet.has(data?.id || '')">
           <app-template-details
-            [templateID]="data?.uuid || ''"
-            (onCreateVersion)="openCodeEditor()"
+            *ngIf="expandSet.has(data?.id || '')"
+            [templateUUID]="data?.uuid || ''"
+            [templateID]="data?.id || ''"
+            (onOpenCodeEditor)="openCodeEditor()"
           ></app-template-details>
         </tr>
       </ng-container>
@@ -89,13 +107,6 @@
     <i nz-icon nzType="search"></i>
   </button>
 </ng-template>
-
-<nz-dropdown-menu #menu="nzDropdownMenu">
-  <ul nz-menu nzSelectable>
-    <li nz-menu-item>Edit Template Name</li>
-    <li nz-menu-item nzDanger>Delete</li>
-  </ul>
-</nz-dropdown-menu>
 
 <nz-modal
   [(nzVisible)]="showCreateTemplateForm"
@@ -144,9 +155,9 @@
             nzPlaceHolder="Please select app"
           >
             <nz-option
-              *ngFor="let option of listOfOption"
-              [nzLabel]="option.label"
-              [nzValue]="option.value"
+              *ngFor="let app of appList"
+              [nzLabel]="app.appName"
+              [nzValue]="app.appCode"
             ></nz-option>
           </nz-select>
         </nz-form-control>

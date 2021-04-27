@@ -1,3 +1,17 @@
+export interface User {
+  username: string;
+  name: string;
+  apps: App[];
+  token: string;
+}
+
+export interface App {
+  appCode: string;
+  apiToken: string;
+  appName: string;
+  appStatus: string;
+}
+
 export interface LoginBody {
   username: string;
   password: string;
@@ -19,5 +33,5 @@ export interface WhoAmIResponse {
   username: string;
   name: string;
   dateIssued: string;
-  apps: string[];
+  apps: App[];
 }

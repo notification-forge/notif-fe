@@ -1,10 +1,12 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ApolloTestingModule } from 'apollo-angular/testing';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
-
 import { TemplatesPageComponent } from './templates-page.component';
 
 describe('TemplatesPageComponent', () => {
@@ -21,6 +23,9 @@ describe('TemplatesPageComponent', () => {
         NzDropDownModule,
         NzRadioModule,
         NzMessageModule,
+        RouterTestingModule,
+        HttpClientTestingModule,
+        ApolloTestingModule,
       ],
       declarations: [TemplatesPageComponent],
     }).compileComponents();

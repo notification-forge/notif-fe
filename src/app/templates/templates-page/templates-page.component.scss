@@ -32,3 +32,19 @@
 .code-editor-header {
   background-color: red;
 }
+
+.chip {
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.email-chip {
+  background-color: rgb(255, 219, 219);
+  font-weight: bold;
+}
+
+.teams-chip {
+  background-color: rgb(210, 210, 255);
+  font-weight: bold;
+}

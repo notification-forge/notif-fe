@@ -15,11 +15,7 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-  constructor(
-    private tokenService: TokenService,
-    private router: Router,
-    private authService: AuthService
-  ) {}
+  constructor(private tokenService: TokenService, private router: Router) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -38,7 +34,8 @@ export class ApiInterceptor implements HttpInterceptor {
           (error.status === 401 || error.status === 403) &&
           this.router.url !== '/login'
         ) {
-          this.authService.logout();
+          this.tokenService.token = null;
+          this.router.navigate(['login']);
         }
         return throwError(error);
       })

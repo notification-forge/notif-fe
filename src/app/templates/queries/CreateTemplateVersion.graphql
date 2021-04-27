@@ -1,0 +1,7 @@
+mutation CreateTemplateVersion($templateId: ID!) {
+  createTemplateVersion(input: { templateId: $templateId }) {
+    id
+    templateId
+    status
+  }
+}

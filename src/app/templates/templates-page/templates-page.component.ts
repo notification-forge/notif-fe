@@ -11,6 +11,8 @@ import {
 } from 'src/app/graphql/graphql';
 import { LayoutService } from 'src/app/shared/layout.service';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { AuthService } from 'src/app/shared/auth.service';
+import { App } from 'src/app/shared/models/api.models';
 
 @Component({
   selector: 'app-templates-page',
@@ -18,15 +20,14 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
   styleUrls: ['./templates-page.component.scss'],
 })
 export class TemplatesPageComponent implements OnInit, OnDestroy {
-  // UI related
-  tagValue = [];
-  listOfOption: DropdownOption[] = [
-    {
-      label: 'BCAT',
-      value: 'BCAT',
-    },
-  ];
-  listOfData: (Template | null)[] = [];
+  // Search Header
+  selectedAppCodes: string[] = [];
+  appList: App[] = [];
+  allAppCodes: string[] = [];
+  appMap: AppMap;
+
+  // Templates Detrails
+  templateList: (Template | null | undefined)[] = [];
   expandSet = new Set<string>();
   codeEditorVisible = false;
 
@@ -60,13 +61,26 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private fb: FormBuilder,
     private message: NzMessageService,
+    private auth: AuthService,
+
+    // Queries
     private getAllTemplatesWithPagesQuery: GetAllTemplatesWithPagesGQL,
     private createTemplateQuery: CreateTemplateGQL
   ) {}
 
   ngOnInit(): void {
-    const { pageSize, pageIndex } = this.pagination;
     this.layoutService.setHeaderTitle('Templates');
+
+    this.auth.user$.subscribe((user) => {
+      this.appList = user?.apps || [];
+      this.allAppCodes = user?.apps.map((app) => app.appCode) || [];
+      this.appMap =
+        user?.apps.reduce((reducer, app) => {
+          reducer[app.appCode] = app;
+          return reducer;
+        }, {} as AppMap) || {};
+    });
+
     this.queryChanged
       .pipe(
         debounceTime(500),
@@ -75,8 +89,20 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
       )
       .subscribe((query: string) => {
         this.query = query;
-        this.getAllTemplates(this.pagination.pageSize, 0, false, query);
+        let queryAppCodes = this.selectedAppCodes;
+        if (this.selectedAppCodes.length === 0)
+          queryAppCodes = this.allAppCodes;
+
+        this.getAllTemplates(
+          this.pagination.pageSize,
+          0,
+          false,
+          query,
+          queryAppCodes
+        );
       });
+
+    const { pageSize, pageIndex } = this.pagination;
     this.getAllTemplates(pageSize, pageIndex);
   }
 
@@ -88,14 +114,15 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     pageSize: number,
     pageIndex: number,
     shouldUseNetwork: boolean = false,
-    query: string = ''
+    query: string = '',
+    appCodes: string[] = this.allAppCodes
   ) {
     this.tableLoading = true;
     this.getAllTemplatesWithPagesQuery
       .fetch(
         {
           name: query,
-          appCodes: ['BCAT'],
+          appCodes: appCodes,
           pageNumber: pageIndex,
           rowPerPage: pageSize,
         },
@@ -104,12 +131,15 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: ({ data, loading }) => {
+          const templateList =
+            data.templatePages?.edges?.map((edge) => edge?.node) || [];
+
           this.tableLoading = loading;
-          this.listOfData = data.templatePages?.content || [];
+          this.templateList = templateList;
           const pagination: Pagination = {
-            totalElements: data.templatePages?.totalElements || 0,
-            pageSize: data.templatePages?.size || 0,
-            pageIndex: data.templatePages?.number || 0,
+            totalElements: data.templatePages?.totalCount || 0,
+            pageSize,
+            pageIndex,
           };
 
           this.pagination = pagination;
@@ -165,6 +195,20 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     this.queryChanged.next(query);
   }
 
+  onAppFilterSelect(appCodes: string[]) {
+    this.selectedAppCodes = appCodes;
+    let queryAppCodes = appCodes;
+    if (appCodes.length === 0) queryAppCodes = this.allAppCodes;
+
+    this.getAllTemplates(
+      this.pagination.pageSize,
+      0,
+      false,
+      this.query,
+      queryAppCodes
+    );
+  }
+
   onFormSubmit() {
     const { templateName, alertType, appCode } = this.createTemplateForm.value;
     this.formLoading = true;
@@ -193,13 +237,12 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   }
 }
 
-interface DropdownOption {
-  label: string;
-  value: string;
-}
-
 interface Pagination {
   pageIndex: number;
   pageSize: number;
   totalElements: number;
+}
+
+interface AppMap {
+  [key: string]: App;
 }

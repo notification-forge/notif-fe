@@ -1,232 +1,551 @@
+# Setting template Type to choose between email or teams messaging
 enum AlertType {
+  #
   TEAMS
+
+  #
   EMAIL
 }
 
-input ApprovalAppInput {
-  appCode: String
-  status: AppStatus
-  rejectedReason: String
-}
-
+# App's onboarding status
 enum AppStatus {
+  #
   ACTIVE
+
+  #
   INACTIVE
+
+  #
   PENDING_OWNER_APPROVAL
+
+  #
   REJECTED
 }
 
-input CloneTemplateVersionInput {
-  templateId: ID
-  id: Int
-  name: String
-  settings: String
-  body: String
-}
-
-input CreateAppInput {
+#
+input ApprovalAppInput {
+  #
   appCode: String
-  name: String
-  justification: String
-  description: String
-  primaryOwnerName: String
-  primaryOwnerId: String
-  secondaryOwnerName: String
-  secondaryOwnerId: String
-}
 
-input CreateTemplateInput {
-  name: String
-  alertType: AlertType
-  appCode: String
-}
-
-input CreateTemplateVersionInput {
-  templateId: ID
-}
-
-scalar Date
-
-type Image {
-  id: ID
-  appCode: String
-  contentType: String
-  tenant: String
-  fileName: String
-  fileSignature: String
-  status: ImageStatus
-  imageData: String
-}
-
-type ImagePages {
-  totalElements: Int
-  totalPages: Int
-  content: [Image]
-  isEmpty: Boolean
-  isFirst: Boolean
-  isLast: Boolean
-  number: Int
-  numberOfElements: Int
-  size: Int
-  sort: Sort
-}
-
-enum ImageStatus {
-  ACTIVE
-  DELETED
-}
-
-type Mutation {
-  createTemplate(input: CreateTemplateInput!): Template!
-  updateTemplate(input: UpdateTemplateInput!): Template!
-  createTemplateVersion(input: CreateTemplateVersionInput!): TemplateVersion!
-  cloneTemplateVersion(input: CloneTemplateVersionInput!): TemplateVersion!
-  updateTemplateVersion(input: UpdateTemplateVersionInput!): TemplateVersion!
-  uploadImage(appCode: String, file: Upload!): Image!
-  onboardApp(input: CreateAppInput!): Tenant!
-  updateApp(input: UpdateAppInput!): Tenant!
-  approveOrRejectAppInput(input: ApprovalAppInput!): Tenant!
-  onboardUser(input: OnboardingUserInput!): User!
-}
-
-type Onboarding {
-  id: ID
-  username: String
-  appCode: String
-}
-
-input OnboardingUserInput {
-  appCode: String
-  username: String
-  name: String
-}
-
-input PaginationInput {
-  pageNumber: Int
-  rowPerPage: Int
-  sortDirection: SortDirection
-  sortField: String
-}
-
-type Query {
-  template(id: ID): Template
-  templatePages(
-    name: String
-    appCodes: [String]
-    paginationInput: PaginationInput
-  ): TemplatePages
-  templateVersion(id: ID): TemplateVersion
-  imagePages(
-    name: String
-    appCodes: [String]
-    paginationInput: PaginationInput
-  ): ImagePages
-  tenant(id: ID): Tenant
-  user(username: ID): User
-}
-
-type Sort {
-  isSorted: Boolean
-  isUnsorted: Boolean
-  isEmpty: Boolean
-}
-
-enum SortDirection {
-  ASC
-  DESC
-}
-
-type Template {
-  id: ID
-  name: String
-  uuid: String
-  alertType: String
-  appCode: String
-  templateVersions: [TemplateVersion]
-  createdDate: Date
-  lastModifiedDate: Date
-}
-
-type TemplatePages {
-  totalElements: Int
-  totalPages: Int
-  content: [Template]
-  isEmpty: Boolean
-  isFirst: Boolean
-  isLast: Boolean
-  number: Int
-  numberOfElements: Int
-  size: Int
-  sort: Sort
-}
-
-enum TemplateStatus {
-  DRAFT
-  PUBLISHED
-}
-
-type TemplateVersion {
-  templateId: ID
-  id: Int
-  name: String
-  templateHash: String
-  body: String
-  settings: String
-  version: String
-  status: TemplateStatus
-  createdDate: Date
-  lastModifiedDate: Date
-}
-
-type Tenant {
-  appCode: ID
-  displayName: String
-  apiToken: String
+  #
   status: AppStatus
-  justification: String
-  description: String
-  primaryOwnerName: String
-  primaryOwnerId: String
-  secondaryOwnerName: String
-  secondaryOwnerId: String
-  encryptionKey: String
-  appSettings: String
-  onboardings: [Onboarding]
-  approvedBy: String
-  approvedDate: Date
-  rejectedBy: String
-  rejectedDate: Date
+
+  #
   rejectedReason: String
 }
 
-input UpdateAppInput {
-  appCode: String
+#
+input CloneTemplateVersionInput {
+  #
+  templateId: ID
+
+  #
+  id: Int
+
+  # Name of the template version
   name: String
+
+  # Settings to be set within the template.
+  # Note: EMAILS and TEAMS_MESSAGE have different settings
+  # refer to template version entity for more info
+  settings: String
+
+  # Template body
+  # EMAILS -> HTML format
+  # TEAMS MESSAGE -> JSON format
+  body: String
+}
+
+#
+input CreateAppInput {
+  #
+  appCode: String
+
+  #
+  name: String
+
+  #
   justification: String
+
+  #
   description: String
+
+  #
   primaryOwnerName: String
+
+  #
   primaryOwnerId: String
+
+  #
   secondaryOwnerName: String
+
+  #
   secondaryOwnerId: String
 }
 
-input UpdateTemplateInput {
+#
+input CreateTemplateInput {
+  # name of the template has to be unique to each application
+  name: String
+
+  # choosing between email or teams messaging
+  alertType: AlertType
+
+  #
+  appCode: String
+}
+
+#
+input CreateTemplateVersionInput {
+  #
+  templateId: ID
+}
+
+#
+scalar Date
+
+#
+type Image {
+  #
   id: ID
+
+  # Connecting template to the application that uses this template
+  appCode: String
+
+  # Content type of the image file
+  contentType: String
+
+  # Name of the image
+  fileName: String
+
+  # An image SHA256
+  fileSignature: String
+
+  # Status of the image, whether if it is currently active or been deleted
+  status: ImageStatus
+
+  # ByteArray of the image
+  imageData: String
+}
+
+#
+type ImageConnection {
+  #
+  totalCount: Int
+
+  #
+  edges: [ImageConnectionEdge]
+
+  #
+  pageInfo: PageInfo
+}
+
+#
+type ImageConnectionEdge {
+  #
+  cursor: String
+
+  #
+  node: Image
+}
+
+#
+input ImageSearchFilterInput {
+  #
+  fileNamePortion: String
+
+  #
+  appCodes: [String]
+}
+
+# Status of the image, whether if it is currently active or been deleted
+enum ImageStatus {
+  #
+  ACTIVE
+
+  #
+  DELETED
+}
+
+#
+type Mutation {
+  # Mutation on template creation
+  createTemplate(input: CreateTemplateInput!): Template!
+
+  # Mutation on template update
+  updateTemplate(input: UpdateTemplateInput!): Template!
+
+  # Mutation on template version creation
+  # Template Version creation will always be DRAFT status
+  # Overwrites any current draft version
+  # No content within template version
+  createTemplateVersion(input: CreateTemplateVersionInput!): TemplateVersion!
+
+  # Mutation on cloning any current template version
+  # Template Version cloning will always be DRAFT status
+  # Overwrites any current draft version
+  # Copies content of cloned template version
+  cloneTemplateVersion(input: CloneTemplateVersionInput!): TemplateVersion!
+
+  # Mutation on DRAFT template version moditification
+  # Based on template status given, it will be a overwrite of current DRAFT / PUBLISHING
+  updateTemplateVersion(input: UpdateTemplateVersionInput!): TemplateVersion!
+
+  # Mutation for uploading an image
+  uploadImage(appCode: String, file: Upload!): Image!
+
+  # Mutation on App onboarding
+  onboardApp(input: CreateAppInput!): Tenant!
+
+  # Mutation on App updates
+  updateApp(input: UpdateAppInput!): Tenant!
+
+  # Mutation on App approval
+  # Approvers can approve or reject app onboarding application
+  approveOrRejectAppInput(input: ApprovalAppInput!): Tenant!
+
+  # Mutation on User onboarding
+  onboardUser(input: OnboardingUserInput!): User!
+}
+
+#
+type Onboarding {
+  #
+  id: ID
+
+  # 1BankID of the User
+  username: String
+
+  # App code of the application
+  # Unique ID of application
+  appCode: String
+}
+
+#
+input OnboardingUserInput {
+  #
+  appCode: String
+
+  #
+  username: String
+
+  #
   name: String
 }
 
-input UpdateTemplateVersionInput {
+#
+type PageInfo {
+  #
+  hasPreviousPage: Boolean!
+
+  #
+  hasNextPage: Boolean!
+
+  #
+  startCursor: String
+
+  #
+  endCursor: String
+}
+
+#
+input PaginationInput {
+  #
+  pageNumber: Int
+
+  #
+  rowPerPage: Int
+
+  #
+  sortDirection: SortDirection
+
+  #
+  sortField: String
+}
+
+#
+type Query {
+  # Query on an individual template
+  # id -> Template's id
+  template(id: ID): Template
+
+  # Query on templates with pagination
+  # name -> search for template name
+  # appCodes -> filter by the List of app codes user wish to view
+  # paginationInput -> pagination inputs such as current page, page limit and sort
+  templatePages(
+    name: String
+    appCodes: [String]
+    pageRequestInput: PaginationInput
+  ): TemplateConnection
+
+  # Query on an individual template version
+  # id -> Template Version's id
+  templateVersion(id: ID): TemplateVersion
+
+  # Query on templates with pagination
+  # searchFilter -> The search criteria
+  # paginationInput -> pagination inputs such as current page, page limit and sort
+  getImages(
+    searchFilter: ImageSearchFilterInput
+    pageRequestInput: PaginationInput
+  ): ImageConnection
+
+  # Query on an individual app
+  # id -> App's app code
+  tenant(id: ID): Tenant
+
+  # Query on an individual user
+  # id -> User's 1BankID
+  user(username: ID): User
+}
+
+#
+enum SortDirection {
+  #
+  ASC
+
+  #
+  DESC
+}
+
+#
+type Template {
+  #
   id: ID
+
+  # Name of the template has to be unique to each application
   name: String
-  settings: String
+
+  # UUID to be displayed on the frontend as a unqiue identifier to users
+  uuid: String
+
+  # Setting template Type to choose between email or teams messaging
+  alertType: String
+
+  # Connecting template to the application that uses this template
+  appCode: String
+
+  # List of template versions for this template.
+  # Unique key of App
+  # One Template to Many Template Versions relationship
+  templateVersions: [TemplateVersion]
+
+  #
+  createdDate: Date
+
+  #
+  lastModifiedDate: Date
+}
+
+#
+type TemplateConnection {
+  #
+  totalCount: Int
+
+  #
+  edges: [TemplateConnectionEdge]
+
+  #
+  pageInfo: PageInfo
+}
+
+#
+type TemplateConnectionEdge {
+  #
+  cursor: String
+
+  #
+  node: Template
+}
+
+# Status of the template version
+# There could only be one DRAFT at any given time
+# Only PUBLISHED templates can be triggered to send notifications
+enum TemplateStatus {
+  #
+  DRAFT
+
+  #
+  PUBLISHED
+}
+
+#
+type TemplateVersion {
+  # Connecting template version to the template that owns this version
+  # Unique key of template
+  # Many Template Version to One Template relationship
+  templateId: ID
+
+  #
+  id: Int
+
+  # Name of the template version
+  name: String
+
+  # Hash of the template version
+  # Ensuring that each template version is different
+  # Hashing -> TemplateId, body, settings, status
+  templateHash: String
+
+  # Template body
+  # EMAILS -> HTML format
+  # TEAMS MESSAGE -> JSON format
   body: String
+
+  # Settings to be set within the template.
+  # Note: EMAILS and TEAMS_MESSAGE have different settings
+  # refer to template version entity for more info
+  settings: String
+
+  # Version number of the template version (auto increment)
+  version: String
+
+  # Status of the template version
+  # There could only be one DRAFT at any given time
+  # Only PUBLISHED templates can be triggered to send notifications
+  status: TemplateStatus
+
+  #
+  createdDate: Date
+
+  #
+  lastModifiedDate: Date
+}
+
+#
+type Tenant {
+  # App code of application
+  # Unique ID of application
+  appCode: ID
+
+  # Name of the application
+  displayName: String
+
+  # API Token generated to each onboarded application
+  apiToken: String
+
+  # App's onboarding status
+  status: AppStatus
+
+  # Justification for why App should be onboarded
+  justification: String
+
+  # Description of App
+  description: String
+
+  # primaryOwnerName of App
+  primaryOwnerName: String
+
+  # primaryOwnerId of App
+  primaryOwnerId: String
+
+  # secondaryOwnerName of App
+  secondaryOwnerName: String
+
+  # secondaryOwnerId of App
+  secondaryOwnerId: String
+
+  # encryptionKey of App
+  encryptionKey: String
+
+  # appSettings of App
+  appSettings: String
+
+  # List of onboardings for this App
+  # Unique key of appCode
+  # One App to Many Onboarding relationship
+  onboardings: [Onboarding]
+
+  # Username of approved
+  approvedBy: String
+
+  # Date of the approved
+  approvedDate: Date
+
+  # Username of rejected
+  rejectedBy: String
+
+  # Date of the rejection
+  rejectedDate: Date
+
+  # Rejected reason
+  rejectedReason: String
+}
+
+#
+input UpdateAppInput {
+  #
+  appCode: String
+
+  #
+  name: String
+
+  #
+  justification: String
+
+  #
+  description: String
+
+  #
+  primaryOwnerName: String
+
+  #
+  primaryOwnerId: String
+
+  #
+  secondaryOwnerName: String
+
+  #
+  secondaryOwnerId: String
+}
+
+#
+input UpdateTemplateInput {
+  #
+  id: ID
+
+  # name of the template has to be unique to each application
+  name: String
+}
+
+#
+input UpdateTemplateVersionInput {
+  #
+  id: ID
+
+  # Name of the template version
+  name: String
+
+  # Settings to be set within the template.
+  # Note: EMAILS and TEAMS_MESSAGE have different settings
+  # refer to template version entity for more info
+  settings: String
+
+  # Template body
+  # EMAILS -> HTML format
+  # TEAMS MESSAGE -> JSON format
+  body: String
+
+  # Status of the template version
+  # There could only be one DRAFT at any given time
+  # Only PUBLISHED templates can be triggered to send notifications
   status: TemplateStatus
 }
 
+#
 scalar Upload
 
+#
 type User {
+  # 1BankID of the User
   username: ID
+
+  # Name of User
   name: String
+
+  # List of onboardings for this User
+  # Unique key of username
+  # One User to Many Onboarding relationship
   onboardings: [Onboarding]
 }
