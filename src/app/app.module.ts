@@ -19,6 +19,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { AuthGuard } from './shared/auth.guard';
 import { ApiInterceptor } from './shared/api.interceptor';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 registerLocaleData(en);
 
@@ -44,6 +45,7 @@ registerLocaleData(en);
     { provide: NZ_I18N, useValue: en_US },
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
+    NzMessageService,
   ],
   bootstrap: [AppComponent],
 })
