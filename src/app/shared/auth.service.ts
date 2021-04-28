@@ -85,7 +85,7 @@ export class AuthService {
           this.user$.next(user);
         },
         error: () => {
-          this.message.error('Invalid username and password');
+          this.message.error('Invalid username or password');
         },
       });
   }
