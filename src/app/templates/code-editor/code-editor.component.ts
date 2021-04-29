@@ -39,9 +39,7 @@ export class CodeEditorComponent implements OnInit, OnChanges {
     private editorService: EditorService
   ) {}
 
-  ngOnInit(): void {
-    console.log('init');
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!!changes.codeEditorVisible && changes.codeEditorVisible.currentValue) {
