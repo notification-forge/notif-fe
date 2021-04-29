@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 import { TemplateStatus } from '../graphql/graphql';
 
 @Injectable({
@@ -8,6 +9,7 @@ import { TemplateStatus } from '../graphql/graphql';
 export class EditorService {
   private _designCodeBody: string | null;
   private _templateVersionId: number;
+  saveLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   settingsForm: FormGroup = this.fb.group({
     from: ['', Validators.required],
     to: ['', Validators.required],
@@ -36,6 +38,8 @@ export class EditorService {
       'saving to backend with template version id',
       this._templateVersionId
     );
+    this.saveLoading$.next(true);
+    setTimeout(() => this.saveLoading$.next(false), 1000);
   }
 
   get designCodeBody() {
