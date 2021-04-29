@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -31,6 +30,7 @@ export class CodeEditorComponent implements OnInit, OnChanges {
   tabValue = TabValues.DESIGN;
   readonly TAB_VALUES = TabValues;
   settingsVisible: boolean = false;
+  initialDesignCode: string | null;
 
   private shouldStopSubscribing: Subject<null> = new Subject();
 
@@ -62,8 +62,9 @@ export class CodeEditorComponent implements OnInit, OnChanges {
         .pipe(takeUntil(this.shouldStopSubscribing))
         .subscribe({
           next: ({ data, loading }) => {
+            this.initialDesignCode = data.templateVersion?.body || null;
             this.editorService.initializeEmail(
-              data.templateVersion?.body || '',
+              data.templateVersion?.body || null,
               data.templateVersion?.name || '',
               data.templateVersion?.status || TemplateStatus.Draft
             );
@@ -77,7 +78,6 @@ export class CodeEditorComponent implements OnInit, OnChanges {
   }
 
   openSettings() {
-    console.log('opening settings');
     this.settingsVisible = true;
   }
 

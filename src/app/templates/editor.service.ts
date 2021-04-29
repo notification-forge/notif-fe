@@ -12,19 +12,27 @@ export class EditorService {
     cc: [''],
     bcc: [''],
   });
-  designCodeBody: string;
+  private _designCodeBody: string | null;
   templateVersionName: string;
   status: TemplateStatus;
 
   constructor(private fb: FormBuilder) {}
 
   initializeEmail(
-    designCodeBody: string,
+    designCodeBody: string | null,
     templateVersionName: string,
     status: TemplateStatus
   ) {
-    this.designCodeBody = designCodeBody;
+    this._designCodeBody = designCodeBody;
     this.templateVersionName = templateVersionName;
     this.status = status;
+  }
+
+  get designCodeBody() {
+    return this._designCodeBody;
+  }
+
+  set designCodeBody(newBody: string | null) {
+    this._designCodeBody = newBody;
   }
 }
