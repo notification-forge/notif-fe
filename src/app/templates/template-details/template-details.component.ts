@@ -21,7 +21,7 @@ import {
 })
 export class TemplateDetailsComponent implements OnInit, OnDestroy {
   @Input() templateUUID: string;
-  @Input() templateID: string;
+  @Input() templateID: number;
   @Output() onOpenCodeEditor: EventEmitter<number> = new EventEmitter();
 
   templateVersionList: (TemplateVersion | null)[];
@@ -44,7 +44,7 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
   fetchTemplateDetails() {
     this.detailsIsLoading = true;
     this.getTemplateDetails
-      .fetch({ id: this.templateID })
+      .fetch({ id: `${this.templateID}` })
       .pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: ({ data, loading }) => {
@@ -56,12 +56,12 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
 
   createVersion() {
     this.createTemplateVersion
-      .mutate({ templateId: this.templateID })
+      .mutate({ templateId: `${this.templateID}` })
       .pipe(
         switchMap((res) => {
           this.openCodeEditor(res.data?.createTemplateVersion.id || -1);
           return this.getTemplateDetails.fetch(
-            { id: this.templateID },
+            { id: `${this.templateID}` },
             { fetchPolicy: 'network-only' }
           );
         })

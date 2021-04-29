@@ -135,12 +135,12 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
       .subscribe({
         next: ({ data, loading }) => {
           const templateList =
-            data.templatePages?.edges?.map((edge) => edge?.node) || [];
+            data.templates?.edges?.map((edge) => edge?.node) || [];
 
           this.tableLoading = loading;
           this.templateList = templateList;
           const pagination: Pagination = {
-            totalElements: data.templatePages?.totalCount || 0,
+            totalElements: data.templates?.totalCount || 0,
             pageSize,
             pageIndex,
           };
