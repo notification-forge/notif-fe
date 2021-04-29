@@ -31,6 +31,7 @@ export class CodeEditorComponent implements OnInit, OnChanges {
   readonly TAB_VALUES = TabValues;
   settingsVisible: boolean = false;
   initialDesignCode: string | null;
+  detailsLoading: boolean = false;
 
   private shouldStopSubscribing: Subject<null> = new Subject();
 
@@ -52,7 +53,8 @@ export class CodeEditorComponent implements OnInit, OnChanges {
   }
 
   getTemplateVersionDetailsById(templateVersionId: number) {
-    if (this.templateVersionId !== -1) {
+    if (templateVersionId !== -1) {
+      this.detailsLoading = true;
       this.getTemplateVersionDetails
         .fetch({
           templateVersionId: String(templateVersionId),
@@ -67,6 +69,7 @@ export class CodeEditorComponent implements OnInit, OnChanges {
               data.templateVersion?.name || '',
               data.templateVersion?.status || TemplateStatus.Draft
             );
+            this.detailsLoading = loading;
           },
         });
     }
