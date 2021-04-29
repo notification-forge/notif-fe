@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { map, switchMap } from 'rxjs/operators';
 import {
   LoginBody,
@@ -20,7 +21,8 @@ export class AuthService {
   constructor(
     private tokenService: TokenService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private message: NzMessageService
   ) {
     this.restoreSession();
   }
@@ -78,8 +80,13 @@ export class AuthService {
           return user;
         })
       )
-      .subscribe((user: User) => {
-        this.user$.next(user);
+      .subscribe({
+        next: (user: User) => {
+          this.user$.next(user);
+        },
+        error: () => {
+          this.message.error('Invalid username or password');
+        },
       });
   }
 

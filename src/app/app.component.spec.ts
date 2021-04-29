@@ -1,13 +1,16 @@
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { AppComponent } from './app.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientModule],
+      imports: [RouterTestingModule, HttpClientModule, OverlayModule],
       declarations: [AppComponent],
+      providers: [NzMessageService],
     }).compileComponents();
   });
 

@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzIconTestModule } from '../nz-icon-test/nz-icon-test.module';
 import { LoginComponent } from './login.component';
 
@@ -23,6 +24,7 @@ describe('LoginComponent', () => {
         NzIconTestModule,
         HttpClientModule,
       ],
+      providers: [NzMessageService],
       declarations: [LoginComponent],
     }).compileComponents();
   });
