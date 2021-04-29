@@ -1,0 +1,25 @@
+mutation UpdateTemplateVersion(
+  $id: ID!
+  $name: String!
+  $settings: String!
+  $body: String!
+  $status: TemplateStatus!
+) {
+  updateTemplateVersion(
+    input: {
+      id: $id
+      name: $name
+      settings: $settings
+      body: $body
+      status: $status
+      plugins: {}
+    }
+  ) {
+    id
+    templateId
+    status
+    name
+    settings
+    body
+  }
+}

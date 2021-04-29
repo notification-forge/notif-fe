@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { TemplateStatus } from '../graphql/graphql';
+import { TemplateStatus, UpdateTemplateVersionGQL } from '../graphql/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,10 @@ export class EditorService {
   templateVersionName: string;
   status: TemplateStatus;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private updateTemplateVersion: UpdateTemplateVersionGQL
+  ) {}
 
   initializeEmail(
     templateVersionId: number,
@@ -37,20 +40,25 @@ export class EditorService {
   }
 
   saveTemplate() {
-    console.log(
-      'saving to backend with template version id',
-      this._templateVersionId
-    );
     this.saveLoading$.next(true);
-    setTimeout(() => {
-      this.saveLoading$.next(false);
-      const rand = Math.random();
-      if (rand > 0.5) {
-        this.saveSuccess$.next(true);
-      } else {
-        this.saveSuccess$.next(false);
-      }
-    }, 1000);
+    this.updateTemplateVersion
+      .mutate({
+        id: `${this._templateVersionId}`,
+        name: this.templateVersionName,
+        settings: '',
+        body: this._designCodeBody || '',
+        status: this.status,
+      })
+      .subscribe({
+        next: (_) => {
+          this.saveSuccess$.next(true);
+          this.saveLoading$.next(false);
+        },
+        error: () => {
+          this.saveSuccess$.next(false);
+          this.saveLoading$.next(false);
+        },
+      });
   }
 
   get designCodeBody() {
