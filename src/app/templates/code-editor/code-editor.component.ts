@@ -33,6 +33,9 @@ export class CodeEditorComponent implements OnInit, OnChanges {
   initialDesignCode: string | null;
   detailsLoading: boolean = false;
 
+  isSaving: boolean = false;
+  saveSuccess: boolean = true;
+
   private shouldStopSubscribing: Subject<null> = new Subject();
 
   constructor(
@@ -40,7 +43,14 @@ export class CodeEditorComponent implements OnInit, OnChanges {
     private editorService: EditorService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.editorService.saveLoading$.subscribe((saveLoading) => {
+      this.isSaving = saveLoading;
+    });
+    this.editorService.saveSuccess$.subscribe((saveSuccess) => {
+      this.saveSuccess = saveSuccess;
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!!changes.codeEditorVisible && changes.codeEditorVisible.currentValue) {

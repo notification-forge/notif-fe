@@ -9,7 +9,10 @@ import { TemplateStatus } from '../graphql/graphql';
 export class EditorService {
   private _designCodeBody: string | null;
   private _templateVersionId: number;
+
   saveLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  saveSuccess$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+
   settingsForm: FormGroup = this.fb.group({
     from: ['', Validators.required],
     to: ['', Validators.required],
@@ -39,7 +42,15 @@ export class EditorService {
       this._templateVersionId
     );
     this.saveLoading$.next(true);
-    setTimeout(() => this.saveLoading$.next(false), 1000);
+    setTimeout(() => {
+      this.saveLoading$.next(false);
+      const rand = Math.random();
+      if (rand > 0.5) {
+        this.saveSuccess$.next(true);
+      } else {
+        this.saveSuccess$.next(false);
+      }
+    }, 1000);
   }
 
   get designCodeBody() {

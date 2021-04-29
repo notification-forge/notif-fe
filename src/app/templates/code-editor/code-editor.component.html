@@ -15,8 +15,21 @@
       </nz-radio-group>
 
       <div class="button-wrapper">
-        <button nz-button nzType="dashed" (click)="onCloseCodeEditor()">
-          <i nz-icon nzType="save" nzTheme="outline"></i>Save
+        <button
+          nz-button
+          nzType="dashed"
+          (click)="onCloseCodeEditor()"
+          [nzLoading]="isSaving"
+          [disabled]="saveSuccess && !isSaving"
+        >
+          <i nz-icon nzType="save" nzTheme="outline"></i>
+          {{
+            isSaving
+              ? 'Saving...'
+              : !saveSuccess
+              ? 'Changes not saved. Click to try again...'
+              : 'All changes saved'
+          }}
         </button>
         <span class="spacer"></span>
         <button nz-button nzType="primary" (click)="onCloseCodeEditor()">
