@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -18,7 +19,7 @@ import { template } from './email-template';
   templateUrl: './design-editor.component.html',
   styleUrls: ['./design-editor.component.scss'],
 })
-export class DesignEditorComponent implements OnInit, OnChanges {
+export class DesignEditorComponent implements OnInit, OnDestroy {
   @Output() openSettings = new EventEmitter<null>();
   @Input() initialDesignCode: string | null;
 
@@ -31,17 +32,14 @@ export class DesignEditorComponent implements OnInit, OnChanges {
   constructor(private editorService: EditorService) {}
 
   ngOnInit(): void {
+    this.designCode = this.initialDesignCode || template;
     this.designCodeChange$.pipe(debounceTime(1000)).subscribe((newBody) => {
       this.designCode = newBody;
       this.editorService.designCodeBody = newBody;
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (!!changes.initialDesignCode) {
-      this.designCode = changes.initialDesignCode.currentValue || template;
-    }
-  }
+  ngOnDestroy() {}
 
   onDesignCodeChange(code: string) {
     this.designCodeChange$.next(code);

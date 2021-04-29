@@ -62,6 +62,7 @@ export class CodeEditorComponent implements OnInit, OnChanges {
           next: ({ data, loading }) => {
             this.initialDesignCode = data.templateVersion?.body || null;
             this.editorService.initializeEmail(
+              templateVersionId,
               data.templateVersion?.body || null,
               data.templateVersion?.name || '',
               data.templateVersion?.status || TemplateStatus.Draft
