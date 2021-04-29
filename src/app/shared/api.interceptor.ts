@@ -6,15 +6,17 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { TokenService } from './token.service';
 import { AuthService } from './auth.service';
 
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { User } from './models/api.models';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
+  user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   constructor(private tokenService: TokenService, private router: Router) {}
 
   intercept(
@@ -35,6 +37,7 @@ export class ApiInterceptor implements HttpInterceptor {
           this.router.url !== '/login'
         ) {
           this.tokenService.token = null;
+          this.user$.next(null);
           this.router.navigate(['login']);
         }
         return throwError(error);
