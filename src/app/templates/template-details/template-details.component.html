@@ -70,7 +70,10 @@
             </a>
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu nzSelectable>
-                <li nz-menu-item [routerLink]="['/templates/editor']">
+                <li
+                  nz-menu-item
+                  [routerLink]="['/templates/editor', data?.id || -1]"
+                >
                   Edit Draft
                 </li>
                 <li nz-menu-item nzDanger>Delete</li>

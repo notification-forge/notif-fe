@@ -37,7 +37,7 @@ const routes: Routes = [
         component: TemplatesPageComponent,
       },
       {
-        path: 'editor',
+        path: 'editor/:templateVersionId',
         component: CodeEditorComponent,
       },
     ],

@@ -1,66 +1,52 @@
-<!-- <nz-drawer
-  [nzClosable]="true"
-  [nzVisible]="codeEditorVisible"
-  [nzMaskClosable]="false"
-  nzHeight="100vh"
-  nzPlacement="bottom"
-  [nzTitle]="header"
-  (nzOnClose)="onCloseCodeEditor()"
->
-  <ng-template #header>
-    <header class="wrapper">
-      <nz-radio-group [(ngModel)]="tabValue" nzSize="large">
-        <label nz-radio-button [nzValue]="TAB_VALUES.DESIGN">DESIGN</label>
-        <label nz-radio-button [nzValue]="TAB_VALUES.TEST">TEST</label>
-      </nz-radio-group>
+<article>
+  <header class="wrapper">
+    <nz-radio-group [(ngModel)]="tabValue" nzSize="large">
+      <label nz-radio-button [nzValue]="TAB_VALUES.DESIGN">DESIGN</label>
+      <label nz-radio-button [nzValue]="TAB_VALUES.TEST">TEST</label>
+    </nz-radio-group>
 
-      <div class="button-wrapper">
-        <button
-          nz-button
-          nzType="dashed"
-          (click)="manualRetrySave()"
-          [nzLoading]="isSaving"
-          [disabled]="saveSuccess && !isSaving"
-        >
-          <i nz-icon nzType="save" nzTheme="outline"></i>
-          {{
-            isSaving
-              ? 'Saving...'
-              : !saveSuccess
-              ? 'Changes not saved. Click to try again...'
-              : 'All changes saved'
-          }}
-        </button>
-        <span class="spacer"></span>
-        <button nz-button nzType="primary" (click)="onCloseCodeEditor()">
-          Publish
-        </button>
-      </div>
-    </header>
-  </ng-template>
-  <ng-container *nzDrawerContent>
-    <ng-container
-      [ngSwitch]="tabValue"
-      *ngIf="codeEditorVisible && !detailsLoading; else skeletonLoader"
-    >
-      <ng-container *ngSwitchCase="TAB_VALUES.DESIGN">
-        <app-design-editor
-          (openSettings)="openSettings()"
-          [initialDesignCode]="initialDesignCode"
-        ></app-design-editor>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="TAB_VALUES.TEST">
-        <app-test-editor></app-test-editor>
-      </ng-container>
+    <div class="button-wrapper">
+      <button
+        nz-button
+        nzType="dashed"
+        (click)="manualRetrySave()"
+        [nzLoading]="isSaving"
+        [disabled]="saveSuccess && !isSaving"
+      >
+        <i nz-icon nzType="save" nzTheme="outline"></i>
+        {{
+          isSaving
+            ? 'Saving...'
+            : !saveSuccess
+            ? 'Changes not saved. Click to try again...'
+            : 'All changes saved'
+        }}
+      </button>
+      <span class="spacer"></span>
+      <button nz-button nzType="primary">Publish</button>
+    </div>
+  </header>
+  <ng-container
+    [ngSwitch]="tabValue"
+    *ngIf="!detailsLoading; else skeletonLoader"
+  >
+    <ng-container *ngSwitchCase="TAB_VALUES.DESIGN">
+      <app-design-editor
+        (openSettings)="openSettings()"
+        [initialDesignCode]="initialDesignCode"
+      ></app-design-editor>
     </ng-container>
 
-    <ng-template #skeletonLoader>
-      <div class="loader-wrapper">
-        <nz-skeleton [nzParagraph]="{ rows: 20 }"></nz-skeleton>
-      </div>
-    </ng-template>
+    <ng-container *ngSwitchCase="TAB_VALUES.TEST">
+      <app-test-editor></app-test-editor>
+    </ng-container>
   </ng-container>
+
+  <ng-template #skeletonLoader>
+    <div class="loader-wrapper">
+      <nz-skeleton [nzParagraph]="{ rows: 20 }"></nz-skeleton>
+    </div>
+  </ng-template>
 
   <nz-drawer
     [nzClosable]="false"
@@ -74,5 +60,4 @@
       <app-settings-editor></app-settings-editor>
     </ng-container>
   </nz-drawer>
-</nz-drawer> -->
-<p>hello world</p>
+</article>
