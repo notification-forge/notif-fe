@@ -739,7 +739,7 @@ export const UpdateTemplateVersionDocument = gql`
         settings: $settings
         body: $body
         status: $status
-        plugins: {}
+        plugins: { plugins: [] }
       }
     ) {
       id

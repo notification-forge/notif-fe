@@ -63,12 +63,16 @@ export class CodeEditorComponent implements OnInit, OnChanges {
   }
 
   getTemplateVersionDetailsById(templateVersionId: number) {
+    console.log('?');
     if (templateVersionId !== -1) {
       this.detailsLoading = true;
       this.getTemplateVersionDetails
-        .fetch({
-          templateVersionId: String(templateVersionId),
-        })
+        .fetch(
+          {
+            templateVersionId: String(templateVersionId),
+          },
+          { fetchPolicy: 'network-only' }
+        )
         .pipe(takeUntil(this.shouldStopSubscribing))
         .subscribe({
           next: ({ data, loading }) => {
@@ -95,6 +99,10 @@ export class CodeEditorComponent implements OnInit, OnChanges {
 
   closeSettings() {
     this.settingsVisible = false;
+  }
+
+  manualRetrySave() {
+    this.editorService.saveTemplate();
   }
 }
 

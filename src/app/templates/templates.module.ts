@@ -36,6 +36,10 @@ const routes: Routes = [
         path: '',
         component: TemplatesPageComponent,
       },
+      {
+        path: 'editor',
+        component: CodeEditorComponent,
+      },
     ],
   },
 ];
