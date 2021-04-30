@@ -35,10 +35,12 @@ const routes: Routes = [
       {
         path: '',
         component: TemplatesPageComponent,
+        data: { animations: 'templates-main' },
       },
       {
         path: 'editor/:templateVersionId',
         component: CodeEditorComponent,
+        data: { animations: 'templates-editor' },
       },
     ],
   },

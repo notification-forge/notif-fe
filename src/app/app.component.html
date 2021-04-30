@@ -3,6 +3,8 @@
 
   <div class="app-main">
     <app-header *ngIf="userIsLoggedIn"></app-header>
-    <router-outlet></router-outlet>
+    <div [@routeAnimations]="prepareRoute(outlet)">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
   </div>
 </section>
