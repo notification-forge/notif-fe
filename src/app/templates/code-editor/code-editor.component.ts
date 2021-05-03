@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -15,6 +16,7 @@ import {
   GetTemplateVersionDetailsGQL,
   TemplateStatus,
 } from 'src/app/graphql/graphql';
+import { LayoutService } from 'src/app/shared/layout.service';
 import { EditorService } from '../editor.service';
 
 @Component({
@@ -23,7 +25,7 @@ import { EditorService } from '../editor.service';
   styleUrls: ['./code-editor.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class CodeEditorComponent implements OnInit {
+export class CodeEditorComponent implements OnInit, OnDestroy {
   templateVersionId: number;
   tabValue = TabValues.DESIGN;
   readonly TAB_VALUES = TabValues;
@@ -39,10 +41,12 @@ export class CodeEditorComponent implements OnInit {
   constructor(
     private getTemplateVersionDetails: GetTemplateVersionDetailsGQL,
     private editorService: EditorService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private layoutService: LayoutService
   ) {}
 
   ngOnInit(): void {
+    this.layoutService.shouldShowHeaderAndSideNav$.next(false);
     this.route.paramMap.subscribe((params) => {
       let id = params.get('templateVersionId') || -1;
       if (id !== -1) {
@@ -57,6 +61,10 @@ export class CodeEditorComponent implements OnInit {
     this.editorService.saveSuccess$.subscribe((saveSuccess) => {
       this.saveSuccess = saveSuccess;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.layoutService.shouldShowHeaderAndSideNav$.next(true);
   }
 
   getTemplateVersionDetailsById(templateVersionId: number) {

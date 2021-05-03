@@ -10,6 +10,9 @@ export class LayoutService {
     false
   );
   headerTitle$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  shouldShowHeaderAndSideNav$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    true
+  );
 
   constructor() {}
 
