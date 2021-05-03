@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -42,7 +43,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     private getTemplateVersionDetails: GetTemplateVersionDetailsGQL,
     private editorService: EditorService,
     private route: ActivatedRoute,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -103,6 +105,10 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
 
   manualRetrySave() {
     this.editorService.saveTemplate();
+  }
+
+  goBack() {
+    this.location.back();
   }
 }
 
