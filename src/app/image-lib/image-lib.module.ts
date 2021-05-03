@@ -16,6 +16,7 @@ const routes: Routes = [
       {
         path: '',
         component: ImageLibPageComponent,
+        data: { animations: 'image-lib' },
       },
     ],
   },

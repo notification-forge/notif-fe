@@ -30,6 +30,7 @@ registerLocaleData(en);
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    BrowserModule,
     BrowserAnimationsModule,
     NzLayoutModule,
     NzMenuModule,

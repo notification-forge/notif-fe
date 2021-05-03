@@ -1,0 +1,14 @@
+query GetTemplateVersionDetails($templateVersionId: ID!) {
+  templateVersion(id: $templateVersionId) {
+    templateId
+    id
+    name
+    templateHash
+    body
+    settings
+    version
+    status
+    createdDate
+    lastModifiedDate
+  }
+}

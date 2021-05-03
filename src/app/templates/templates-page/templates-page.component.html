@@ -56,8 +56,8 @@
       <ng-container *ngFor="let data of nzTable.data">
         <tr>
           <td
-            [nzExpand]="expandSet.has(data?.id || '')"
-            (nzExpandChange)="onExpandChange(data?.id || '', $event)"
+            [nzExpand]="expandSet.has('' + data?.id || '')"
+            (nzExpandChange)="onExpandChange('' + data?.id || '', $event)"
           ></td>
           <td>{{ data?.name }}</td>
           <td>
@@ -84,23 +84,18 @@
             </nz-dropdown-menu>
           </td>
         </tr>
-        <tr [nzExpand]="expandSet.has(data?.id || '')">
+        <tr [nzExpand]="expandSet.has('' + data?.id || '')">
           <app-template-details
-            *ngIf="expandSet.has(data?.id || '')"
+            *ngIf="expandSet.has('' + data?.id || '')"
             [templateUUID]="data?.uuid || ''"
-            [templateID]="data?.id || ''"
-            (onOpenCodeEditor)="openCodeEditor()"
+            [templateID]="data?.id || -1"
+            (onOpenCodeEditor)="handleOpenCodeEditorRequest($event)"
           ></app-template-details>
         </tr>
       </ng-container>
     </tbody>
   </nz-table>
 </section>
-
-<app-code-editor
-  [codeEditorVisible]="codeEditorVisible"
-  (closeCodeEditor)="closeCodeEditor()"
-></app-code-editor>
 
 <ng-template #suffixIconButton>
   <button nz-button nzType="primary" nzSearch>

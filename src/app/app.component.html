@@ -1,8 +1,10 @@
 <section class="app-wrapper">
-  <app-side-nav *ngIf="userIsLoggedIn"></app-side-nav>
+  <app-side-nav *ngIf="userIsLoggedIn && showHeaderSideNav"></app-side-nav>
 
   <div class="app-main">
-    <app-header *ngIf="userIsLoggedIn"></app-header>
-    <router-outlet></router-outlet>
+    <app-header *ngIf="userIsLoggedIn && showHeaderSideNav"></app-header>
+    <div [@routeAnimations]="prepareRoute(outlet)">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
   </div>
 </section>

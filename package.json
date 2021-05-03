@@ -12,7 +12,7 @@
     "format": "prettier --write src/**/*.{ts,html,scss}",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "graphql-codegen": "graphql-codegen --config codegen.yml"
+    "graphql-codegen": "graphql-codegen --config codegen.yml && prettier --write src/app/graphql/**/*.ts"
   },
   "private": true,
   "dependencies": {

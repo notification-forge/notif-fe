@@ -7,6 +7,78 @@ enum AlertType {
   EMAIL
 }
 
+#
+type App {
+  # App code of application
+  # Unique ID of application
+  appCode: ID
+
+  # Name of the application
+  displayName: String
+
+  # API Token generated to each onboarded application
+  apiToken: String
+
+  # App's onboarding status
+  status: AppStatus
+
+  # Justification for why App should be onboarded
+  justification: String
+
+  # Description of App
+  description: String
+
+  # primaryOwnerName of App
+  primaryOwnerName: String
+
+  # primaryOwnerId of App
+  primaryOwnerId: String
+
+  # secondaryOwnerName of App
+  secondaryOwnerName: String
+
+  # secondaryOwnerId of App
+  secondaryOwnerId: String
+
+  # encryptionKey of App
+  encryptionKey: String
+
+  # appSettings of App
+  appSettings: String
+
+  # List of onboardings for this App
+  # Unique key of appCode
+  # One App to Many Onboarding relationship
+  onboardings: [Onboarding]
+
+  # Username of approved
+  approvedBy: String
+
+  # Date of the approved
+  approvedDate: Date
+
+  # Username of rejected
+  rejectedBy: String
+
+  # Date of the rejection
+  rejectedDate: Date
+
+  # Rejected reason
+  rejectedReason: String
+
+  # Audit Created Date
+  createdDate: Date
+
+  # Audit Created By
+  createdBy: String
+
+  # Audit Last Modified Date
+  lastModifiedDate: Date
+
+  # Audit Last Modified By
+  lastModifiedBy: String
+}
+
 # App's onboarding status
 enum AppStatus {
   #
@@ -54,6 +126,46 @@ input CloneTemplateVersionInput {
   # EMAILS -> HTML format
   # TEAMS MESSAGE -> JSON format
   body: String
+
+  # Plugins to be used when Template Version is being called
+  # Add configurations for each plugins
+  plugins: PluginsInput
+}
+
+#
+type Configuration {
+  #
+  name: String
+
+  #
+  displayName: String
+
+  #
+  fieldType: FieldType
+
+  #
+  description: String
+
+  #
+  mandatory: Boolean
+
+  #
+  allowedOptions: [String]
+
+  #
+  validationExpr: String
+
+  #
+  value: String
+}
+
+#
+input ConfigurationInput {
+  # Field in the configuration
+  key: String
+
+  # Value to be placed into the field
+  value: String
 }
 
 #
@@ -105,11 +217,35 @@ input CreateTemplateVersionInput {
 scalar Date
 
 #
+enum FieldType {
+  #
+  STRING
+
+  #
+  INT
+
+  #
+  LONG
+
+  #
+  BIG_INTEGER
+
+  #
+  BIG_DECIMAL
+
+  #
+  ENUM
+
+  #
+  BOOLEAN
+}
+
+#
 type Image {
   #
-  id: ID
+  id: Int
 
-  # Connecting template to the application that uses this template
+  # Connecting image to the application that uses this image
   appCode: String
 
   # Content type of the image file
@@ -126,6 +262,18 @@ type Image {
 
   # ByteArray of the image
   imageData: String
+
+  # Audit Created Date
+  createdDate: Date
+
+  # Audit Created By
+  createdBy: String
+
+  # Audit Last Modified Date
+  lastModifiedDate: Date
+
+  # Audit Last Modified By
+  lastModifiedBy: String
 }
 
 #
@@ -168,6 +316,90 @@ enum ImageStatus {
 }
 
 #
+type Message {
+  #
+  id: ID
+
+  #
+  templateId: Int
+
+  #
+  templateVersionId: Int
+
+  #
+  appCode: String
+
+  #
+  content: String
+
+  #
+  settings: String
+
+  #
+  messageType: MessageType
+
+  #
+  messageStatus: MessageStatus
+
+  #
+  reason: String
+
+  #
+  timesTriggered: Int
+
+  # Audit Created Date
+  createdDate: Date
+
+  # Audit Created By
+  createdBy: String
+
+  # Audit Last Modified Date
+  lastModifiedDate: Date
+
+  # Audit Last Modified By
+  lastModifiedBy: String
+}
+
+#
+input MessageInput {
+  #
+  templateUUID: String
+
+  #
+  templateHash: Int
+
+  #
+  content: String
+
+  #
+  setting: String
+
+  #
+  messageType: MessageType
+}
+
+#
+enum MessageStatus {
+  #
+  PENDING
+
+  #
+  SENT
+
+  #
+  FAILED
+}
+
+#
+enum MessageType {
+  #
+  MAIL
+
+  #
+  TEAMS
+}
+
+#
 type Mutation {
   # Mutation on template creation
   createTemplate(input: CreateTemplateInput!): Template!
@@ -195,17 +427,20 @@ type Mutation {
   uploadImage(appCode: String, file: Upload!): Image!
 
   # Mutation on App onboarding
-  onboardApp(input: CreateAppInput!): Tenant!
+  onboardApp(input: CreateAppInput!): App!
 
   # Mutation on App updates
-  updateApp(input: UpdateAppInput!): Tenant!
+  updateApp(input: UpdateAppInput!): App!
 
   # Mutation on App approval
   # Approvers can approve or reject app onboarding application
-  approveOrRejectAppInput(input: ApprovalAppInput!): Tenant!
+  approveOrRejectAppInput(input: ApprovalAppInput!): App!
 
   # Mutation on User onboarding
   onboardUser(input: OnboardingUserInput!): User!
+
+  # Mutation on Message
+  createMessage(input: MessageInput!): Message!
 }
 
 #
@@ -264,6 +499,48 @@ input PaginationInput {
 }
 
 #
+type Plugin {
+  #
+  id: Int
+
+  #
+  name: String
+
+  #
+  appCode: String
+
+  #
+  configurations: [Configuration]
+
+  # Audit Created Date
+  createdDate: Date
+
+  # Audit Created By
+  createdBy: String
+
+  # Audit Last Modified Date
+  lastModifiedDate: Date
+
+  # Audit Last Modified By
+  lastModifiedBy: String
+}
+
+#
+input PluginInput {
+  # Unique Identifier for the plugin chosen
+  pluginId: ID
+
+  # A list of key value pairs for plugin's configuration
+  configurations: [ConfigurationInput]
+}
+
+#
+input PluginsInput {
+  #
+  plugins: [PluginInput]
+}
+
+#
 type Query {
   # Query on an individual template
   # id -> Template's id
@@ -273,7 +550,7 @@ type Query {
   # name -> search for template name
   # appCodes -> filter by the List of app codes user wish to view
   # paginationInput -> pagination inputs such as current page, page limit and sort
-  templatePages(
+  templates(
     name: String
     appCodes: [String]
     pageRequestInput: PaginationInput
@@ -286,18 +563,22 @@ type Query {
   # Query on templates with pagination
   # searchFilter -> The search criteria
   # paginationInput -> pagination inputs such as current page, page limit and sort
-  getImages(
+  images(
     searchFilter: ImageSearchFilterInput
     pageRequestInput: PaginationInput
   ): ImageConnection
 
   # Query on an individual app
   # id -> App's app code
-  tenant(id: ID): Tenant
+  app(appCode: ID): App
 
   # Query on an individual user
-  # id -> User's 1BankID
+  # username -> User's 1BankID
   user(username: ID): User
+
+  # Query on available plugins for app
+  # appCode -> App code onboarded
+  plugins(appCode: String): [Plugin]
 }
 
 #
@@ -312,7 +593,7 @@ enum SortDirection {
 #
 type Template {
   #
-  id: ID
+  id: Int
 
   # Name of the template has to be unique to each application
   name: String
@@ -331,11 +612,17 @@ type Template {
   # One Template to Many Template Versions relationship
   templateVersions: [TemplateVersion]
 
-  #
+  # Audit Created Date
   createdDate: Date
 
-  #
+  # Audit Created By
+  createdBy: String
+
+  # Audit Last Modified Date
   lastModifiedDate: Date
+
+  # Audit Last Modified By
+  lastModifiedBy: String
 }
 
 #
@@ -372,13 +659,13 @@ enum TemplateStatus {
 
 #
 type TemplateVersion {
+  #
+  id: Int
+
   # Connecting template version to the template that owns this version
   # Unique key of template
   # Many Template Version to One Template relationship
-  templateId: ID
-
-  #
-  id: Int
+  templateId: Int
 
   # Name of the template version
   name: String
@@ -406,71 +693,20 @@ type TemplateVersion {
   # Only PUBLISHED templates can be triggered to send notifications
   status: TemplateStatus
 
-  #
+  # Plugin details of Template Version
+  plugins: [Plugin]
+
+  # Audit Created Date
   createdDate: Date
 
-  #
+  # Audit Created By
+  createdBy: String
+
+  # Audit Last Modified Date
   lastModifiedDate: Date
-}
 
-#
-type Tenant {
-  # App code of application
-  # Unique ID of application
-  appCode: ID
-
-  # Name of the application
-  displayName: String
-
-  # API Token generated to each onboarded application
-  apiToken: String
-
-  # App's onboarding status
-  status: AppStatus
-
-  # Justification for why App should be onboarded
-  justification: String
-
-  # Description of App
-  description: String
-
-  # primaryOwnerName of App
-  primaryOwnerName: String
-
-  # primaryOwnerId of App
-  primaryOwnerId: String
-
-  # secondaryOwnerName of App
-  secondaryOwnerName: String
-
-  # secondaryOwnerId of App
-  secondaryOwnerId: String
-
-  # encryptionKey of App
-  encryptionKey: String
-
-  # appSettings of App
-  appSettings: String
-
-  # List of onboardings for this App
-  # Unique key of appCode
-  # One App to Many Onboarding relationship
-  onboardings: [Onboarding]
-
-  # Username of approved
-  approvedBy: String
-
-  # Date of the approved
-  approvedDate: Date
-
-  # Username of rejected
-  rejectedBy: String
-
-  # Date of the rejection
-  rejectedDate: Date
-
-  # Rejected reason
-  rejectedReason: String
+  # Audit Last Modified By
+  lastModifiedBy: String
 }
 
 #
@@ -531,6 +767,10 @@ input UpdateTemplateVersionInput {
   # There could only be one DRAFT at any given time
   # Only PUBLISHED templates can be triggered to send notifications
   status: TemplateStatus
+
+  # Plugins to be used when Template Version is being called
+  # Add configurations for each plugins
+  plugins: PluginsInput
 }
 
 #

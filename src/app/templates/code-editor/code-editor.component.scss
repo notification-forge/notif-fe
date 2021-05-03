@@ -1,14 +1,33 @@
 .wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 1rem;
+  height: 90vh;
 
-  .button-wrapper {
-    margin-right: 2rem;
+  .close-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 1rem;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem;
 
-    .spacer {
-      display: inline-block;
-      width: 1rem;
+    .button-wrapper {
+      .spacer {
+        display: inline-block;
+        width: 1rem;
+      }
     }
+  }
+
+  .content {
+    height: 100%;
+  }
+
+  .loader-wrapper {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
   }
 }
