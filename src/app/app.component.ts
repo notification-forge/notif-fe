@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { fade } from './router-animations';
+import { fade } from './animations';
 import { AuthService } from './shared/auth.service';
 import { LayoutService } from './shared/layout.service';
 
@@ -33,11 +33,6 @@ export class AppComponent implements OnInit {
   }
 
   prepareRoute(outlet: RouterOutlet) {
-    console.log(
-      outlet &&
-        outlet.activatedRouteData &&
-        outlet.activatedRouteData.animations
-    );
     return (
       outlet &&
       outlet.activatedRouteData &&
