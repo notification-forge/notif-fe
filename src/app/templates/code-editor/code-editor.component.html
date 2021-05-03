@@ -1,5 +1,10 @@
-<article>
-  <header class="wrapper">
+<article class="wrapper">
+  <div class="close-btn-wrapper">
+    <button nz-button nzType="text" nzShape="circle">
+      <i nz-icon nzType="close"></i>
+    </button>
+  </div>
+  <header>
     <nz-radio-group [(ngModel)]="tabValue" nzSize="large">
       <label nz-radio-button [nzValue]="TAB_VALUES.DESIGN">DESIGN</label>
       <label nz-radio-button [nzValue]="TAB_VALUES.TEST">TEST</label>
@@ -26,6 +31,7 @@
       <button nz-button nzType="primary">Publish</button>
     </div>
   </header>
+
   <ng-container
     [ngSwitch]="tabValue"
     *ngIf="!detailsLoading; else skeletonLoader"

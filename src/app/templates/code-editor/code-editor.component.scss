@@ -1,20 +1,27 @@
 .wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 1rem;
+  .close-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 1rem;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 1rem;
 
-  .button-wrapper {
-    margin-right: 2rem;
-
-    .spacer {
-      display: inline-block;
-      width: 1rem;
+    .button-wrapper {
+      .spacer {
+        display: inline-block;
+        width: 1rem;
+      }
     }
   }
-}
 
-.loader-wrapper {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
+  .loader-wrapper {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
 }
