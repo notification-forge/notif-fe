@@ -1,23 +1,24 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
   HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
 } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { TokenService } from './token.service';
-import { AuthService } from './auth.service';
-
-import { catchError } from 'rxjs/operators';
+import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from './models/api.models';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { AuthService } from './auth.service';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-  user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
-  constructor(private tokenService: TokenService, private router: Router) {}
+  constructor(
+    private tokenService: TokenService,
+    private router: Router,
+    private injector: Injector
+  ) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -36,9 +37,8 @@ export class ApiInterceptor implements HttpInterceptor {
           (error.status === 401 || error.status === 403) &&
           this.router.url !== '/login'
         ) {
-          this.tokenService.token = null;
-          this.user$.next(null);
-          this.router.navigate(['login']);
+          const auth = this.injector.get(AuthService);
+          auth.logout();
         }
         return throwError(error);
       })
