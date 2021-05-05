@@ -1,18 +1,15 @@
 import {
   Component,
   EventEmitter,
-  Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { EditorService } from '../editor.service';
-import { template } from './email-template';
+import { emailTemplate } from './email-template';
 
 @Component({
   selector: 'app-design-editor',
@@ -31,7 +28,7 @@ export class DesignEditorComponent implements OnInit, OnDestroy {
   constructor(private editorService: EditorService) {}
 
   ngOnInit(): void {
-    this.designCode = this.editorService.designCodeBody || template;
+    this.designCode = this.editorService.designCodeBody || emailTemplate;
     this.designCodeChange$.pipe(debounceTime(1000)).subscribe((newBody) => {
       this.designCode = newBody;
       this.editorService.designCodeBody = newBody;
