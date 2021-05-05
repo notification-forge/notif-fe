@@ -14,10 +14,13 @@ export class EditorService {
   saveSuccess$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   settingsForm: FormGroup = this.fb.group({
-    from: ['', Validators.required],
-    to: ['', Validators.required],
-    cc: [''],
-    bcc: [''],
+    subject: ['', Validators.required],
+    sender: ['', Validators.required],
+    recipients: [''],
+    ccRecipients: [''],
+    bccRecipients: [''],
+    importance: [''],
+    hasAttachments: [''],
   });
   templateVersionName: string;
   status: TemplateStatus;
@@ -45,7 +48,7 @@ export class EditorService {
       .mutate({
         id: `${this._templateVersionId}`,
         name: this.templateVersionName,
-        settings: '',
+        settings: JSON.stringify(this.settingsForm.value),
         body: this._designCodeBody || '',
         status: this.status,
       })
