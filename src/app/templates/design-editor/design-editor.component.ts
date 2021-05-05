@@ -32,7 +32,7 @@ export class DesignEditorComponent implements OnInit, OnDestroy {
   constructor(private editorService: EditorService) {}
 
   ngOnInit(): void {
-    this.designCode = this.initialDesignCode || template;
+    this.designCode = this.editorService.designCodeBody || template;
     this.designCodeChange$.pipe(debounceTime(1000)).subscribe((newBody) => {
       this.designCode = newBody;
       this.editorService.designCodeBody = newBody;
