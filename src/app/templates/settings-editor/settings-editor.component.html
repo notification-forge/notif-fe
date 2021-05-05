@@ -1,9 +1,23 @@
-<form nz-form [formGroup]="settingsForm">
+<form nz-form [formGroup]="settingsForm" nzLayout="vertical">
   <nz-form-item>
-    <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="sender" nzRequired>
-      Sender
+    <nz-form-label nzFor="template-version-name">
+      Template Version Name
     </nz-form-label>
     <nz-form-control nzErrorTip="Please input From value!">
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          placeholder="e.g Default Template"
+          name="template-version-name"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="sender" nzRequired> Sender </nz-form-label>
+    <nz-form-control nzErrorTip="Please input Sender value!">
       <nz-input-group>
         <input
           type="text"
@@ -17,10 +31,8 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="recipients" nzRequired>
-      Recipients
-    </nz-form-label>
-    <nz-form-control nzErrorTip="Please input To value!">
+    <nz-form-label nzFor="recipients" nzRequired> Recipients </nz-form-label>
+    <nz-form-control nzErrorTip="Please input Recipients value!">
       <nz-input-group>
         <input
           type="text"
@@ -34,9 +46,7 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="ccRecipients">
-      CC
-    </nz-form-label>
+    <nz-form-label nzFor="ccRecipients"> CC </nz-form-label>
     <nz-form-control nzErrorTip="Please input CC value!">
       <nz-input-group>
         <input
@@ -55,9 +65,7 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="bccRecipients">
-      BCC
-    </nz-form-label>
+    <nz-form-label nzFor="bccRecipients"> BCC </nz-form-label>
     <nz-form-control nzErrorTip="Please input BCC value!">
       <nz-input-group>
         <input
