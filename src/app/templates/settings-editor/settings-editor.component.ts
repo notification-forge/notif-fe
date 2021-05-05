@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { EditorService } from '../editor.service';
 
 @Component({
@@ -7,14 +9,21 @@ import { EditorService } from '../editor.service';
   templateUrl: './settings-editor.component.html',
   styleUrls: ['./settings-editor.component.scss'],
 })
-export class SettingsEditorComponent implements OnInit {
+export class SettingsEditorComponent implements OnInit, OnDestroy {
   settingsForm: FormGroup = this.editorService.settingsForm;
+  destroy$: Subject<null> = new Subject<null>();
 
   constructor(private editorService: EditorService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.settingsForm.valueChanges
+      .pipe(debounceTime(1000), takeUntil(this.destroy$))
+      .subscribe((_) => {
+        this.editorService.saveTemplate();
+      });
+  }
 
-  onFormSubmit(): void {
-    console.log(this.settingsForm.value);
+  ngOnDestroy() {
+    this.destroy$.next();
   }
 }

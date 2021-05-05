@@ -1,48 +1,61 @@
-<form nz-form [formGroup]="settingsForm" (ngSubmit)="onFormSubmit()">
+<form nz-form [formGroup]="settingsForm" nzLayout="vertical">
   <nz-form-item>
-    <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="from" nzRequired>
-      From
+    <nz-form-label nzFor="template-version-name">
+      Template Version Name
     </nz-form-label>
     <nz-form-control nzErrorTip="Please input From value!">
       <nz-input-group>
         <input
           type="text"
           nz-input
-          formControlName="from"
-          placeholder="e.g bcatsgops1@email.com"
-          name="from"
+          placeholder="e.g Default Template"
+          formControlName="templateVersionName"
+          name="template-version-name"
         />
       </nz-input-group>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="to" nzRequired>
-      To
-    </nz-form-label>
-    <nz-form-control nzErrorTip="Please input To value!">
+    <nz-form-label nzFor="sender" nzRequired> Sender </nz-form-label>
+    <nz-form-control nzErrorTip="Please input Sender value!">
       <nz-input-group>
         <input
           type="text"
           nz-input
-          formControlName="to"
-          placeholder="e.g users@email.com"
-          name="to"
+          formControlName="sender"
+          placeholder="e.g bcatsgops1@email.com"
+          name="sender"
         />
       </nz-input-group>
     </nz-form-control>
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="cc"> CC </nz-form-label>
+    <nz-form-label nzFor="recipients" nzRequired> Recipients </nz-form-label>
+    <nz-form-control nzErrorTip="Please input Recipients value!">
+      <nz-input-group>
+        <input
+          type="text"
+          nz-input
+          formControlName="recipients"
+          placeholder="e.g users@email.com"
+          name="recipients"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="ccRecipients"> CC </nz-form-label>
     <nz-form-control nzErrorTip="Please input CC value!">
       <nz-input-group>
         <input
           type="text"
           nz-input
-          formControlName="cc"
+          formControlName="ccRecipients"
           placeholder="e.g user2@email.com"
-          name="cc"
+          name="ccRecipients"
           nz-tooltip
           nzTooltipTrigger="focus"
           nzTooltipPlacement="topLeft"
@@ -53,15 +66,15 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="3" [nzXs]="24" nzFor="bcc"> BCC </nz-form-label>
+    <nz-form-label nzFor="bccRecipients"> BCC </nz-form-label>
     <nz-form-control nzErrorTip="Please input BCC value!">
       <nz-input-group>
         <input
           type="text"
           nz-input
-          formControlName="bcc"
+          formControlName="bccRecipients"
           placeholder="e.g user2@email.com"
-          name="bcc"
+          name="bccRecipients"
           nz-tooltip
           nzTooltipTrigger="focus"
           nzTooltipPlacement="topLeft"

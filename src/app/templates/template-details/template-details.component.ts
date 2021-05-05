@@ -6,6 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import {
@@ -22,7 +23,6 @@ import {
 export class TemplateDetailsComponent implements OnInit, OnDestroy {
   @Input() templateUUID: string;
   @Input() templateID: number;
-  @Output() onOpenCodeEditor: EventEmitter<number> = new EventEmitter();
 
   templateVersionList: (TemplateVersion | null)[];
   onDestroy$: Subject<null> = new Subject<null>();
@@ -30,7 +30,8 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private getTemplateDetails: GetTemplateDetailsGQL,
-    private createTemplateVersion: CreateTemplateVersionGQL
+    private createTemplateVersion: CreateTemplateVersionGQL,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +60,11 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
       .mutate({ templateId: `${this.templateID}` })
       .pipe(
         switchMap((res) => {
-          this.openCodeEditor(res.data?.createTemplateVersion.id || -1);
+          this.router.navigate([
+            'templates',
+            'editor',
+            res.data?.createTemplateVersion.id || -1,
+          ]);
           return this.getTemplateDetails.fetch(
             { id: `${this.templateID}` },
             { fetchPolicy: 'network-only' }
@@ -72,9 +77,5 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
             details.data.template?.templateVersions || [];
         },
       });
-  }
-
-  openCodeEditor(templateVersionId: number) {
-    this.onOpenCodeEditor.emit(templateVersionId);
   }
 }

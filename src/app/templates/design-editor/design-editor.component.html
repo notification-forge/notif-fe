@@ -32,15 +32,15 @@
       <div class="preview-senders">
         <h2>
           {{
-            settingsForm.value.from ||
-              'from@email.com (Click on settings to configue)'
+            settingsForm.value.sender ||
+              'sender@email.com (Click on settings to configue)'
           }}
         </h2>
         <div class="preview-to-from">
-          <p class="preview-to-from-title">To</p>
+          <p class="preview-to-from-title">Recipients</p>
           <p>
             {{
-              settingsForm.value.to ||
+              settingsForm.value.recipients ||
                 'to@email.com (Click on settings to configue)'
             }}
           </p>
@@ -49,7 +49,7 @@
           <p class="preview-to-from-title">CC</p>
           <p>
             {{
-              settingsForm.value.cc ||
+              settingsForm.value.ccRecipients ||
                 'cc@email.com (Click on settings to configue)'
             }}
           </p>

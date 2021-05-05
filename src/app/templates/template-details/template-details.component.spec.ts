@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ApolloTestingModule } from 'apollo-angular/testing';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { TemplateDetailsComponent } from './template-details.component';
@@ -10,7 +11,12 @@ describe('TemplateDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NzSkeletonModule, HttpClientTestingModule, ApolloTestingModule],
+      imports: [
+        NzSkeletonModule,
+        HttpClientTestingModule,
+        ApolloTestingModule,
+        RouterTestingModule,
+      ],
       declarations: [TemplateDetailsComponent],
     }).compileComponents();
   });

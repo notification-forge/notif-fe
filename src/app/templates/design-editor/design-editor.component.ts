@@ -21,7 +21,6 @@ import { template } from './email-template';
 })
 export class DesignEditorComponent implements OnInit, OnDestroy {
   @Output() openSettings = new EventEmitter<null>();
-  @Input() initialDesignCode: string | null;
 
   settingsForm: FormGroup = this.editorService.settingsForm;
   designEditorOptions = { theme: 'vs-dark', language: 'html' };
@@ -32,7 +31,7 @@ export class DesignEditorComponent implements OnInit, OnDestroy {
   constructor(private editorService: EditorService) {}
 
   ngOnInit(): void {
-    this.designCode = this.initialDesignCode || template;
+    this.designCode = this.editorService.designCodeBody || template;
     this.designCodeChange$.pipe(debounceTime(1000)).subscribe((newBody) => {
       this.designCode = newBody;
       this.editorService.designCodeBody = newBody;
