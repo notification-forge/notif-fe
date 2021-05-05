@@ -39,9 +39,6 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     appCode: ['', Validators.required],
   });
 
-  // Code Editor
-  selectedTemplateVersion: number = -1;
-
   // Loaders
   tableLoading = false;
   formLoading = false;
@@ -156,12 +153,6 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  // Handle Children
-  handleOpenCodeEditorRequest(templateVersionId: number) {
-    this.selectedTemplateVersion = templateVersionId;
-    this.openCodeEditor();
-  }
-
   onPageChange({ pageIndex, pageSize }: NzTableQueryParams): void {
     if (pageIndex - 1 !== this.pagination.pageIndex) {
       const paginationClone = {
@@ -182,14 +173,6 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
     } else {
       this.expandSet.delete(id);
     }
-  }
-
-  openCodeEditor() {
-    this.codeEditorVisible = true;
-  }
-
-  closeCodeEditor() {
-    this.codeEditorVisible = false;
   }
 
   openForm() {
