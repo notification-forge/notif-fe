@@ -21,7 +21,6 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   tabValue = TabValues.DESIGN;
   readonly TAB_VALUES = TabValues;
   settingsVisible: boolean = false;
-  initialDesignCode: string | null;
   detailsLoading: boolean = false;
 
   isSaving: boolean = false;
@@ -72,7 +71,6 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.shouldStopSubscribing))
         .subscribe({
           next: ({ data, loading }) => {
-            this.initialDesignCode = data.templateVersion?.body || null;
             this.editorService.initializeEmail(
               templateVersionId,
               data.templateVersion?.body || null,

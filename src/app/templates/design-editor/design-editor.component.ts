@@ -21,7 +21,6 @@ import { template } from './email-template';
 })
 export class DesignEditorComponent implements OnInit, OnDestroy {
   @Output() openSettings = new EventEmitter<null>();
-  @Input() initialDesignCode: string | null;
 
   settingsForm: FormGroup = this.editorService.settingsForm;
   designEditorOptions = { theme: 'vs-dark', language: 'html' };

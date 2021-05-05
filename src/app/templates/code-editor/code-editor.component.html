@@ -38,10 +38,7 @@
       *ngIf="!detailsLoading; else skeletonLoader"
     >
       <ng-container *ngSwitchCase="TAB_VALUES.DESIGN">
-        <app-design-editor
-          (openSettings)="openSettings()"
-          [initialDesignCode]="initialDesignCode"
-        ></app-design-editor>
+        <app-design-editor (openSettings)="openSettings()"></app-design-editor>
       </ng-container>
 
       <ng-container *ngSwitchCase="TAB_VALUES.TEST">
