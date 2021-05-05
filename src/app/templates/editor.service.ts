@@ -34,12 +34,16 @@ export class EditorService {
     templateVersionId: number,
     designCodeBody: string | null,
     templateVersionName: string,
+    settings: string,
     status: TemplateStatus
   ) {
     this._templateVersionId = templateVersionId;
     this._designCodeBody = designCodeBody;
     this.templateVersionName = templateVersionName;
     this.status = status;
+
+    const settingsJson = JSON.parse(settings);
+    this.settingsForm.setValue(settingsJson);
   }
 
   saveTemplate() {

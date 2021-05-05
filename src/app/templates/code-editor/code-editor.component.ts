@@ -71,10 +71,12 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.shouldStopSubscribing))
         .subscribe({
           next: ({ data, loading }) => {
+            console.log('daaataaa', data);
             this.editorService.initializeEmail(
               templateVersionId,
               data.templateVersion?.body || null,
               data.templateVersion?.name || '',
+              data.templateVersion?.settings || '{}',
               data.templateVersion?.status || TemplateStatus.Draft
             );
             this.detailsLoading = loading;
