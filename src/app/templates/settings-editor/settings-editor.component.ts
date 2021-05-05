@@ -26,8 +26,4 @@ export class SettingsEditorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
   }
-
-  onFormSubmit(): void {
-    console.log(this.settingsForm.value);
-  }
 }
