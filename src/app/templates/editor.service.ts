@@ -14,6 +14,7 @@ export class EditorService {
   saveSuccess$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   settingsForm: FormGroup = this.fb.group({
+    templateVersionName: [''],
     subject: ['', Validators.required],
     sender: ['', Validators.required],
     recipients: [''],
@@ -22,7 +23,6 @@ export class EditorService {
     importance: [''],
     hasAttachments: [''],
   });
-  templateVersionName: string;
   status: TemplateStatus;
 
   constructor(
@@ -39,20 +39,27 @@ export class EditorService {
   ) {
     this._templateVersionId = templateVersionId;
     this._designCodeBody = designCodeBody;
-    this.templateVersionName = templateVersionName;
     this.status = status;
 
     const settingsJson = JSON.parse(settings);
-    this.settingsForm.setValue(settingsJson);
+    this.settingsForm.setValue({
+      ...settingsJson,
+      templateVersionName,
+    });
   }
 
   saveTemplate() {
     this.saveLoading$.next(true);
+    const settingValues = this.settingsForm.value;
+    const templateVersionName = settingValues.templateVersionName;
+
+    delete settingValues['templateVersionName'];
+
     this.updateTemplateVersion
       .mutate({
         id: `${this._templateVersionId}`,
-        name: this.templateVersionName,
-        settings: JSON.stringify(this.settingsForm.value),
+        name: templateVersionName,
+        settings: JSON.stringify(settingValues),
         body: this._designCodeBody || '',
         status: this.status,
       })
