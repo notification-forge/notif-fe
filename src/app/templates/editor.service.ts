@@ -75,6 +75,21 @@ export class EditorService {
       });
   }
 
+  publishTemplate() {
+    const settingValues = this.settingsForm.value;
+    const templateVersionName = settingValues.templateVersionName;
+
+    delete settingValues['templateVersionName'];
+
+    return this.updateTemplateVersion.mutate({
+      id: `${this._templateVersionId}`,
+      name: templateVersionName,
+      settings: JSON.stringify(settingValues),
+      body: this._designCodeBody || '',
+      status: TemplateStatus.Published,
+    });
+  }
+
   get designCodeBody() {
     return this._designCodeBody;
   }

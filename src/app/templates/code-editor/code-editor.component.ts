@@ -96,6 +96,14 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     this.editorService.saveTemplate();
   }
 
+  publishTemplate() {
+    console.log('attempt to publish...');
+    this.editorService.publishTemplate().subscribe((res) => {
+      console.log('published', res);
+      this.goBack();
+    });
+  }
+
   goBack() {
     this.location.back();
   }
