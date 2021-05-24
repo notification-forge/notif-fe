@@ -9,5 +9,24 @@ query GetTemplateVersionDetails($templateVersionId: ID!) {
     status
     createdDate
     lastModifiedDate
+    plugins {
+      id
+      name
+      appCode
+      configurations {
+        name
+        displayName
+        fieldType
+        description
+        mandatory
+        allowedOptions
+        validationExpr
+        value
+      }
+      createdDate
+      createdBy
+      lastModifiedBy
+      lastModifiedDate
+    }
   }
 }

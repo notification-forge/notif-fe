@@ -556,7 +556,42 @@ export type GetTemplateVersionDetailsQuery = { __typename?: 'Query' } & {
       | 'status'
       | 'createdDate'
       | 'lastModifiedDate'
-    >
+    > & {
+        plugins?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'Plugin' } & Pick<
+                Plugin,
+                | 'id'
+                | 'name'
+                | 'appCode'
+                | 'createdDate'
+                | 'createdBy'
+                | 'lastModifiedBy'
+                | 'lastModifiedDate'
+              > & {
+                  configurations?: Maybe<
+                    Array<
+                      Maybe<
+                        { __typename?: 'Configuration' } & Pick<
+                          Configuration,
+                          | 'name'
+                          | 'displayName'
+                          | 'fieldType'
+                          | 'description'
+                          | 'mandatory'
+                          | 'allowedOptions'
+                          | 'validationExpr'
+                          | 'value'
+                        >
+                      >
+                    >
+                  >;
+                }
+            >
+          >
+        >;
+      }
   >;
 };
 
@@ -719,6 +754,25 @@ export const GetTemplateVersionDetailsDocument = gql`
       status
       createdDate
       lastModifiedDate
+      plugins {
+        id
+        name
+        appCode
+        configurations {
+          name
+          displayName
+          fieldType
+          description
+          mandatory
+          allowedOptions
+          validationExpr
+          value
+        }
+        createdDate
+        createdBy
+        lastModifiedBy
+        lastModifiedDate
+      }
     }
   }
 `;
