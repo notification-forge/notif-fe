@@ -50,10 +50,18 @@ export class EditorService {
 
   saveTemplate() {
     this.saveLoading$.next(true);
-    const settingValues = this.settingsForm.value;
+    const settingValues = JSON.parse(JSON.stringify(this.settingsForm.value));
     const templateVersionName = settingValues.templateVersionName;
 
     delete settingValues['templateVersionName'];
+
+    console.log('variables', {
+      id: `${this._templateVersionId}`,
+      name: templateVersionName,
+      settings: JSON.stringify(settingValues),
+      body: this._designCodeBody || '',
+      status: this.status,
+    });
 
     this.updateTemplateVersion
       .mutate({
