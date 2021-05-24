@@ -594,6 +594,7 @@ export type GetTemplateVersionDetailsQuery = { __typename?: 'Query' } & {
             >
           >
         >;
+        template?: Maybe<{ __typename?: 'Template' } & Pick<Template, 'type'>>;
       }
   >;
 };
@@ -775,6 +776,9 @@ export const GetTemplateVersionDetailsDocument = gql`
         createdBy
         lastModifiedBy
         lastModifiedDate
+      }
+      template {
+        type
       }
     }
   }

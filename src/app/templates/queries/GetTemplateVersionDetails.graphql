@@ -28,5 +28,8 @@ query GetTemplateVersionDetails($templateVersionId: ID!) {
       lastModifiedBy
       lastModifiedDate
     }
+    template {
+      type
+    }
   }
 }
