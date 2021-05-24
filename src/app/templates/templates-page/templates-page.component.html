@@ -63,11 +63,11 @@
           <td>
             <div
               [ngClass]="[
-                data?.alertType === 'EMAIL' ? 'email-chip' : 'teams-chip',
+                data?.type === 'EMAIL' ? 'email-chip' : 'teams-chip',
                 'chip'
               ]"
             >
-              {{ data?.alertType }}
+              {{ data?.type }}
             </div>
           </td>
           <td>{{ appMap[data?.appCode || ''].appName || 'N/A' }}</td>
@@ -127,12 +127,12 @@
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label nzFor="alertType" nzRequired> Alert Type</nz-form-label>
+        <nz-form-label nzFor="type" nzRequired> Alert Type</nz-form-label>
         <nz-form-control nzErrorTip="Please select the alert type!">
           <nz-radio-group
-            formControlName="alertType"
+            formControlName="type"
             nzButtonStyle="solid"
-            name="alertType"
+            name="type"
           >
             <label nz-radio-button nzValue="EMAIL">Email</label>
             <label nz-radio-button nzValue="TEAMS">Teams</label>

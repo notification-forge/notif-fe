@@ -12,7 +12,6 @@ mutation UpdateTemplateVersion(
       settings: $settings
       body: $body
       status: $status
-      plugins: { plugins: [] }
     }
   ) {
     id

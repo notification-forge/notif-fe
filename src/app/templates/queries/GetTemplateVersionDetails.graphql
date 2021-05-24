@@ -3,7 +3,6 @@ query GetTemplateVersionDetails($templateVersionId: ID!) {
     templateId
     id
     name
-    templateHash
     body
     settings
     version
