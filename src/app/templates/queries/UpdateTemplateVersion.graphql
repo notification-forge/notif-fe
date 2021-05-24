@@ -4,6 +4,7 @@ mutation UpdateTemplateVersion(
   $settings: String!
   $body: String!
   $status: TemplateStatus!
+  $plugins: [PluginInput]!
 ) {
   updateTemplateVersion(
     input: {
@@ -12,6 +13,7 @@ mutation UpdateTemplateVersion(
       settings: $settings
       body: $body
       status: $status
+      plugins: $plugins
     }
   ) {
     id

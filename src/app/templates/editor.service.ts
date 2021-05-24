@@ -55,14 +55,6 @@ export class EditorService {
 
     delete settingValues['templateVersionName'];
 
-    console.log('variables', {
-      id: `${this._templateVersionId}`,
-      name: templateVersionName,
-      settings: JSON.stringify(settingValues),
-      body: this._designCodeBody || '',
-      status: this.status,
-    });
-
     this.updateTemplateVersion
       .mutate({
         id: `${this._templateVersionId}`,
@@ -70,6 +62,7 @@ export class EditorService {
         settings: JSON.stringify(settingValues),
         body: this._designCodeBody || '',
         status: this.status,
+        plugins: [],
       })
       .subscribe({
         next: (_) => {
@@ -95,6 +88,7 @@ export class EditorService {
       settings: JSON.stringify(settingValues),
       body: this._designCodeBody || '',
       status: TemplateStatus.Published,
+      plugins: [],
     });
   }
 

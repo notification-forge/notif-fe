@@ -605,6 +605,7 @@ export type UpdateTemplateVersionMutationVariables = Exact<{
   settings: Scalars['String'];
   body: Scalars['String'];
   status: TemplateStatus;
+  plugins: Array<Maybe<PluginInput>> | Maybe<PluginInput>;
 }>;
 
 export type UpdateTemplateVersionMutation = { __typename?: 'Mutation' } & {
@@ -804,6 +805,7 @@ export const UpdateTemplateVersionDocument = gql`
     $settings: String!
     $body: String!
     $status: TemplateStatus!
+    $plugins: [PluginInput]!
   ) {
     updateTemplateVersion(
       input: {
@@ -812,6 +814,7 @@ export const UpdateTemplateVersionDocument = gql`
         settings: $settings
         body: $body
         status: $status
+        plugins: $plugins
       }
     ) {
       id
