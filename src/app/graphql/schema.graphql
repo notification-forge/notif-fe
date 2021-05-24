@@ -352,6 +352,12 @@ type Message {
 
   # Audit Last Modified By
   lastModifiedBy: String
+
+  # Template of message
+  template: Template
+
+  # Template Version of message
+  templateVersion: TemplateVersion
 }
 
 #
@@ -730,6 +736,9 @@ type TemplateVersion {
 
   # Audit Last Modified By
   lastModifiedBy: String
+
+  # Template of template version
+  template: Template
 }
 
 #

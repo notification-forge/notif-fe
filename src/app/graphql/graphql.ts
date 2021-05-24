@@ -170,6 +170,8 @@ export type Message = {
   createdBy?: Maybe<Scalars['String']>;
   lastModifiedDate?: Maybe<Scalars['Date']>;
   lastModifiedBy?: Maybe<Scalars['String']>;
+  template?: Maybe<Template>;
+  templateVersion?: Maybe<TemplateVersion>;
 };
 
 export type MessageConnection = {
@@ -415,6 +417,7 @@ export type TemplateVersion = {
   createdBy?: Maybe<Scalars['String']>;
   lastModifiedDate?: Maybe<Scalars['Date']>;
   lastModifiedBy?: Maybe<Scalars['String']>;
+  template?: Maybe<Template>;
 };
 
 export type UpdateAppInput = {
