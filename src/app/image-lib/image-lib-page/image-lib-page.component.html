@@ -1,14 +1,25 @@
 <section class="image-lib-page-wrapper">
   <div class="button-wrapper">
-    <button nz-button nzType="primary">Upload New Image</button>
+    <button nz-button nzType="primary" (click)="openForm()">
+      Upload New Image
+    </button>
   </div>
   <div class="input-wrapper">
     <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-      <input type="text" nz-input placeholder="Search for image file name" />
+      <input
+        type="text"
+        nz-input
+        placeholder="Search for image file name"
+        [ngModel]="query"
+        (ngModelChange)="onSearch($event)"
+      />
     </nz-input-group>
 
     <nz-select
-      [(ngModel)]="tagValue"
+      name="app"
+      ngDefaultControl
+      [ngModel]="selectedAppCodes"
+      (ngModelChange)="onAppFilterSelect($event)"
       nzMode="tags"
       nzPlaceHolder="Please select app"
     >
@@ -49,3 +60,65 @@
     <i nz-icon nzType="search"></i>
   </button>
 </ng-template>
+
+<nz-modal
+  [(nzVisible)]="showUploadImageForm"
+  nzTitle="Upload Image"
+  (nzOnCancel)="closeForm()"
+  [nzFooter]="modalFooter"
+>
+  <ng-template nzModalContent>
+    <form nz-form [formGroup]="uploadImageForm">
+      <nz-form-item>
+        <nz-form-label nzFor="appCode" nzRequired> App Code</nz-form-label>
+        <nz-form-control nzErrorTip="Please select the app code!">
+          <nz-select
+            formControlName="appCode"
+            name="appCode"
+            nzPlaceHolder="Please select app"
+          >
+            <nz-option
+              *ngFor="let app of appList"
+              [nzLabel]="app.appName"
+              [nzValue]="app.appCode"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="file" nzRequired> Choose File </nz-form-label>
+        <input
+          #fileInput
+          type="file"
+          formControlName="file"
+          (change)="onChange($event)"
+        />
+        <!-- <nz-form-control nzErrorTip="Please upload Image!">
+          <nz-input-group nzPrefixIcon="user">
+            <input
+              type="text"
+              nz-input
+              formControlName="templateName"
+              placeholder="Template Name"
+              name="templateName"
+            />
+          </nz-input-group>
+        </nz-form-control> -->
+      </nz-form-item>
+    </form>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="closeForm()">Cancel</button>
+    <button
+      nz-button
+      [nzType]="'primary'"
+      type="submit"
+      (click)="onFormSubmit()"
+      [disabled]="!uploadImageForm.valid"
+      [nzLoading]="formLoading"
+    >
+      Upload Image
+    </button>
+  </ng-template>
+</nz-modal>

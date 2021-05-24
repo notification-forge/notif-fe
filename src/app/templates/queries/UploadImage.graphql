@@ -1,0 +1,5 @@
+mutation uploadImage($appCode: String!,$file:Upload!) {
+  uploadImage(input: { appCode: $appCode,file: $file }) {
+    id
+  }
+}

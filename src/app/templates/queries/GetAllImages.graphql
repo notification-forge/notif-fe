@@ -1,0 +1,36 @@
+query GetAllImages(
+  $name: String!
+  $appCodes: [String!]
+  $pageNumber: Int!
+  $rowPerPage: Int!
+){
+  images(
+    searchFilter:{
+        fileNamePortion: $name,
+        appCodes: $appCodes
+    }, 
+    pageRequestInput: {
+      pageNumber: $pageNumber
+      rowPerPage: $rowPerPage
+      sortDirection: ASC
+      sortField: "fileName"
+  	}
+  ){
+    edges {
+      node{
+        id
+        appCode
+        fileName
+        contentType
+        fileSignature
+        status
+        imageData
+      }
+    }
+    totalCount
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+    }
+  }
+}

@@ -159,6 +159,12 @@ export enum ImageStatus {
   Deleted = 'DELETED',
 }
 
+export type UploadImage = {
+  __typename?: 'UploadImage';
+  appCode?: Maybe<Scalars['String']>;
+  file?: Scalars['Upload'];
+};
+
 export type Message = {
   __typename?: 'Message';
   id?: Maybe<Scalars['ID']>;
@@ -439,6 +445,18 @@ export type CreateTemplateMutationVariables = Exact<{
   appCode: Scalars['String'];
 }>;
 
+export type UploadImageMutationVariables = Exact<{
+  file: Scalars['Upload'];
+  appCode: Scalars['String'];
+}>;
+
+export type UploadImageMutation = { __typename?: 'Mutation' } & {
+  uploadImage: { __typename?: 'UploadImage' } & Pick<
+    UploadImage,
+    'appCode' | 'file'
+  >;
+};
+
 export type CreateTemplateMutation = { __typename?: 'Mutation' } & {
   createTemplate: { __typename?: 'Template' } & Pick<
     Template,
@@ -454,6 +472,46 @@ export type CreateTemplateVersionMutation = { __typename?: 'Mutation' } & {
   createTemplateVersion: { __typename?: 'TemplateVersion' } & Pick<
     TemplateVersion,
     'id' | 'templateId' | 'status'
+  >;
+};
+
+export type GetAllImagesQueryVariables = Exact<{
+  name: Scalars['String'];
+  appCodes?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  pageNumber: Scalars['Int'];
+  rowPerPage: Scalars['Int'];
+}>;
+
+export type GetAllImagesQuery = { __typename?: 'Query' } & {
+  images?: Maybe<
+    { __typename?: 'ImageConnection' } & Pick<ImageConnection, 'totalCount'> & {
+        edges?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'ImageConnectionEdge' } & {
+                node?: Maybe<
+                  { __typename?: 'Image' } & Pick<
+                    Image,
+                    | 'id'
+                    | 'appCode'
+                    | 'fileName'
+                    | 'contentType'
+                    | 'fileSignature'
+                    | 'status'
+                    | 'imageData'
+                  >
+                >;
+              }
+            >
+          >
+        >;
+        pageInfo?: Maybe<
+          { __typename?: 'PageInfo' } & Pick<
+            PageInfo,
+            'hasPreviousPage' | 'hasNextPage'
+          >
+        >;
+      }
   >;
 };
 
@@ -609,6 +667,76 @@ export class CreateTemplateVersionGQL extends Apollo.Mutation<
   CreateTemplateVersionMutationVariables
 > {
   document = CreateTemplateVersionDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
+export const UploadImageDocument = gql`
+  mutation uploadImage($appCode: String!, $file: Upload!) {
+    uploadImage(appCode: $appCode, file: $file) {
+      id
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UploadImageGQL extends Apollo.Mutation<
+  UploadImageMutation,
+  UploadImageMutationVariables
+> {
+  document = UploadImageDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
+export const GetAllImagesDocument = gql`
+  query GetAllImages(
+    $name: String!
+    $appCodes: [String!]
+    $pageNumber: Int!
+    $rowPerPage: Int!
+  ) {
+    images(
+      searchFilter: { fileNamePortion: $name, appCodes: $appCodes }
+      pageRequestInput: {
+        pageNumber: $pageNumber
+        rowPerPage: $rowPerPage
+        sortDirection: ASC
+        sortField: "fileName"
+      }
+    ) {
+      edges {
+        node {
+          id
+          appCode
+          fileName
+          contentType
+          fileSignature
+          status
+          imageData
+        }
+      }
+      totalCount
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+      }
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GetAllImagesGQL extends Apollo.Query<
+  GetAllImagesQuery,
+  GetAllImagesQueryVariables
+> {
+  document = GetAllImagesDocument;
 
   constructor(apollo: Apollo.Apollo) {
     super(apollo);
