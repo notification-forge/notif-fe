@@ -3,13 +3,14 @@ query GetTemplateDetails($id: ID!) {
     id
     name
     uuid
-    alertType
+    type
     appCode
     templateVersions {
       id
       name
       status
       lastModifiedDate
+      createdBy
     }
   }
 }

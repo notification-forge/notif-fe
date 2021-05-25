@@ -3,12 +3,33 @@ query GetTemplateVersionDetails($templateVersionId: ID!) {
     templateId
     id
     name
-    templateHash
     body
     settings
     version
     status
     createdDate
     lastModifiedDate
+    plugins {
+      id
+      name
+      appCode
+      configurations {
+        name
+        displayName
+        fieldType
+        description
+        mandatory
+        allowedOptions
+        validationExpr
+        value
+      }
+      createdDate
+      createdBy
+      lastModifiedBy
+      lastModifiedDate
+    }
+    template {
+      type
+    }
   }
 }

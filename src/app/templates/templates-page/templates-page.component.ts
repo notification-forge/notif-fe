@@ -4,7 +4,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
-  AlertType,
+  MessageType,
   CreateTemplateGQL,
   GetAllTemplatesWithPagesGQL,
   Template,
@@ -35,7 +35,7 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   showCreateTemplateForm = false;
   createTemplateForm = this.fb.group({
     templateName: ['', Validators.required],
-    alertType: ['EMAIL' as AlertType, Validators.required],
+    type: ['EMAIL' as MessageType, Validators.required],
     appCode: ['', Validators.required],
   });
 
@@ -202,10 +202,10 @@ export class TemplatesPageComponent implements OnInit, OnDestroy {
   }
 
   onFormSubmit() {
-    const { templateName, alertType, appCode } = this.createTemplateForm.value;
+    const { templateName, type, appCode } = this.createTemplateForm.value;
     this.formLoading = true;
     this.createTemplateQuery
-      .mutate({ name: templateName, alertType, appCode })
+      .mutate({ name: templateName, type, appCode })
       .pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: (_) => {

@@ -21,7 +21,7 @@
     ></ngx-monaco-editor>
   </div>
 
-  <div class="preview-wrapper">
+  <div class="preview-wrapper" *ngIf="showPreview">
     <div class="preview-header">
       <nz-avatar
         [nzGap]="8"

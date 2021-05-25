@@ -1,12 +1,3 @@
-# Setting template Type to choose between email or teams messaging
-enum AlertType {
-  #
-  TEAMS
-
-  #
-  EMAIL
-}
-
 #
 type App {
   # App code of application
@@ -129,7 +120,7 @@ input CloneTemplateVersionInput {
 
   # Plugins to be used when Template Version is being called
   # Add configurations for each plugins
-  plugins: PluginsInput
+  plugins: [PluginInput]
 }
 
 #
@@ -201,7 +192,7 @@ input CreateTemplateInput {
   name: String
 
   # choosing between email or teams messaging
-  alertType: AlertType
+  type: MessageType
 
   #
   appCode: String
@@ -320,31 +311,34 @@ type Message {
   #
   id: ID
 
-  #
+  # Template related to Message
   templateId: Int
 
-  #
+  # Template Version related to Message
   templateVersionId: Int
 
-  #
+  # App code related to Message
   appCode: String
 
-  #
+  # Content to fit into Template Body
   content: String
 
-  #
+  # Settings to be set within the template.
+  # Note: EMAILS and TEAMS_MESSAGE have different settings
+  # refer to template version entity for more info
   settings: String
 
-  #
-  messageType: MessageType
+  # Setting template Type to choose between email or teams messaging
+  type: MessageType
 
-  #
-  messageStatus: MessageStatus
+  # Status of the message
+  # Enum for PENDING / SENT / FAILED
+  status: MessageStatus
 
-  #
+  # Reason for FAILED
   reason: String
 
-  #
+  # Number of times triggered
   timesTriggered: Int
 
   # Audit Created Date
@@ -358,6 +352,33 @@ type Message {
 
   # Audit Last Modified By
   lastModifiedBy: String
+
+  # Template of message
+  template: Template
+
+  # Template Version of message
+  templateVersion: TemplateVersion
+}
+
+#
+type MessageConnection {
+  #
+  totalCount: Int
+
+  #
+  edges: [MessageConnectionEdge]
+
+  #
+  pageInfo: PageInfo
+}
+
+#
+type MessageConnectionEdge {
+  #
+  cursor: String
+
+  #
+  node: Message
 }
 
 #
@@ -366,13 +387,13 @@ input MessageInput {
   templateUUID: String
 
   #
-  templateHash: Int
+  templateDigest: String
 
   #
   content: String
 
   #
-  setting: String
+  settings: String
 
   #
   messageType: MessageType
@@ -393,7 +414,7 @@ enum MessageStatus {
 #
 enum MessageType {
   #
-  MAIL
+  EMAIL
 
   #
   TEAMS
@@ -535,12 +556,6 @@ input PluginInput {
 }
 
 #
-input PluginsInput {
-  #
-  plugins: [PluginInput]
-}
-
-#
 type Query {
   # Query on an individual template
   # id -> Template's id
@@ -579,6 +594,20 @@ type Query {
   # Query on available plugins for app
   # appCode -> App code onboarded
   plugins(appCode: String): [Plugin]
+
+  # Query on an individual message
+  # id -> Message's id
+  message(id: ID): Message
+
+  # Query on messages with pagination
+  # name -> search for template name
+  # appCode -> filter by the app code user wish to view
+  # paginationInput -> pagination inputs such as current page, page limit and sort
+  messages(
+    name: String
+    appCode: String
+    pageRequestInput: PaginationInput
+  ): MessageConnection
 }
 
 #
@@ -602,7 +631,7 @@ type Template {
   uuid: String
 
   # Setting template Type to choose between email or teams messaging
-  alertType: String
+  type: MessageType
 
   # Connecting template to the application that uses this template
   appCode: String
@@ -670,10 +699,10 @@ type TemplateVersion {
   # Name of the template version
   name: String
 
-  # Hash of the template version
+  # Digest of the template version
   # Ensuring that each template version is different
-  # Hashing -> TemplateId, body, settings, status
-  templateHash: String
+  # Digest of -> body, settings
+  templateDigest: String
 
   # Template body
   # EMAILS -> HTML format
@@ -707,6 +736,9 @@ type TemplateVersion {
 
   # Audit Last Modified By
   lastModifiedBy: String
+
+  # Template of template version
+  template: Template
 }
 
 #
@@ -770,7 +802,7 @@ input UpdateTemplateVersionInput {
 
   # Plugins to be used when Template Version is being called
   # Add configurations for each plugins
-  plugins: PluginsInput
+  plugins: [PluginInput]
 }
 
 #

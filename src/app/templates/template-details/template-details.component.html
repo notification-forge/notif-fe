@@ -62,7 +62,7 @@
               {{ data?.status }}
             </div>
           </td>
-          <td>PENDING BACKEND API</td>
+          <td>{{ data?.createdBy || 'N/A' }}</td>
           <td>{{ data?.lastModifiedDate }}</td>
           <td>
             <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
@@ -70,11 +70,12 @@
             </a>
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu nzSelectable>
-                <li
-                  nz-menu-item
-                  [routerLink]="['/templates/editor', data?.id || -1]"
-                >
-                  Edit Draft
+                <li nz-menu-item (click)="handleEditDraft(data)">
+                  {{
+                    data?.status === 'PUBLISHED'
+                      ? 'New Draft From This Version'
+                      : 'Edit Draft'
+                  }}
                 </li>
                 <li nz-menu-item nzDanger>Delete</li>
               </ul>

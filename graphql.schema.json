@@ -9,29 +9,6 @@
     "subscriptionType": null,
     "types": [
       {
-        "kind": "ENUM",
-        "name": "AlertType",
-        "description": null,
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "TEAMS",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "EMAIL",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "App",
         "description": null,
@@ -482,9 +459,13 @@
             "name": "plugins",
             "description": null,
             "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "PluginsInput",
-              "ofType": null
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "PluginInput",
+                "ofType": null
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -787,11 +768,11 @@
             "deprecationReason": null
           },
           {
-            "name": "alertType",
+            "name": "type",
             "description": null,
             "type": {
               "kind": "ENUM",
-              "name": "AlertType",
+              "name": "MessageType",
               "ofType": null
             },
             "defaultValue": null,
@@ -1270,7 +1251,7 @@
             "deprecationReason": null
           },
           {
-            "name": "messageType",
+            "name": "type",
             "description": null,
             "args": [],
             "type": {
@@ -1282,7 +1263,7 @@
             "deprecationReason": null
           },
           {
-            "name": "messageStatus",
+            "name": "status",
             "description": null,
             "args": [],
             "type": {
@@ -1364,6 +1345,116 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "template",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Template",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "templateVersion",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "TemplateVersion",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "MessageConnection",
+        "description": null,
+        "fields": [
+          {
+            "name": "totalCount",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "edges",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "MessageConnectionEdge",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pageInfo",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "PageInfo",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "MessageConnectionEdge",
+        "description": null,
+        "fields": [
+          {
+            "name": "cursor",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "node",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Message",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -1390,11 +1481,11 @@
             "deprecationReason": null
           },
           {
-            "name": "templateHash",
+            "name": "templateDigest",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -1414,7 +1505,7 @@
             "deprecationReason": null
           },
           {
-            "name": "setting",
+            "name": "settings",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1480,7 +1571,7 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "MAIL",
+            "name": "EMAIL",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -2251,33 +2342,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "PluginsInput",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "plugins",
-            "description": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "PluginInput",
-                "ofType": null
-              }
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "Query",
         "description": null,
@@ -2500,6 +2564,80 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "message",
+            "description": null,
+            "args": [
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Message",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "messages",
+            "description": null,
+            "args": [
+              {
+                "name": "name",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "appCode",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "pageRequestInput",
+                "description": null,
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "PaginationInput",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "MessageConnection",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -2572,12 +2710,12 @@
             "deprecationReason": null
           },
           {
-            "name": "alertType",
+            "name": "type",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "MessageType",
               "ofType": null
             },
             "isDeprecated": false,
@@ -2816,7 +2954,7 @@
             "deprecationReason": null
           },
           {
-            "name": "templateHash",
+            "name": "templateDigest",
             "description": null,
             "args": [],
             "type": {
@@ -2934,6 +3072,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "template",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Template",
               "ofType": null
             },
             "isDeprecated": false,
@@ -3157,9 +3307,13 @@
             "name": "plugins",
             "description": null,
             "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "PluginsInput",
-              "ofType": null
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "INPUT_OBJECT",
+                "name": "PluginInput",
+                "ofType": null
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,

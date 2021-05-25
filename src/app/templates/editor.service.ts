@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { TemplateStatus, UpdateTemplateVersionGQL } from '../graphql/graphql';
+import {
+  MessageType,
+  TemplateStatus,
+  UpdateTemplateVersionGQL,
+} from '../graphql/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +28,7 @@ export class EditorService {
     hasAttachments: [''],
   });
   status: TemplateStatus;
+  type: MessageType;
 
   constructor(
     private fb: FormBuilder,
@@ -35,14 +40,73 @@ export class EditorService {
     designCodeBody: string | null,
     templateVersionName: string,
     settings: string,
-    status: TemplateStatus
+    status: TemplateStatus,
+    type: MessageType
   ) {
     this._templateVersionId = templateVersionId;
     this._designCodeBody = designCodeBody;
     this.status = status;
+    this.type = type;
 
     const settingsJson = JSON.parse(settings);
+
+    const defaultEmailSettings = {
+      templateVersionName: '',
+      subject: '',
+      sender: '',
+      recipients: '',
+      ccRecipients: '',
+      bccRecipients: '',
+      importance: '',
+      hasAttachments: '',
+    };
+
     this.settingsForm.setValue({
+      ...defaultEmailSettings,
+      ...settingsJson,
+      templateVersionName,
+    });
+  }
+
+  initializeTeams(
+    templateVersionId: number,
+    designCodeBody: string | null,
+    templateVersionName: string,
+    settings: string,
+    status: TemplateStatus,
+    type: MessageType
+  ) {
+    this._templateVersionId = templateVersionId;
+    this._designCodeBody = designCodeBody;
+    this.status = status;
+    this.type = type;
+
+    const settingsJson = JSON.parse(settings);
+
+    this.settingsForm = this.fb.group({
+      templateVersionName: [''],
+      subject: ['', Validators.required],
+      sender: ['', Validators.required],
+      recipients: [''],
+      ccRecipients: [''],
+      bccRecipients: [''],
+      importance: [''],
+      hasAttachments: [''],
+    });
+
+    const defaultEmailSettings = {
+      templateVersionName: '',
+      subject: '',
+      sender: '',
+      recipients: '',
+      ccRecipients: '',
+      bccRecipients: '',
+      importance: '',
+      hasAttachments: '',
+    };
+
+    this.settingsForm.setValue({
+      ...defaultEmailSettings,
       ...settingsJson,
       templateVersionName,
     });
@@ -50,7 +114,7 @@ export class EditorService {
 
   saveTemplate() {
     this.saveLoading$.next(true);
-    const settingValues = this.settingsForm.value;
+    const settingValues = JSON.parse(JSON.stringify(this.settingsForm.value));
     const templateVersionName = settingValues.templateVersionName;
 
     delete settingValues['templateVersionName'];
@@ -62,6 +126,7 @@ export class EditorService {
         settings: JSON.stringify(settingValues),
         body: this._designCodeBody || '',
         status: this.status,
+        plugins: [],
       })
       .subscribe({
         next: (_) => {
@@ -73,6 +138,22 @@ export class EditorService {
           this.saveLoading$.next(false);
         },
       });
+  }
+
+  publishTemplate() {
+    const settingValues = this.settingsForm.value;
+    const templateVersionName = settingValues.templateVersionName;
+
+    delete settingValues['templateVersionName'];
+
+    return this.updateTemplateVersion.mutate({
+      id: `${this._templateVersionId}`,
+      name: templateVersionName,
+      settings: JSON.stringify(settingValues),
+      body: this._designCodeBody || '',
+      status: TemplateStatus.Published,
+      plugins: [],
+    });
   }
 
   get designCodeBody() {

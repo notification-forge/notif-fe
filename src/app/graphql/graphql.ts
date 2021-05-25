@@ -20,11 +20,6 @@ export type Scalars = {
   Upload: any;
 };
 
-export enum AlertType {
-  Teams = 'TEAMS',
-  Email = 'EMAIL',
-}
-
 export type App = {
   __typename?: 'App';
   appCode?: Maybe<Scalars['ID']>;
@@ -70,7 +65,7 @@ export type CloneTemplateVersionInput = {
   name?: Maybe<Scalars['String']>;
   settings?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['String']>;
-  plugins?: Maybe<PluginsInput>;
+  plugins?: Maybe<Array<Maybe<PluginInput>>>;
 };
 
 export type Configuration = {
@@ -103,7 +98,7 @@ export type CreateAppInput = {
 
 export type CreateTemplateInput = {
   name?: Maybe<Scalars['String']>;
-  alertType?: Maybe<AlertType>;
+  type?: Maybe<MessageType>;
   appCode?: Maybe<Scalars['String']>;
 };
 
@@ -167,21 +162,36 @@ export type Message = {
   appCode?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   settings?: Maybe<Scalars['String']>;
-  messageType?: Maybe<MessageType>;
-  messageStatus?: Maybe<MessageStatus>;
+  type?: Maybe<MessageType>;
+  status?: Maybe<MessageStatus>;
   reason?: Maybe<Scalars['String']>;
   timesTriggered?: Maybe<Scalars['Int']>;
   createdDate?: Maybe<Scalars['Date']>;
   createdBy?: Maybe<Scalars['String']>;
   lastModifiedDate?: Maybe<Scalars['Date']>;
   lastModifiedBy?: Maybe<Scalars['String']>;
+  template?: Maybe<Template>;
+  templateVersion?: Maybe<TemplateVersion>;
+};
+
+export type MessageConnection = {
+  __typename?: 'MessageConnection';
+  totalCount?: Maybe<Scalars['Int']>;
+  edges?: Maybe<Array<Maybe<MessageConnectionEdge>>>;
+  pageInfo?: Maybe<PageInfo>;
+};
+
+export type MessageConnectionEdge = {
+  __typename?: 'MessageConnectionEdge';
+  cursor?: Maybe<Scalars['String']>;
+  node?: Maybe<Message>;
 };
 
 export type MessageInput = {
   templateUUID?: Maybe<Scalars['String']>;
-  templateHash?: Maybe<Scalars['Int']>;
+  templateDigest?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
-  setting?: Maybe<Scalars['String']>;
+  settings?: Maybe<Scalars['String']>;
   messageType?: Maybe<MessageType>;
 };
 
@@ -192,7 +202,7 @@ export enum MessageStatus {
 }
 
 export enum MessageType {
-  Mail = 'MAIL',
+  Email = 'EMAIL',
   Teams = 'TEAMS',
 }
 
@@ -301,10 +311,6 @@ export type PluginInput = {
   configurations?: Maybe<Array<Maybe<ConfigurationInput>>>;
 };
 
-export type PluginsInput = {
-  plugins?: Maybe<Array<Maybe<PluginInput>>>;
-};
-
 export type Query = {
   __typename?: 'Query';
   template?: Maybe<Template>;
@@ -314,6 +320,8 @@ export type Query = {
   app?: Maybe<App>;
   user?: Maybe<User>;
   plugins?: Maybe<Array<Maybe<Plugin>>>;
+  message?: Maybe<Message>;
+  messages?: Maybe<MessageConnection>;
 };
 
 export type QueryTemplateArgs = {
@@ -347,6 +355,16 @@ export type QueryPluginsArgs = {
   appCode?: Maybe<Scalars['String']>;
 };
 
+export type QueryMessageArgs = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type QueryMessagesArgs = {
+  name?: Maybe<Scalars['String']>;
+  appCode?: Maybe<Scalars['String']>;
+  pageRequestInput?: Maybe<PaginationInput>;
+};
+
 export enum SortDirection {
   Asc = 'ASC',
   Desc = 'DESC',
@@ -357,7 +375,7 @@ export type Template = {
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   uuid?: Maybe<Scalars['String']>;
-  alertType?: Maybe<Scalars['String']>;
+  type?: Maybe<MessageType>;
   appCode?: Maybe<Scalars['String']>;
   templateVersions?: Maybe<Array<Maybe<TemplateVersion>>>;
   createdDate?: Maybe<Scalars['Date']>;
@@ -389,7 +407,7 @@ export type TemplateVersion = {
   id?: Maybe<Scalars['Int']>;
   templateId?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
-  templateHash?: Maybe<Scalars['String']>;
+  templateDigest?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['String']>;
   settings?: Maybe<Scalars['String']>;
   version?: Maybe<Scalars['String']>;
@@ -399,6 +417,7 @@ export type TemplateVersion = {
   createdBy?: Maybe<Scalars['String']>;
   lastModifiedDate?: Maybe<Scalars['Date']>;
   lastModifiedBy?: Maybe<Scalars['String']>;
+  template?: Maybe<Template>;
 };
 
 export type UpdateAppInput = {
@@ -423,7 +442,7 @@ export type UpdateTemplateVersionInput = {
   settings?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['String']>;
   status?: Maybe<TemplateStatus>;
-  plugins?: Maybe<PluginsInput>;
+  plugins?: Maybe<Array<Maybe<PluginInput>>>;
 };
 
 export type User = {
@@ -435,14 +454,14 @@ export type User = {
 
 export type CreateTemplateMutationVariables = Exact<{
   name: Scalars['String'];
-  alertType: AlertType;
+  type: MessageType;
   appCode: Scalars['String'];
 }>;
 
 export type CreateTemplateMutation = { __typename?: 'Mutation' } & {
   createTemplate: { __typename?: 'Template' } & Pick<
     Template,
-    'name' | 'uuid' | 'alertType' | 'appCode' | 'createdDate'
+    'name' | 'uuid' | 'type' | 'appCode' | 'createdDate'
   >;
 };
 
@@ -478,7 +497,7 @@ export type GetAllTemplatesWithPagesQuery = { __typename?: 'Query' } & {
                   { __typename?: 'Template' } & Pick<
                     Template,
                     | 'name'
-                    | 'alertType'
+                    | 'type'
                     | 'id'
                     | 'uuid'
                     | 'appCode'
@@ -507,14 +526,14 @@ export type GetTemplateDetailsQuery = { __typename?: 'Query' } & {
   template?: Maybe<
     { __typename?: 'Template' } & Pick<
       Template,
-      'id' | 'name' | 'uuid' | 'alertType' | 'appCode'
+      'id' | 'name' | 'uuid' | 'type' | 'appCode'
     > & {
         templateVersions?: Maybe<
           Array<
             Maybe<
               { __typename?: 'TemplateVersion' } & Pick<
                 TemplateVersion,
-                'id' | 'name' | 'status' | 'lastModifiedDate'
+                'id' | 'name' | 'status' | 'lastModifiedDate' | 'createdBy'
               >
             >
           >
@@ -534,14 +553,49 @@ export type GetTemplateVersionDetailsQuery = { __typename?: 'Query' } & {
       | 'templateId'
       | 'id'
       | 'name'
-      | 'templateHash'
       | 'body'
       | 'settings'
       | 'version'
       | 'status'
       | 'createdDate'
       | 'lastModifiedDate'
-    >
+    > & {
+        plugins?: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'Plugin' } & Pick<
+                Plugin,
+                | 'id'
+                | 'name'
+                | 'appCode'
+                | 'createdDate'
+                | 'createdBy'
+                | 'lastModifiedBy'
+                | 'lastModifiedDate'
+              > & {
+                  configurations?: Maybe<
+                    Array<
+                      Maybe<
+                        { __typename?: 'Configuration' } & Pick<
+                          Configuration,
+                          | 'name'
+                          | 'displayName'
+                          | 'fieldType'
+                          | 'description'
+                          | 'mandatory'
+                          | 'allowedOptions'
+                          | 'validationExpr'
+                          | 'value'
+                        >
+                      >
+                    >
+                  >;
+                }
+            >
+          >
+        >;
+        template?: Maybe<{ __typename?: 'Template' } & Pick<Template, 'type'>>;
+      }
   >;
 };
 
@@ -551,6 +605,7 @@ export type UpdateTemplateVersionMutationVariables = Exact<{
   settings: Scalars['String'];
   body: Scalars['String'];
   status: TemplateStatus;
+  plugins: Array<Maybe<PluginInput>> | Maybe<PluginInput>;
 }>;
 
 export type UpdateTemplateVersionMutation = { __typename?: 'Mutation' } & {
@@ -563,15 +618,13 @@ export type UpdateTemplateVersionMutation = { __typename?: 'Mutation' } & {
 export const CreateTemplateDocument = gql`
   mutation CreateTemplate(
     $name: String!
-    $alertType: AlertType!
+    $type: MessageType!
     $appCode: String!
   ) {
-    createTemplate(
-      input: { name: $name, alertType: $alertType, appCode: $appCode }
-    ) {
+    createTemplate(input: { name: $name, type: $type, appCode: $appCode }) {
       name
       uuid
-      alertType
+      type
       appCode
       createdDate
     }
@@ -635,7 +688,7 @@ export const GetAllTemplatesWithPagesDocument = gql`
       edges {
         node {
           name
-          alertType
+          type
           id
           uuid
           appCode
@@ -669,13 +722,14 @@ export const GetTemplateDetailsDocument = gql`
       id
       name
       uuid
-      alertType
+      type
       appCode
       templateVersions {
         id
         name
         status
         lastModifiedDate
+        createdBy
       }
     }
   }
@@ -700,13 +754,34 @@ export const GetTemplateVersionDetailsDocument = gql`
       templateId
       id
       name
-      templateHash
       body
       settings
       version
       status
       createdDate
       lastModifiedDate
+      plugins {
+        id
+        name
+        appCode
+        configurations {
+          name
+          displayName
+          fieldType
+          description
+          mandatory
+          allowedOptions
+          validationExpr
+          value
+        }
+        createdDate
+        createdBy
+        lastModifiedBy
+        lastModifiedDate
+      }
+      template {
+        type
+      }
     }
   }
 `;
@@ -731,6 +806,7 @@ export const UpdateTemplateVersionDocument = gql`
     $settings: String!
     $body: String!
     $status: TemplateStatus!
+    $plugins: [PluginInput]!
   ) {
     updateTemplateVersion(
       input: {
@@ -739,7 +815,7 @@ export const UpdateTemplateVersionDocument = gql`
         settings: $settings
         body: $body
         status: $status
-        plugins: { plugins: [] }
+        plugins: $plugins
       }
     ) {
       id

@@ -1,14 +1,12 @@
 mutation CreateTemplate(
   $name: String!
-  $alertType: AlertType!
+  $type: MessageType!
   $appCode: String!
 ) {
-  createTemplate(
-    input: { name: $name, alertType: $alertType, appCode: $appCode }
-  ) {
+  createTemplate(input: { name: $name, type: $type, appCode: $appCode }) {
     name
     uuid
-    alertType
+    type
     appCode
     createdDate
   }
