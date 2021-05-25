@@ -49,7 +49,6 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe({
         next: ({ data, loading }) => {
-          console.log(data);
           this.detailsIsLoading = loading;
           this.templateVersionList = data.template?.templateVersions || [];
         },
