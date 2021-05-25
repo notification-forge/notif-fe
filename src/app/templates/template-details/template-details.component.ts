@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
@@ -60,11 +53,15 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
       .mutate({ templateId: `${this.templateID}` })
       .pipe(
         switchMap((res) => {
-          this.router.navigate([
-            'templates',
-            'editor',
-            res.data?.createTemplateVersion.id || -1,
-          ]);
+          console.log(res);
+          if (res.data) {
+            this.router.navigate([
+              'templates',
+              'editor',
+              res.data.createTemplateVersion.id || -1,
+            ]);
+          }
+
           return this.getTemplateDetails.fetch(
             { id: `${this.templateID}` },
             { fetchPolicy: 'network-only' }
@@ -77,5 +74,15 @@ export class TemplateDetailsComponent implements OnInit, OnDestroy {
             details.data.template?.templateVersions || [];
         },
       });
+  }
+
+  handleEditDraft(templateVersion: TemplateVersion | null) {
+    if (!templateVersion) return;
+
+    if (templateVersion.status === 'DRAFT') {
+      this.router.navigate(['templates', 'editor', templateVersion.id]);
+    } else {
+      this.createVersion();
+    }
   }
 }
