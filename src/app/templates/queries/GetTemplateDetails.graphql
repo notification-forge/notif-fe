@@ -10,6 +10,7 @@ query GetTemplateDetails($id: ID!) {
       name
       status
       lastModifiedDate
+      createdBy
     }
   }
 }

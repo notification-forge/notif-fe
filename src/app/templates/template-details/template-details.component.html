@@ -62,7 +62,7 @@
               {{ data?.status }}
             </div>
           </td>
-          <td>PENDING BACKEND API</td>
+          <td>{{ data?.createdBy || 'N/A' }}</td>
           <td>{{ data?.lastModifiedDate }}</td>
           <td>
             <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
