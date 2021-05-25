@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
   GetTemplateVersionDetailsGQL,
+  MessageType,
   TemplateStatus,
 } from 'src/app/graphql/graphql';
 import { LayoutService } from 'src/app/shared/layout.service';
@@ -71,13 +72,14 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.shouldStopSubscribing))
         .subscribe({
           next: ({ data, loading }) => {
-            // console.log(data);
+            console.log(data);
             this.editorService.initializeEmail(
               templateVersionId,
               data.templateVersion?.body || null,
               data.templateVersion?.name || '',
               data.templateVersion?.settings || '{}',
-              data.templateVersion?.status || TemplateStatus.Draft
+              data.templateVersion?.status || TemplateStatus.Draft,
+              data.templateVersion?.template?.type || MessageType.Email
             );
             this.detailsLoading = loading;
           },

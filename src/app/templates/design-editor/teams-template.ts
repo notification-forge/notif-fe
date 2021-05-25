@@ -1,4 +1,4 @@
-const teamsTemplate = `{
+export const teamsTemplate = `{
     "@type": "MessageCard",
     "@context": "http://schema.org/extensions",
     "themeColor": "0076D7",

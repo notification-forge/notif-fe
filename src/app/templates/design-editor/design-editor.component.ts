@@ -8,8 +8,10 @@ import {
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { MessageType } from 'src/app/graphql/graphql';
 import { EditorService } from '../editor.service';
 import { emailTemplate } from './email-template';
+import { teamsTemplate } from './teams-template';
 
 @Component({
   selector: 'app-design-editor',
@@ -24,11 +26,21 @@ export class DesignEditorComponent implements OnInit, OnDestroy {
 
   designCode: string;
   designCodeChange$: Subject<string> = new Subject<string>();
+  type: MessageType;
+  showPreview: boolean = true;
 
   constructor(private editorService: EditorService) {}
 
   ngOnInit(): void {
-    this.designCode = this.editorService.designCodeBody || emailTemplate;
+    this.type = this.editorService.type;
+    this.designEditorOptions.language =
+      this.editorService.type === MessageType.Email ? 'html' : 'json';
+    this.showPreview = this.editorService.type === MessageType.Email;
+    this.designCode =
+      this.editorService.designCodeBody ||
+      this.editorService.type === MessageType.Email
+        ? emailTemplate
+        : teamsTemplate;
     this.designCodeChange$.pipe(debounceTime(1000)).subscribe((newBody) => {
       this.designCode = newBody;
       this.editorService.designCodeBody = newBody;

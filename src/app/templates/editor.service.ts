@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { TemplateStatus, UpdateTemplateVersionGQL } from '../graphql/graphql';
+import {
+  MessageType,
+  TemplateStatus,
+  UpdateTemplateVersionGQL,
+} from '../graphql/graphql';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +28,7 @@ export class EditorService {
     hasAttachments: [''],
   });
   status: TemplateStatus;
+  type: MessageType;
 
   constructor(
     private fb: FormBuilder,
@@ -35,13 +40,60 @@ export class EditorService {
     designCodeBody: string | null,
     templateVersionName: string,
     settings: string,
-    status: TemplateStatus
+    status: TemplateStatus,
+    type: MessageType
   ) {
     this._templateVersionId = templateVersionId;
     this._designCodeBody = designCodeBody;
     this.status = status;
+    this.type = type;
 
     const settingsJson = JSON.parse(settings);
+
+    const defaultEmailSettings = {
+      templateVersionName: '',
+      subject: '',
+      sender: '',
+      recipients: '',
+      ccRecipients: '',
+      bccRecipients: '',
+      importance: '',
+      hasAttachments: '',
+    };
+
+    this.settingsForm.setValue({
+      ...defaultEmailSettings,
+      ...settingsJson,
+      templateVersionName,
+    });
+  }
+
+  initializeTeams(
+    templateVersionId: number,
+    designCodeBody: string | null,
+    templateVersionName: string,
+    settings: string,
+    status: TemplateStatus,
+    type: MessageType
+  ) {
+    this._templateVersionId = templateVersionId;
+    this._designCodeBody = designCodeBody;
+    this.status = status;
+    this.type = type;
+
+    const settingsJson = JSON.parse(settings);
+
+    this.settingsForm = this.fb.group({
+      templateVersionName: [''],
+      subject: ['', Validators.required],
+      sender: ['', Validators.required],
+      recipients: [''],
+      ccRecipients: [''],
+      bccRecipients: [''],
+      importance: [''],
+      hasAttachments: [''],
+    });
+
     const defaultEmailSettings = {
       templateVersionName: '',
       subject: '',
