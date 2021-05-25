@@ -42,7 +42,19 @@ export class EditorService {
     this.status = status;
 
     const settingsJson = JSON.parse(settings);
+    const defaultEmailSettings = {
+      templateVersionName: '',
+      subject: '',
+      sender: '',
+      recipients: '',
+      ccRecipients: '',
+      bccRecipients: '',
+      importance: '',
+      hasAttachments: '',
+    };
+
     this.settingsForm.setValue({
+      ...defaultEmailSettings,
       ...settingsJson,
       templateVersionName,
     });
