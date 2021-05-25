@@ -38,9 +38,9 @@ export class DesignEditorComponent implements OnInit, OnDestroy {
     this.showPreview = this.editorService.type === MessageType.Email;
     this.designCode =
       this.editorService.designCodeBody ||
-      this.editorService.type === MessageType.Email
+      (this.editorService.type === MessageType.Email
         ? emailTemplate
-        : teamsTemplate;
+        : teamsTemplate);
     this.designCodeChange$.pipe(debounceTime(1000)).subscribe((newBody) => {
       this.designCode = newBody;
       this.editorService.designCodeBody = newBody;
